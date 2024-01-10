@@ -7,6 +7,7 @@ import {
   IsString,
 } from 'class-validator';
 import { Transform } from 'class-transformer';
+import { PermissionLevel } from './users.entity';
 
 export class CreateUserDto {
   @IsString()
@@ -22,18 +23,22 @@ export class CreateUserDto {
   @IsString()
   @IsNotEmpty()
   readonly ci: string;
+  @IsOptional()
   @IsEmail()
   @IsNotEmpty()
-  readonly email: string;
+  readonly email?: string;
   @IsString()
   @IsOptional()
-  readonly cellphone: string;
+  readonly cellphone?: string;
   @IsNotEmpty()
   @IsOptional()
   roleId?: number;
   @IsString()
   @IsOptional()
   password?: string;
+  @IsString()
+  @IsOptional()
+  permissionLevel?: PermissionLevel;
   @IsDate()
   @IsOptional()
   readonly lastLogin?: Date;

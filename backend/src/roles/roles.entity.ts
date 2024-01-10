@@ -24,9 +24,13 @@ export class Role {
 
   // permissions: Permission[];
   @Column()
-  pPersonal: boolean;
+  pRoute: boolean;
   @Column()
   pOwner: boolean;
+  @Column()
+  pOperator: boolean;
+  @Column()
+  pDriver: boolean;
 
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;

@@ -1,5 +1,15 @@
+import { ClassVehicle } from 'src/class-vehicle/class-vehicle.entity';
+import { Driver } from 'src/drivers/drivers.entity';
 import { Operator } from 'src/operators/operators.entity';
+import { Owner } from 'src/owners/owners.entity';
+import { Payorder } from 'src/payorders/payorders.entity';
 import { Role } from 'src/roles/roles.entity';
+import { Rossete } from 'src/rossetes/rossetes.entity';
+import { Route } from 'src/routes/routes.entity';
+import { Santion } from 'src/santions/santions.entity';
+import { TypePayorder } from 'src/type-payorders/type-payorders.entity';
+import { TypeSantion } from 'src/type-santions/type-santions.entity';
+import { Vehicle } from 'src/vehicle/vehicle.entity';
 import {
   Entity,
   Column,
@@ -11,7 +21,9 @@ import {
 } from 'typeorm';
 
 export enum PermissionLevel {
+  SUPERADMINISTRADOR = 'SUPERADMINISTRADOR',
   ADMINISTRADOR = 'ADMINISTRADOR',
+  TECNICO = 'TECNICO',
   OPERADOR = 'OPERADOR',
   CONSULTOR = 'CONSULTOR',
 }
@@ -65,4 +77,24 @@ export class User {
   rolesUpdate: Role[];
   @OneToMany(() => Operator, (operator) => operator.user)
   operatorsUpdate: Operator[];
+  @OneToMany(() => Payorder, (payorder) => payorder.user)
+  payordersUpdate: Payorder[];
+  @OneToMany(() => Santion, (santion) => santion.user)
+  santionsUpdate: Santion[];
+  @OneToMany(() => Owner, (owner) => owner.user)
+  ownersUpdate: Owner[];
+  @OneToMany(() => Driver, (driver) => driver.user)
+  driversUpdate: Driver[];
+  @OneToMany(() => Vehicle, (vehicle) => vehicle.user)
+  vehiclesUpdate: Vehicle[];
+  @OneToMany(() => Route, (route) => route.user)
+  routesUpdate: Route[];
+  @OneToMany(() => Rossete, (rossete) => rossete.user)
+  rossetesUpdate: Rossete[];
+  @OneToMany(() => TypePayorder, (typePayorder) => typePayorder.user)
+  typePayordersUpdate: TypePayorder[];
+  @OneToMany(() => TypeSantion, (typeSantion) => typeSantion.user)
+  typeSantionsUpdate: TypeSantion[];
+  @OneToMany(() => ClassVehicle, (classVehicle) => classVehicle.user)
+  classVehicleUpdate: ClassVehicle[];
 }

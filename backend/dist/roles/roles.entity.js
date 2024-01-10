@@ -10,9 +10,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Role = void 0;
+const openapi = require("@nestjs/swagger");
 const typeorm_1 = require("typeorm");
 const users_entity_1 = require("../users/users.entity");
 let Role = class Role {
+    static _OPENAPI_METADATA_FACTORY() {
+        return { id: { required: true, type: () => Number }, name: { required: true, type: () => String }, description: { required: true, type: () => String }, isActive: { required: true, type: () => Boolean }, pRoute: { required: true, type: () => Boolean }, pOwner: { required: true, type: () => Boolean }, pOperator: { required: true, type: () => Boolean }, pDriver: { required: true, type: () => Boolean }, createdAt: { required: true, type: () => Date }, updatedAt: { required: true, type: () => Date }, users: { required: true, type: () => [require("../users/users.entity").User] }, user: { required: true, type: () => require("../users/users.entity").User } };
+    }
 };
 exports.Role = Role;
 __decorate([
@@ -34,11 +38,19 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Boolean)
-], Role.prototype, "pPersonal", void 0);
+], Role.prototype, "pRoute", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Boolean)
 ], Role.prototype, "pOwner", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Boolean)
+], Role.prototype, "pOperator", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Boolean)
+], Role.prototype, "pDriver", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' }),
     __metadata("design:type", Date)

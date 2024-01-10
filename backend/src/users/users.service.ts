@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository,In } from 'typeorm';
 import { User } from './users.entity';
 import { PermissionLevel } from './users.entity';
 import { CreateUserDto, FilterUserDto, UpdateUserDto } from './users.dto';
@@ -33,8 +33,15 @@ export class UsersService {
     return user;
   }
   async getUsers(permissionLevel: PermissionLevel): Promise<User[]> {
+    if(permissionLevel === PermissionLevel.ADMINISTRADOR){
+      const users = await this.userRepository.find({
+        where: { permissionLevel: In(['ADMINISTRADOR','SUPERADMINISTRADOR','TECNICO'])  },
+        relations: ['role'],
+      });
+      return users;
+    }
     const users = await this.userRepository.find({
-      where: { permissionLevel },
+      where: { permissionLevel: permissionLevel },
       relations: ['role'],
     });
     return users;
@@ -56,6 +63,7 @@ export class UsersService {
     if (user) {
       throw new HttpException('El ci ya esta ingresado', HttpStatus.NOT_FOUND);
     }
+    permissionLevel = data.permissionLevel || permissionLevel;
     const newUser = this.userRepository.create({
       ...data,
       permissionLevel,
@@ -63,12 +71,10 @@ export class UsersService {
     return await this.userRepository.save(newUser);
   }
   async updateUser(id: number, data: UpdateUserDto) {
-    console.log('buscando usuario');
     const user = await this.userRepository.findOne({
       where: { id },
       relations: ['role'],
     });
-    console.log(user);
     if (!user) {
       throw new HttpException('El usuario no existe', HttpStatus.NOT_FOUND);
     }

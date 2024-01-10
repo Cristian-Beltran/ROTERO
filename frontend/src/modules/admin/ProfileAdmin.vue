@@ -1,143 +1,127 @@
 <template>
-  <form @submit="onsubmit">
-    <div class="grid lg:grid-cols-2 mt-6 gap-y-4 gap-x-2 sm:grid-cols-1">
-      <FormField v-slot="{ componentField }" name="email">
-        <FormItem class="col-span-2">
-          <FormLabel>Correo electrónico</FormLabel>
-          <FormControl>
-            <Input type="email" disabled placeholder="correo@gmail.com " v-bind="componentField" />
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-      </FormField>
-      <FormField v-slot="{ componentField }" class="w-6/12" name="firstName">
-        <FormItem>
-          <FormLabel>Nombre/s</FormLabel>
-          <FormControl>
-            <Input type="text" placeholder="Nombre" v-bind="componentField" />
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-      </FormField>
-      <FormField v-slot="{ componentField }" name="lastName">
-        <FormItem>
-          <FormLabel>Apellido/s</FormLabel>
-          <FormControl>
-            <Input type="text" placeholder="Apellidos" v-bind="componentField" />
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-      </FormField>
-      <FormField v-slot="{ componentField }" name="birthday">
-        <FormItem>
-          <FormLabel>Fecha de nacimiento</FormLabel>
-          <FormControl>
-            <Input type="date" v-bind="componentField" />
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-      </FormField>
-      <FormField v-slot="{ componentField }" name="ci">
-        <FormItem>
-          <FormLabel>Carnet de identidad</FormLabel>
-          <FormControl>
-            <Input type="text" placeholder="123456" v-bind="componentField" />
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-      </FormField>
-      <FormField v-slot="{ componentField }" name="cellphone">
-        <FormItem>
-          <FormLabel>Teléfono celular</FormLabel>
-          <FormControl>
-            <Input type="text" placeholder="Numero de celular" v-bind="componentField" />
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-      </FormField>
+  <form action="" @submit="handleSubmit">
+    <div class="mt-6 grid grid-cols-2 gap-x-4 gap-y-4">
+      <div class="grid items-center">
+        <Label for="email">Email</Label>
+        <Input id="email" type="email" placeholder="Correo electronico" v-model="v$.email.$model" />
+        <Error :errors="v$.email.$errors" />
+      </div>
+      <div class="grid items-center">
+        <Label for="firstName">Nombre/s</Label>
+        <Input
+          id="firstName"
+          type="text"
+          placeholder="Nombre de administrador"
+          v-model="v$.firstName.$model"
+        />
+        <Error :errors="v$.firstName.$errors" />
+      </div>
+      <div class="grid items-center">
+        <Label for="lastName">Apellido/s</Label>
+        <Input
+          id="lastName"
+          type="text"
+          placeholder="Apellido de administrador"
+          v-model="v$.lastName.$model"
+        />
+        <Error :errors="v$.lastName.$errors" />
+      </div>
+      <div class="grid items-center">
+        <Label for="birthday">Fecha de nacimiento</Label>
+        <Input
+          id="birthday"
+          type="date"
+          placeholder="Fecha de nacimiento"
+          v-model="v$.birthday.$model"
+        />
+        <Error :errors="v$.birthday.$errors" />
+      </div>
+      <div class="grid items-center">
+        <Label for="ci">CI</Label>
+        <Input id="ci" type="text" placeholder="Carnet de identidad" v-model="v$.ci.$model" />
+        <Error :errors="v$.ci.$errors" />
+      </div>
+      <div class="grid items-center">
+        <Label for="cellphone">Celular</Label>
+        <Input
+          id="cellphone"
+          type="text"
+          placeholder="Numero de celular"
+          v-model="v$.cellphone.$model"
+        />
+        <Error :errors="v$.cellphone.$errors" />
+      </div>
     </div>
-    <div class="flex justify-between mt-8">
-      <Button type="button" variant="destructive" @click="exit"
-        ><v-icon name="fa-times" class="mr-2" />Salir</Button
-      >
-      <Button type="submit"><v-icon name="fa-save" class="mr-2" />Guardar cambios</Button>
+    <div class="flex justify-between mt-4">
+      <router-link to="/">
+        <Button type="button" variant="destructive"
+          ><v-icon name="fa-times" class="mr-2" />Salir</Button
+        >
+      </router-link>
+      <Button class=""><v-icon name="fa-save" type="submit" />Guardar</Button>
     </div>
   </form>
 </template>
 <script setup lang="ts">
-import { Button } from '@/commun/ui/button'
+import Input from '@/commun/ui/input/Input.vue'
+import Label from '@/commun/ui/label/Label.vue'
+import Error from '@/commun/me/ErrorBase.vue'
+import Button from '@/commun/ui/button/Button.vue'
+import { useVuelidate } from '@vuelidate/core'
+import { required, helpers } from '@vuelidate/validators'
+import { reactive, computed, onMounted } from 'vue'
 import { useAuthStore } from '@/stores/auth.stores'
-import { useForm } from 'vee-validate'
-import { toTypedSchema } from '@vee-validate/zod'
 import { useToast } from 'vue-toastification'
-import * as z from 'zod'
-import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/commun/ui/form'
-import { Input } from '@/commun/ui/input'
-import { useRouter } from 'vue-router'
-const router = useRouter()
+
 const authStore = useAuthStore()
 const toast = useToast()
-const formSchema = toTypedSchema(
-  z.object({
-    firstName: z
-      .string()
-      .min(2, {
-        message: 'El nombre debe tener al menos 2 caracteres'
-      })
-      .max(50, {
-        message: 'El nombre debe tener menos de 50 caracteres'
-      }),
-    lastName: z
-      .string()
-      .min(2, {
-        message: 'El apellido debe tener al menos 2 caracteres'
-      })
-      .max(50, {
-        message: 'El apellido debe tener menos de 50 caracteres'
-      }),
-    birthday: z
-      .date()
-      .min(new Date(1900, 1, 1), {
-        message: 'La fecha de nacimiento debe ser mayor a 1900'
-      })
-      .max(new Date(), {
-        message: 'La fecha de nacimiento debe ser menor a la fecha actual'
-      }),
-    ci: z
-      .string()
-      .min(7, {
-        message: 'El carnet de identidad debe tener al menos 7 caracteres'
-      })
-      .max(10, {
-        message: 'El carnet de identidad debe tener menos de 10 caracteres'
-      }),
-    email: z.string().email({
-      message: 'El correo electrónico no es válido'
-    }),
-    cellphone: z.optional(z.null())
-  })
-)
+const formData = reactive({
+  firstName: '',
+  lastName: '',
+  email: '',
+  birthday: '',
+  ci: '',
+  cellphone: ''
+})
 
-const { handleSubmit } = useForm({
-  validationSchema: formSchema,
-  initialValues: {
-    firstName: authStore.auth.firstName,
-    lastName: authStore.auth.lastName,
-    birthday: new Date(authStore.auth.birthday),
-    ci: authStore.auth.ci,
-    email: authStore.auth.email,
-    cellphone: authStore.auth.cellphone
+const rules = computed(() => ({
+  firstName: { required: helpers.withMessage('El nombre es requerido', required) },
+  lastName: { required: helpers.withMessage('El apellido es requerido', required) },
+  email: {
+    required: helpers.withMessage('El email es requerido', required),
+    email: helpers.withMessage('El email no es válido', required)
+  },
+  birthday: { required: helpers.withMessage('La fecha de nacimiento es requerida', required) },
+  ci: { required: helpers.withMessage('La cédula de identidad es requerida', required) },
+  cellphone: { required: helpers.withMessage('El teléfono es requerido', required) }
+}))
+
+const v$ = useVuelidate(rules, formData)
+
+async function handleSubmit(e) {
+  if (e) e.preventDefault()
+  const isFormCorrect = await v$.value.$validate()
+  if (isFormCorrect) {
+    try {
+      await authStore.updateProfile(formData)
+      toast.success('Perfil actualizado correctamente')
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message)
+    }
   }
-})
-const onsubmit = handleSubmit(async (values) => {
-  try {
-    toast.success('Perfil actualizado')
-  } catch (error: any) {
-    toast.error(error.message)
-  }
-})
-const exit = () => {
-  console.log('exit')
-  router.push('/')
 }
+
+onMounted(async () => {
+  try {
+    console.log('authStore.auth', authStore.auth)
+    formData.firstName = authStore.auth.firstName
+    formData.lastName = authStore.auth.lastName
+    formData.email = authStore.auth.email
+    formData.birthday = new Date(authStore.auth.birthday).toISOString().split('T')[0]
+    formData.ci = authStore.auth.ci
+    formData.cellphone = authStore.auth.cellphone
+  } catch (error: any) {
+    toast.error(error?.response?.data?.message)
+  }
+})
 </script>

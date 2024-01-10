@@ -13,14 +13,24 @@ const payorders_controller_1 = require("./payorders.controller");
 const users_module_1 = require("../users/users.module");
 const typeorm_1 = require("@nestjs/typeorm");
 const payorders_entity_1 = require("./payorders.entity");
+const operators_module_1 = require("../operators/operators.module");
+const pdf_module_1 = require("../pdf/pdf.module");
+const type_payorders_module_1 = require("../type-payorders/type-payorders.module");
 let PayordersModule = class PayordersModule {
 };
 exports.PayordersModule = PayordersModule;
 exports.PayordersModule = PayordersModule = __decorate([
     (0, common_1.Module)({
-        imports: [users_module_1.UsersModule, typeorm_1.TypeOrmModule.forFeature([payorders_entity_1.Payorder])],
+        imports: [
+            pdf_module_1.PdfModule,
+            users_module_1.UsersModule,
+            operators_module_1.OperatorsModule,
+            type_payorders_module_1.TypePayordersModule,
+            typeorm_1.TypeOrmModule.forFeature([payorders_entity_1.Payorder]),
+        ],
         providers: [payorders_service_1.PayordersService],
         controllers: [payorders_controller_1.PayordersController],
+        exports: [payorders_service_1.PayordersService],
     })
 ], PayordersModule);
 //# sourceMappingURL=payorders.module.js.map

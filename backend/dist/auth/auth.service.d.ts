@@ -1,6 +1,7 @@
 import { JwtService } from '@nestjs/jwt';
 import { LoginAdminDto } from './auth.dto';
 import { UsersService } from 'src/users/users.service';
+import { CreateUserDto } from 'src/users/users.dto';
 export declare class AuthService {
     private userService;
     private jwtService;
@@ -22,9 +23,20 @@ export declare class AuthService {
         role: import("../roles/roles.entity").Role;
         rolesUpdate: import("../roles/roles.entity").Role[];
         operatorsUpdate: import("../operators/operators.entity").Operator[];
+        payordersUpdate: import("../payorders/payorders.entity").Payorder[];
+        santionsUpdate: import("../santions/santions.entity").Santion[];
+        ownersUpdate: import("../owners/owners.entity").Owner[];
+        driversUpdate: import("../drivers/drivers.entity").Driver[];
+        vehiclesUpdate: import("../vehicle/vehicle.entity").Vehicle[];
+        routesUpdate: import("../routes/routes.entity").Route[];
+        rossetesUpdate: import("../rossetes/rossetes.entity").Rossete[];
+        typePayordersUpdate: import("../type-payorders/type-payorders.entity").TypePayorder[];
+        typeSantionsUpdate: import("../type-santions/type-santions.entity").TypeSantion[];
+        classVehicleUpdate: import("../class-vehicle/class-vehicle.entity").ClassVehicle[];
         accessToken: string;
     }>;
     verify(userId: number): Promise<import("../users/users.entity").User>;
-    updatePassword(id: number, password: string): Promise<import("typeorm").UpdateResult>;
+    updatePassword(id: number, password: string, oldPassword: string): Promise<import("typeorm").UpdateResult>;
+    updateProfile(id: number, data: CreateUserDto): Promise<import("typeorm").UpdateResult>;
     private generateToken;
 }

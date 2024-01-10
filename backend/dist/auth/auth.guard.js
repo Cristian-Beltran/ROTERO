@@ -15,6 +15,7 @@ const jwt_1 = require("@nestjs/jwt");
 const auth_constans_1 = require("./auth.constans");
 const core_1 = require("@nestjs/core");
 const auth_decorator_1 = require("./auth.decorator");
+const users_entity_1 = require("../users/users.entity");
 let AuthGuard = class AuthGuard {
     constructor(jwtService, reflector) {
         this.jwtService = jwtService;
@@ -47,6 +48,60 @@ let AuthGuard = class AuthGuard {
     extractTokenFromHeader(request) {
         const [type, token] = request.headers.authorization?.split(' ') ?? [];
         return type === 'Bearer' ? token : undefined;
+    }
+    permissionLevelSuperAdmin(contex) {
+        const request = contex.switchToHttp().getRequest();
+        const user = request['user'];
+        if (user && user.permissionLevel === users_entity_1.PermissionLevel.SUPERADMINISTRADOR) {
+            return true;
+        }
+        throw new common_1.UnauthorizedException('No tiene permisos para acceder');
+    }
+    permissionLevelAdmin(contex) {
+        const request = contex.switchToHttp().getRequest();
+        const user = request['user'];
+        if (user &&
+            (user.permissionLevel === users_entity_1.PermissionLevel.ADMINISTRADOR ||
+                user.permissionLevel === users_entity_1.PermissionLevel.SUPERADMINISTRADOR)) {
+            return true;
+        }
+        throw new common_1.UnauthorizedException('No tiene permisos para acceder');
+    }
+    permissionLevelTecnical(contex) {
+        const request = contex.switchToHttp().getRequest();
+        const user = request['user'];
+        if (user &&
+            (user.permissionLevel === users_entity_1.PermissionLevel.TECNICO ||
+                user.permissionLevel === users_entity_1.PermissionLevel.ADMINISTRADOR ||
+                user.permissionLevel === users_entity_1.PermissionLevel.SUPERADMINISTRADOR)) {
+            return true;
+        }
+        throw new common_1.UnauthorizedException('No tiene permisos para acceder');
+    }
+    permissionLevelConsultor(contex) {
+        const request = contex.switchToHttp().getRequest();
+        const user = request['user'];
+        if (user &&
+            (user.permissionLevel === users_entity_1.PermissionLevel.CONSULTOR ||
+                user.permissionLevel === users_entity_1.PermissionLevel.TECNICO ||
+                user.permissionLevel === users_entity_1.PermissionLevel.ADMINISTRADOR ||
+                user.permissionLevel === users_entity_1.PermissionLevel.SUPERADMINISTRADOR)) {
+            return true;
+        }
+        throw new common_1.UnauthorizedException('No tiene permisos para acceder');
+    }
+    permissionLevelOperator(contex) {
+        const request = contex.switchToHttp().getRequest();
+        const user = request['user'];
+        if (user &&
+            (user.permissionLevel === users_entity_1.PermissionLevel.OPERADOR ||
+                user.permissionLevel === users_entity_1.PermissionLevel.CONSULTOR ||
+                user.permissionLevel === users_entity_1.PermissionLevel.TECNICO ||
+                user.permissionLevel === users_entity_1.PermissionLevel.ADMINISTRADOR ||
+                user.permissionLevel === users_entity_1.PermissionLevel.SUPERADMINISTRADOR)) {
+            return true;
+        }
+        throw new common_1.UnauthorizedException('No tiene permisos para acceder');
     }
 };
 exports.AuthGuard = AuthGuard;

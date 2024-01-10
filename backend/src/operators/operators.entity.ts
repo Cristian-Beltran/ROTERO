@@ -12,9 +12,13 @@ import {
 
 import { User } from 'src/users/users.entity';
 import { Payorder } from 'src/payorders/payorders.entity';
+import { Santion } from 'src/santions/santions.entity';
+import { Owner } from 'src/owners/owners.entity';
+import { Driver } from 'src/drivers/drivers.entity';
+import { Vehicle } from 'src/vehicle/vehicle.entity';
 
 export enum State {
-  AUTORIZADO = 'AUTIRIZADO',
+  AUTORIZADO = 'AUTORIZADO',
   BAJA = 'BAJA',
   PROCESO = 'PROCESO',
 }
@@ -36,24 +40,34 @@ export class Operator {
   administrativeResolution: string;
   @Column({ type: 'date' })
   dateRa: Date;
-  @Column({ type: 'integer' })
-  initialAffiliates: number;
-  @Column({ type: 'integer' })
-  currentAffiliates: number;
   @Column()
   state: State;
+  @Column()
+  entityMatris: string;
+  @Column()
+  color: string;
+
+  // nuevo
+  @Column()
+  tecnicalNumberUrl: string;
+  @Column()
+  legalNumberUrl: string;
+
   @Column()
   tecnicalNumber: string;
   @Column()
   legalNumber: string;
+
   @Column({ type: 'text' })
   observations: string;
-  @Column()
-  operatorCertification: string;
   @Column({ type: 'date' })
   validity: Date;
-  @Column()
+  @Column({ type: 'text' })
   route: string;
+
+  // Nuevo
+  @Column({ type: 'timestamp', nullable: true })
+  authorizationDate: Date;
 
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
@@ -70,6 +84,14 @@ export class Operator {
   operator: User;
   @OneToMany(() => Payorder, (payorder) => payorder.operator)
   payorders: Payorder[];
+  @OneToMany(() => Santion, (santion) => santion.operator)
+  santions: Payorder[];
+  @OneToMany(() => Owner, (owner) => owner.operator)
+  owners: Owner[];
+  @OneToMany(() => Vehicle, (vehicle) => vehicle.operator)
+  vehicles: Vehicle[];
+  @OneToMany(() => Driver, (driver) => driver.operator, { cascade: false })
+  drivers: Driver[];
 
   @ManyToOne(() => User, (user) => user.operatorsUpdate, { cascade: false })
   user: User;

@@ -10,8 +10,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LoginOperatorDto = exports.LoginAdminDto = exports.SignUpDto = void 0;
+const openapi = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 class SignUpDto {
+    static _OPENAPI_METADATA_FACTORY() {
+        return { firstName: { required: true, type: () => String }, lastName: { required: true, type: () => String }, birthday: { required: true, type: () => Date }, ci: { required: true, type: () => String }, cellphone: { required: true, type: () => String } };
+    }
 }
 exports.SignUpDto = SignUpDto;
 __decorate([
@@ -40,6 +44,9 @@ __decorate([
     __metadata("design:type", String)
 ], SignUpDto.prototype, "cellphone", void 0);
 class LoginAdminDto {
+    static _OPENAPI_METADATA_FACTORY() {
+        return { email: { required: true, type: () => String }, password: { required: true, type: () => String } };
+    }
 }
 exports.LoginAdminDto = LoginAdminDto;
 __decorate([
@@ -54,6 +61,9 @@ __decorate([
     __metadata("design:type", String)
 ], LoginAdminDto.prototype, "password", void 0);
 class LoginOperatorDto {
+    static _OPENAPI_METADATA_FACTORY() {
+        return { ci: { required: true, type: () => String }, birthday: { required: true, type: () => Date } };
+    }
 }
 exports.LoginOperatorDto = LoginOperatorDto;
 __decorate([

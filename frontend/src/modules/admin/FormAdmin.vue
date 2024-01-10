@@ -51,6 +51,23 @@
         />
         <Error :errors="v$.cellphone.$errors" />
       </div>
+      <div class="grid items-center">
+        <Label for="permissionLevel">Rol</Label>
+        <Select id="permissionLevel" v-model="v$.permissionLevel.$model">
+          <SelectTrigger class="">
+            <SelectValue placeholder="Seleccione un Rol" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectLabel>Roles</SelectLabel>
+              <SelectItem value="SUPERADMINISTRADOR"> SUPERADMINISTRADOR</SelectItem>
+              <SelectItem value="ADMINISTRADOR"> ADMINISTRADOR</SelectItem>
+              <SelectItem value="TECNICO"> TECNICO</SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+        <Error :errors="v$.permissionLevel.$errors" />
+      </div>
     </div>
     <div class="flex justify-between mt-4">
       <router-link to="/admin">
@@ -63,6 +80,15 @@
   </form>
 </template>
 <script setup lang="ts">
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue
+} from '@/commun/ui/select'
 import Input from '@/commun/ui/input/Input.vue'
 import Label from '@/commun/ui/label/Label.vue'
 import Error from '@/commun/me/ErrorBase.vue'
@@ -74,7 +100,6 @@ import { useAdminStore } from '@/stores/admin.stores'
 import { useToast } from 'vue-toastification'
 import { useRoute } from 'vue-router'
 import { useRouter } from 'vue-router'
-import { dateFormat } from '@/lib/dateFormat'
 
 const adminStore = useAdminStore()
 const toast = useToast()
@@ -86,7 +111,8 @@ const formData = reactive({
   email: '',
   birthday: '',
   ci: '',
-  cellphone: ''
+  cellphone: '',
+  permissionLevel: ''
 })
 
 const rules = computed(() => ({
@@ -98,7 +124,8 @@ const rules = computed(() => ({
   },
   birthday: { required: helpers.withMessage('La fecha de nacimiento es requerida', required) },
   ci: { required: helpers.withMessage('La cédula de identidad es requerida', required) },
-  cellphone: { required: helpers.withMessage('El teléfono es requerido', required) }
+  cellphone: { required: helpers.withMessage('El teléfono es requerido', required) },
+  permissionLevel: { required: helpers.withMessage('El rol es requerido', required) }
 }))
 
 const v$ = useVuelidate(rules, formData)
@@ -110,7 +137,7 @@ async function handleSubmit(e) {
     try {
       if (!route.query.id) await adminStore.createAdmin(formData)
       else await adminStore.updateAdmin(route.query.id, formData)
-      toast.success('Administrador guardado correctamente')
+      toast.success('Usuario guardado correctamente')
       router.push({ name: 'admin' })
     } catch (error) {
       toast.error(error?.response?.data?.message)
@@ -128,6 +155,7 @@ onMounted(async () => {
       formData.birthday = new Date(adminStore.admin.birthday).toISOString().split('T')[0]
       formData.ci = adminStore.admin.ci
       formData.cellphone = adminStore.admin.cellphone
+      formData.permissionLevel = adminStore.admin.permissionLevel
     } catch (error) {
       toast.error(error?.response.data.errors[0])
     }

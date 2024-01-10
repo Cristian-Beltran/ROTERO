@@ -4,7 +4,6 @@ import { createPinia } from 'pinia'
 import Toast from 'vue-toastification'
 // Import the CSS or use your own!
 import 'vue-toastification/dist/index.css'
-
 // Icons
 import * as FaIcons from 'oh-vue-icons/icons/fa'
 import * as CoIcons from 'oh-vue-icons/icons/co'
@@ -31,5 +30,8 @@ const options = {
 }
 app.use(Toast, options)
 app.use(VueSweetalert2)
+
 app.component('v-icon', OhVueIcon)
 app.mount('#app')
+
+  

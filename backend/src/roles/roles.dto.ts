@@ -10,10 +10,17 @@ export class createRoleDto {
   readonly description: string;
   @IsBoolean()
   @IsNotEmpty()
-  readonly pPersonal: boolean;
+  readonly pDriver: boolean;
   @IsBoolean()
   @IsNotEmpty()
   readonly pOwner: boolean;
+  @IsBoolean()
+  @IsNotEmpty()
+  readonly pOperator: boolean;
+  @IsBoolean()
+  @IsNotEmpty()
+  readonly pRoute: boolean;
+
 }
 
 export class updateRoleDto extends PartialType(createRoleDto) {}

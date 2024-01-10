@@ -24,10 +24,12 @@ const columns = [
   { title: 'id', key: 'id' },
   { title: 'name', key: 'name' },
   { title: 'description', key: 'description' },
-  { title: 'Permiso Personal', key: 'pPersonal', type: 'boolean' },
+  { title: 'Ver ruta', key: 'pRoute', type: 'boolean' },
+  { title: 'Ver conductor', key: 'pDriver', type: 'boolean' },
+  { title: 'Ver propietario', key: 'pOwner', type: 'boolean' },
   {
-    title: 'Permiso de Operador',
-    key: 'pOwner',
+    title: 'Ver Operador',
+    key: 'pOperator',
     type: 'boolean'
   },
   { title: 'Actualizado por', key: 'userName' },

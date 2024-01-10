@@ -39,7 +39,7 @@ const onSubmit = handleSubmit(async (values) => {
   try {
     loading.value = true
     await useAuth.login(values.email, values.password)
-    router.push('/dashboard')
+    window.location.reload()
   } catch (error: any) {
     toast.error(error.response.data.message)
     resetForm()
@@ -49,7 +49,9 @@ const onSubmit = handleSubmit(async (values) => {
 </script>
 <template>
   <div class="flex flex-col space-y-2 text-center">
-    <h1 class="text-2xl font-semibold tracking-tight dark:text-white text-black">Ingreso del sistema</h1>
+    <h1 class="text-2xl font-semibold tracking-tight dark:text-white text-black">
+      Ingreso del sistema
+    </h1>
     <p class="text-sm text-muted-foreground">Sistema de control de transporte</p>
   </div>
   <form class="space-y-6" @submit="onSubmit">

@@ -7,4 +7,9 @@ export declare class AuthGuard implements CanActivate {
     constructor(jwtService: JwtService, reflector: Reflector);
     canActivate(context: ExecutionContext): Promise<boolean>;
     private extractTokenFromHeader;
+    permissionLevelSuperAdmin(contex: ExecutionContext): boolean;
+    permissionLevelAdmin(contex: ExecutionContext): boolean;
+    permissionLevelTecnical(contex: ExecutionContext): boolean;
+    permissionLevelConsultor(contex: ExecutionContext): boolean;
+    permissionLevelOperator(contex: ExecutionContext): boolean;
 }

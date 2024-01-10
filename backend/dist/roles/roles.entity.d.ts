@@ -4,8 +4,10 @@ export declare class Role {
     name: string;
     description: string;
     isActive: boolean;
-    pPersonal: boolean;
+    pRoute: boolean;
     pOwner: boolean;
+    pOperator: boolean;
+    pDriver: boolean;
     createdAt: Date;
     updatedAt: Date;
     users: User[];

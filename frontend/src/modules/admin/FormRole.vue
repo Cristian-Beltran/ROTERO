@@ -17,23 +17,43 @@
         <Error :errors="v$.description.$errors" />
       </div>
       <div class="grid items-center">
-        <Label for="pPersonal">Persmiso personal</Label>
+        <Label for="pPersonal">Persmiso de ver conductor</Label>
         <Input
           id="pPersonal"
           type="checkbox"
           class="w-4"
           placeholder="Permiso personal"
-          v-model="v$.pPersonal.$model"
+          v-model="v$.pDriver.$model"
         />
       </div>
       <div class="grid items-center">
-        <Label for="pOwner">Persmiso de propietario</Label>
+        <Label for="pPersonal">Persmiso de ver propietario</Label>
+        <Input
+          id="pPersonal"
+          type="checkbox"
+          class="w-4"
+          placeholder="Permiso personal"
+          v-model="v$.pOwner.$model"
+        />
+      </div>
+      <div class="grid items-center">
+        <Label for="pPersonal">Persmiso de ver ruta</Label>
+        <Input
+          id="pPersonal"
+          type="checkbox"
+          class="w-4"
+          placeholder="Permiso personal"
+          v-model="v$.pRoute.$model"
+        />
+      </div>
+      <div class="grid items-center">
+        <Label for="pOwner">Persmiso de ver operador</Label>
         <Input
           id="pOwner"
           type="checkbox"
           class="w-4"
           placeholder="Permiso de propietario"
-          v-model="v$.pOwner.$model"
+          v-model="v$.pOperator.$model"
         />
       </div>
     </div>
@@ -68,7 +88,9 @@ const formData = reactive({
   name: '',
   description: '',
   pOwner: false,
-  pPersonal: false
+  pDriver: false,
+  pRoute: false,
+  pOperator: false
 })
 
 const rules = computed(() => ({
@@ -78,10 +100,16 @@ const rules = computed(() => ({
   description: {
     required: helpers.withMessage('Se requiere una descripción', required)
   },
-  pPersonal: {
+  pRoute: {
     required: helpers.withMessage('Se requiere ', required)
   },
   pOwner: {
+    required: helpers.withMessage('Se requiere ', required)
+  },
+  pDriver: {
+    required: helpers.withMessage('Se requiere ', required)
+  },
+  pOperator: {
     required: helpers.withMessage('Se requiere ', required)
   }
 }))
@@ -108,9 +136,11 @@ onMounted(async () => {
     try {
       await roleStore.getRole(route.query.id)
       formData.name = roleStore.role.name
-      formData.description = roleStore.role.description
-      formData.pOwner = roleStore.role.pOwner
-      formData.pPersonal = roleStore.role.pPersonal
+      formData.description = roleStore.role?.description
+      formData.pOwner = roleStore.role?.pOwner
+      formData.pDriver = roleStore.role?.pDriver
+      formData.pRoute = roleStore.role?.pRoute
+      formData.pOperator = roleStore.role?.pOperator
     } catch (error) {
       toast.error(error?.response.data.errors[0])
     }

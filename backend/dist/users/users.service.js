@@ -43,8 +43,15 @@ let UsersService = class UsersService {
         return user;
     }
     async getUsers(permissionLevel) {
+        if (permissionLevel === users_entity_2.PermissionLevel.ADMINISTRADOR) {
+            const users = await this.userRepository.find({
+                where: { permissionLevel: (0, typeorm_2.In)(['ADMINISTRADOR', 'SUPERADMINISTRADOR', 'TECNICO']) },
+                relations: ['role'],
+            });
+            return users;
+        }
         const users = await this.userRepository.find({
-            where: { permissionLevel },
+            where: { permissionLevel: permissionLevel },
             relations: ['role'],
         });
         return users;
@@ -66,6 +73,7 @@ let UsersService = class UsersService {
         if (user) {
             throw new common_1.HttpException('El ci ya esta ingresado', common_1.HttpStatus.NOT_FOUND);
         }
+        permissionLevel = data.permissionLevel || permissionLevel;
         const newUser = this.userRepository.create({
             ...data,
             permissionLevel,
@@ -73,12 +81,10 @@ let UsersService = class UsersService {
         return await this.userRepository.save(newUser);
     }
     async updateUser(id, data) {
-        console.log('buscando usuario');
         const user = await this.userRepository.findOne({
             where: { id },
             relations: ['role'],
         });
-        console.log(user);
         if (!user) {
             throw new common_1.HttpException('El usuario no existe', common_1.HttpStatus.NOT_FOUND);
         }

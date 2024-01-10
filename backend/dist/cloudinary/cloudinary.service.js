@@ -9,7 +9,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CloudinaryService = void 0;
 const common_1 = require("@nestjs/common");
 const cloudinary_1 = require("cloudinary");
-const streamifier_1 = require("streamifier");
+const streamifier = require('streamifier');
 let CloudinaryService = class CloudinaryService {
     uploadFile(file) {
         return new Promise((resolve, reject) => {
@@ -18,7 +18,7 @@ let CloudinaryService = class CloudinaryService {
                     return reject(error);
                 resolve(result);
             });
-            streamifier_1.default.createReadStream(file.buffer).pipe(uploadStream);
+            streamifier.createReadStream(file.buffer).pipe(uploadStream);
         });
     }
 };

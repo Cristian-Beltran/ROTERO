@@ -1,8 +1,8 @@
 <template>
-  <Card title="Administradores" description="Lista de administradores" icon="fa-user-shield">
+  <Card title="Usuarios" description="Lista de usuarios del sistema" icon="fa-user-shield">
     <template v-slot:button>
       <router-link to="/admin/create">
-        <Button type="primary"><v-icon name="fa-plus" class="mr-2" />Agregar administrador </Button>
+        <Button type="primary"><v-icon name="fa-plus" class="mr-2" />Agregar usuario</Button>
       </router-link>
     </template>
     <ListAdmin />

@@ -10,10 +10,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FilterUserDto = exports.UpdateUserDto = exports.CreateUserDto = void 0;
+const openapi = require("@nestjs/swagger");
 const mapped_types_1 = require("@nestjs/mapped-types");
 const class_validator_1 = require("class-validator");
 const class_transformer_1 = require("class-transformer");
+const users_entity_1 = require("./users.entity");
 class CreateUserDto {
+    static _OPENAPI_METADATA_FACTORY() {
+        return { firstName: { required: true, type: () => String }, lastName: { required: true, type: () => String }, birthday: { required: true, type: () => Date }, ci: { required: true, type: () => String }, email: { required: false, type: () => String }, cellphone: { required: false, type: () => String }, roleId: { required: false, type: () => Number }, password: { required: false, type: () => String }, permissionLevel: { required: false, enum: require("./users.entity").PermissionLevel }, lastLogin: { required: false, type: () => Date }, role: { required: true, type: () => Object } };
+    }
 }
 exports.CreateUserDto = CreateUserDto;
 __decorate([
@@ -38,6 +43,7 @@ __decorate([
     __metadata("design:type", String)
 ], CreateUserDto.prototype, "ci", void 0);
 __decorate([
+    (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsEmail)(),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
@@ -58,6 +64,11 @@ __decorate([
     __metadata("design:type", String)
 ], CreateUserDto.prototype, "password", void 0);
 __decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], CreateUserDto.prototype, "permissionLevel", void 0);
+__decorate([
     (0, class_validator_1.IsDate)(),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", Date)
@@ -67,9 +78,15 @@ __decorate([
     __metadata("design:type", Object)
 ], CreateUserDto.prototype, "role", void 0);
 class UpdateUserDto extends (0, mapped_types_1.PartialType)(CreateUserDto) {
+    static _OPENAPI_METADATA_FACTORY() {
+        return {};
+    }
 }
 exports.UpdateUserDto = UpdateUserDto;
 class FilterUserDto {
+    static _OPENAPI_METADATA_FACTORY() {
+        return { ci: { required: false, type: () => String }, id: { required: false, type: () => Number }, email: { required: false, type: () => String }, birthday: { required: false, type: () => Date } };
+    }
 }
 exports.FilterUserDto = FilterUserDto;
 //# sourceMappingURL=users.dto.js.map

@@ -1,6 +1,13 @@
 import { defineStore } from 'pinia'
 import { ref, reactive, computed } from 'vue'
-import { loginRequest, verifyTokenRequest } from '@/services/auth.services'
+import {
+  loginRequest,
+  updatePasswordRequest,
+  updateProfileRequest,
+  verifyTokenRequest,
+  uploadFirmOneRequest,
+  uploadFirmTwoRequest
+} from '@/services/auth.services'
 import Cookies from 'js-cookie'
 import type { Auth } from '@/interfaces/Auth.interfaces'
 
@@ -32,7 +39,7 @@ export const useAuthStore = defineStore('auth', () => {
     Cookies.set('token', data.accessToken, { expires: 7 })
   }
   async function logout() {
-    isAuthenticated.value = true
+    isAuthenticated.value = false
     Object.assign(auth, {})
     Cookies.remove('token')
   }
@@ -57,6 +64,35 @@ export const useAuthStore = defineStore('auth', () => {
       return false
     }
   }
-  async function updateProfile(data: Auth) {}
-  return { auth, isAuthenticated, initialName, login, logout, verifyToken }
+  async function updateProfile(data: any) {
+    await updateProfileRequest(data)
+    auth.firstName = data.firstName
+    auth.lastName = data.lastName
+    auth.birthday = data.birthday
+    auth.ci = data.ci
+    auth.email = data.email
+    auth.cellphone = data.cellphone
+  }
+  async function updatePassword(data: { password: string; oldpassword: string }) {
+    await updatePasswordRequest(data)
+  }
+  async function uploadFirmOne(file: FormData) {
+    return await uploadFirmOneRequest(file)
+  }
+  async function uploadFirmTwo(file: FormData) {
+    return await uploadFirmTwoRequest(file)
+  }
+
+  return {
+    auth,
+    isAuthenticated,
+    initialName,
+    login,
+    logout,
+    verifyToken,
+    updateProfile,
+    updatePassword,
+    uploadFirmOne,
+    uploadFirmTwo
+  }
 })

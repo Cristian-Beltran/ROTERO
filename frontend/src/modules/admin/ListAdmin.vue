@@ -25,6 +25,7 @@ const columns = [
   { title: 'Apellido', key: 'lastName' },
   { title: 'Fecha', key: 'birthday', type: 'date' },
   { title: 'CI', key: 'ci' },
+  { title: 'Rol', key: 'permissionLevel' },
   { title: 'email', key: 'email' },
   { title: 'Activo', key: 'isActive', type: 'boolean' },
   { title: 'Ultimo Acceso', key: 'lastLogin', type: 'dateTime' }

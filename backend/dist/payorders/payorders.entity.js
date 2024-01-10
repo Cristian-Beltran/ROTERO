@@ -10,10 +10,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Payorder = void 0;
+const openapi = require("@nestjs/swagger");
 const typeorm_1 = require("typeorm");
 const users_entity_1 = require("../users/users.entity");
 const operators_entity_1 = require("../operators/operators.entity");
+const type_payorders_entity_1 = require("../type-payorders/type-payorders.entity");
 let Payorder = class Payorder {
+    static _OPENAPI_METADATA_FACTORY() {
+        return { id: { required: true, type: () => Number }, detail: { required: true, type: () => String }, cancellationDate: { required: true, type: () => Date }, cancellation: { required: true, type: () => Boolean }, createdAt: { required: true, type: () => Date }, updatedAt: { required: true, type: () => Date }, operator: { required: true, type: () => require("../operators/operators.entity").Operator }, user: { required: true, type: () => require("../users/users.entity").User }, typePayorder: { required: true, type: () => require("../type-payorders/type-payorders.entity").TypePayorder } };
+    }
 };
 exports.Payorder = Payorder;
 __decorate([
@@ -21,15 +26,11 @@ __decorate([
     __metadata("design:type", Number)
 ], Payorder.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", Number)
-], Payorder.prototype, "count", void 0);
-__decorate([
     (0, typeorm_1.Column)({ type: 'text' }),
     __metadata("design:type", String)
 ], Payorder.prototype, "detail", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'date' }),
+    (0, typeorm_1.Column)({ type: 'timestamp', default: null }),
     __metadata("design:type", Date)
 ], Payorder.prototype, "cancellationDate", void 0);
 __decorate([
@@ -55,9 +56,14 @@ __decorate([
     __metadata("design:type", operators_entity_1.Operator)
 ], Payorder.prototype, "operator", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => users_entity_1.User, (user) => user.rolesUpdate, { cascade: false }),
+    (0, typeorm_1.ManyToOne)(() => users_entity_1.User, (user) => user.payordersUpdate, { cascade: false }),
     __metadata("design:type", users_entity_1.User)
 ], Payorder.prototype, "user", void 0);
+__decorate([
+    (0, typeorm_1.OneToOne)(() => type_payorders_entity_1.TypePayorder),
+    (0, typeorm_1.JoinColumn)(),
+    __metadata("design:type", type_payorders_entity_1.TypePayorder)
+], Payorder.prototype, "typePayorder", void 0);
 exports.Payorder = Payorder = __decorate([
     (0, typeorm_1.Entity)()
 ], Payorder);

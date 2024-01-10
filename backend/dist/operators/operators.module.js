@@ -26,6 +26,7 @@ exports.OperatorsModule = OperatorsModule = __decorate([
         ],
         providers: [operators_service_1.OperatorsService],
         controllers: [operators_controller_1.OperatorsController],
+        exports: [operators_service_1.OperatorsService],
     })
 ], OperatorsModule);
 //# sourceMappingURL=operators.module.js.map

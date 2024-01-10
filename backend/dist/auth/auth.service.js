@@ -28,12 +28,12 @@ let AuthService = class AuthService {
         if (!isMatch) {
             throw new common_1.UnauthorizedException('Contraseña incorrecta');
         }
-        if (user.permissionLevel === 'CONSULTOR') {
+        if (user.permissionLevel === 'OPERADOR') {
             throw new common_1.UnauthorizedException('No tiene permisos para acceder');
         }
         await this.userService.updateUser(user.id, { lastLogin: new Date() });
         return {
-            accessToken: await this.generateToken(user.id, user.ci),
+            accessToken: await this.generateToken(user.id, user.ci, user.permissionLevel),
             ...user,
         };
     }
@@ -46,14 +46,27 @@ let AuthService = class AuthService {
         }
         return user;
     }
-    async updatePassword(id, password) {
+    async updatePassword(id, password, oldPassword) {
+        const user = await this.userService.getUserFilter({ id });
+        const isMatch = await bcrypt.compare(oldPassword, user.password);
+        if (!isMatch) {
+            throw new common_1.UnauthorizedException('Contraseña incorrecta');
+        }
         const passwordHash = await bcrypt.hash(password, 10);
         return await this.userService.updateUser(id, { password: passwordHash });
     }
-    async generateToken(id, ci) {
+    async updateProfile(id, data) {
+        const user = await this.userService.getUserFilter({ id });
+        if (!user) {
+            throw new common_1.HttpException('Usuario no encontrado', common_1.HttpStatus.NOT_FOUND);
+        }
+        return await this.userService.updateUser(id, data);
+    }
+    async generateToken(id, ci, permissionLevel) {
         const payload = {
             sub: id,
             ci,
+            permissionLevel,
         };
         return await this.jwtService.signAsync(payload);
     }

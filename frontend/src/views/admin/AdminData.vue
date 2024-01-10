@@ -1,5 +1,5 @@
 <template>
-  <Card title="Administrador" description="Datos de administrador" icon="fa-user-shield">
+  <Card title="Usuario" description="Datos de usuario" icon="fa-user-shield">
     <FormAdmin />
   </Card>
 </template>

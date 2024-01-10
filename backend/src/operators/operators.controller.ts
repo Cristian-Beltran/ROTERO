@@ -6,10 +6,12 @@ import {
   Patch,
   Post,
   Req,
-  UploadedFiles,
+  UploadedFile,
   UseInterceptors,
+  Query,
+  Delete,
 } from '@nestjs/common';
-import { FilesInterceptor } from '@nestjs/platform-express';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { OperatorsService } from './operators.service';
 import { CreateOperatorDto, UpdateOperatorDto } from './operators.dto';
 import { Request } from 'express';
@@ -21,84 +23,73 @@ export class OperatorsController {
     private operatorService: OperatorsService,
     private cloudinaryService: CloudinaryService,
   ) {}
+  @Get('total-affiliates')
+  async getTotalEmployeeOperators(){
+    return await this.operatorService.getTotalEmployeeOperators();
+  }
   @Get()
   async getOperators() {
-    return this.operatorService.getOperators();
+    return await this.operatorService.getOperators();
+  }
+  @Delete(':id')
+  async deleteOperator(@Param('id') id: number) {
+    return await this.operatorService.deleteOperator(id);
+  }
+  @Patch(':id/authorize')
+  async authorizeOperator(@Param('id') id: number) {
+    return await this.operatorService.authorizeOperator(id);
   }
   @Get(':id')
   async getOperator(@Param('id') id: number) {
-    return this.operatorService.getOperator(id);
+    return await this.operatorService.getOperator(id);
   }
   @Post()
-  @UseInterceptors(FilesInterceptor('files', 3))
   async createOperator(
     @Body()
-    @UploadedFiles()
-    files: Express.Multer.File[],
     data: {
       operator: CreateOperatorDto;
       operatorUser: CreateUserDto;
-      files: {
-        route?: any;
-        operatorCertification?: any;
-        administrativeResolution?: any;
-      };
     },
     @Req() request: Request,
   ) {
     const userId = request['user'].sub;
-    if (files) {
-      const filesPromises = files.map((file) =>
-        this.cloudinaryService.uploadFile(file),
-      );
-      const filesResult = await Promise.all(filesPromises);
-      filesResult.forEach((fileResult) => {
-        const key = Object.keys(fileResult)[0];
-        data.files[key] = fileResult[key];
-      });
-    }
-    return this.operatorService.createOperator(
+    return await this.operatorService.createOperator(
       data.operator,
       data.operatorUser,
       userId,
-      data.files,
     );
   }
   @Patch(':id')
-  @UseInterceptors(FilesInterceptor('files', 3))
   async updateOperator(
-    @UploadedFiles() files: Express.Multer.File[],
     @Param('id') id: number,
     @Body()
     data: {
       operator: UpdateOperatorDto;
       operatorUser: CreateUserDto;
-      files: {
-        route?: any;
-        operatorCertification?: any;
-        administrativeResolution?: any;
-      };
     },
     @Req() request: Request,
   ) {
     const userId = request['user'].sub;
-    // .. handle multple files
-    if (files) {
-      const filesPromises = files.map((file) =>
-        this.cloudinaryService.uploadFile(file),
-      );
-      const filesResult = await Promise.all(filesPromises);
-      filesResult.forEach((fileResult) => {
-        const key = Object.keys(fileResult)[0];
-        data.files[key] = fileResult[key];
-      });
-    }
-    return this.operatorService.updateOperator(
+    return await this.operatorService.updateOperator(
       id,
       data.operator,
       data.operatorUser,
       userId,
-      data.files,
+    );
+  }
+  @Patch(':id/files')
+  @UseInterceptors(FileInterceptor('file'))
+  async uploadFiles(
+    @Param('id') id: number,
+    @UploadedFile() file: Express.Multer.File,
+    @Query() params: { location: string },
+  ) {
+    const cloudinary = await this.cloudinaryService.uploadFile(file);
+    const secure_url = cloudinary.secure_url;
+    return await this.operatorService.uploadFiles(
+      id,
+      secure_url,
+      params.location,
     );
   }
 }

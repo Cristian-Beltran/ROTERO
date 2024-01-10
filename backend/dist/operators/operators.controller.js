@@ -13,6 +13,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.OperatorsController = void 0;
+const openapi = require("@nestjs/swagger");
 const common_1 = require("@nestjs/common");
 const platform_express_1 = require("@nestjs/platform-express");
 const operators_service_1 = require("./operators.service");
@@ -22,46 +23,69 @@ let OperatorsController = class OperatorsController {
         this.operatorService = operatorService;
         this.cloudinaryService = cloudinaryService;
     }
+    async getTotalEmployeeOperators() {
+        return await this.operatorService.getTotalEmployeeOperators();
+    }
     async getOperators() {
-        return this.operatorService.getOperators();
+        return await this.operatorService.getOperators();
+    }
+    async deleteOperator(id) {
+        return await this.operatorService.deleteOperator(id);
+    }
+    async authorizeOperator(id) {
+        return await this.operatorService.authorizeOperator(id);
     }
     async getOperator(id) {
-        return this.operatorService.getOperator(id);
+        return await this.operatorService.getOperator(id);
     }
-    async createOperator(files, data, request) {
+    async createOperator(data, request) {
         const userId = request['user'].sub;
-        if (files) {
-            const filesPromises = files.map((file) => this.cloudinaryService.uploadFile(file));
-            const filesResult = await Promise.all(filesPromises);
-            filesResult.forEach((fileResult) => {
-                const key = Object.keys(fileResult)[0];
-                data.files[key] = fileResult[key];
-            });
-        }
-        return this.operatorService.createOperator(data.operator, data.operatorUser, userId, data.files);
+        return await this.operatorService.createOperator(data.operator, data.operatorUser, userId);
     }
-    async updateOperator(files, id, data, request) {
+    async updateOperator(id, data, request) {
         const userId = request['user'].sub;
-        if (files) {
-            const filesPromises = files.map((file) => this.cloudinaryService.uploadFile(file));
-            const filesResult = await Promise.all(filesPromises);
-            filesResult.forEach((fileResult) => {
-                const key = Object.keys(fileResult)[0];
-                data.files[key] = fileResult[key];
-            });
-        }
-        return this.operatorService.updateOperator(id, data.operator, data.operatorUser, userId, data.files);
+        return await this.operatorService.updateOperator(id, data.operator, data.operatorUser, userId);
+    }
+    async uploadFiles(id, file, params) {
+        const cloudinary = await this.cloudinaryService.uploadFile(file);
+        const secure_url = cloudinary.secure_url;
+        return await this.operatorService.uploadFiles(id, secure_url, params.location);
     }
 };
 exports.OperatorsController = OperatorsController;
 __decorate([
+    (0, common_1.Get)('total-affiliates'),
+    openapi.ApiResponse({ status: 200, type: [Object] }),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], OperatorsController.prototype, "getTotalEmployeeOperators", null);
+__decorate([
     (0, common_1.Get)(),
+    openapi.ApiResponse({ status: 200, type: [require("./operators.entity").Operator] }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], OperatorsController.prototype, "getOperators", null);
 __decorate([
+    (0, common_1.Delete)(':id'),
+    openapi.ApiResponse({ status: 200, type: Boolean }),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], OperatorsController.prototype, "deleteOperator", null);
+__decorate([
+    (0, common_1.Patch)(':id/authorize'),
+    openapi.ApiResponse({ status: 200, type: Boolean }),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], OperatorsController.prototype, "authorizeOperator", null);
+__decorate([
     (0, common_1.Get)(':id'),
+    openapi.ApiResponse({ status: 200, type: require("./operators.entity").Operator }),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),
@@ -69,25 +93,34 @@ __decorate([
 ], OperatorsController.prototype, "getOperator", null);
 __decorate([
     (0, common_1.Post)(),
-    (0, common_1.UseInterceptors)((0, platform_express_1.FilesInterceptor)('files', 3)),
+    openapi.ApiResponse({ status: 201, type: Object }),
     __param(0, (0, common_1.Body)()),
-    __param(0, (0, common_1.UploadedFiles)()),
-    __param(2, (0, common_1.Req)()),
+    __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Array, Object, Object]),
+    __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], OperatorsController.prototype, "createOperator", null);
 __decorate([
     (0, common_1.Patch)(':id'),
-    (0, common_1.UseInterceptors)((0, platform_express_1.FilesInterceptor)('files', 3)),
-    __param(0, (0, common_1.UploadedFiles)()),
-    __param(1, (0, common_1.Param)('id')),
-    __param(2, (0, common_1.Body)()),
-    __param(3, (0, common_1.Req)()),
+    openapi.ApiResponse({ status: 200 }),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __param(2, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Array, Number, Object, Object]),
+    __metadata("design:paramtypes", [Number, Object, Object]),
     __metadata("design:returntype", Promise)
 ], OperatorsController.prototype, "updateOperator", null);
+__decorate([
+    (0, common_1.Patch)(':id/files'),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file')),
+    openapi.ApiResponse({ status: 200 }),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.UploadedFile)()),
+    __param(2, (0, common_1.Query)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Object, Object]),
+    __metadata("design:returntype", Promise)
+], OperatorsController.prototype, "uploadFiles", null);
 exports.OperatorsController = OperatorsController = __decorate([
     (0, common_1.Controller)('operators'),
     __metadata("design:paramtypes", [operators_service_1.OperatorsService,

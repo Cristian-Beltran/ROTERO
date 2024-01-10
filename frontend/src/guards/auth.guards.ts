@@ -15,3 +15,16 @@ export const isAuthenticated = async (
   }
 }
 
+export const isNotAuthenticated = async (
+  to: RouteLocationNormalized,
+  from: RouteLocationNormalized,
+  next: NavigationGuardNext
+) => {
+  const authSotre = useAuthStore()
+  const verify = await authSotre.verifyToken()
+  if (!verify) {
+    next()
+  } else {
+    next('/root')
+  }
+}

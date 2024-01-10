@@ -8,7 +8,6 @@ import {
 } from 'class-validator';
 
 import { Transform } from 'class-transformer';
-import { State } from './operators.entity';
 
 export class CreateOperatorDto {
   @IsString()
@@ -26,6 +25,17 @@ export class CreateOperatorDto {
   @IsString()
   @IsNotEmpty()
   nit: string;
+  @IsString()
+  @IsNotEmpty()
+  entityMatris: string;
+  @IsString()
+  @IsNotEmpty()
+  color: string;
+  @IsString()
+  @IsNotEmpty()
+  route: string;
+
+  @IsOptional()
   @Transform(({ value }) => new Date(value))
   @IsDate()
   @IsNotEmpty()
@@ -33,23 +43,22 @@ export class CreateOperatorDto {
   @IsOptional()
   @IsNumber()
   @IsNotEmpty()
-  initialAffiliates: number;
+  initialAffiliates?: number;
   @IsOptional()
   @IsNumber()
   @IsNotEmpty()
-  currentAffiliates: number;
+  currentAffiliates?: number;
+  @IsOptional()
   @IsString()
-  @IsNotEmpty()
-  state: State;
-  @IsString()
-  @IsNotEmpty()
   tecnicalNumber: string;
+  @IsOptional()
   @IsString()
   @IsNotEmpty()
   legalNumber: string;
   @IsString()
   @IsNotEmpty()
   observations: string;
+  @Transform(({ value }) => new Date(value))
   @IsDate()
   @IsNotEmpty()
   validity: Date;

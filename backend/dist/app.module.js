@@ -16,12 +16,16 @@ const payorders_module_1 = require("./payorders/payorders.module");
 const santions_module_1 = require("./santions/santions.module");
 const owners_module_1 = require("./owners/owners.module");
 const drivers_module_1 = require("./drivers/drivers.module");
-const vehicles_module_1 = require("./vehicles/vehicles.module");
 const routes_module_1 = require("./routes/routes.module");
 const rossetes_module_1 = require("./rossetes/rossetes.module");
 const auth_module_1 = require("./auth/auth.module");
 const cloudinary_module_1 = require("./cloudinary/cloudinary.module");
 const config_1 = require("@nestjs/config");
+const pdf_module_1 = require("./pdf/pdf.module");
+const vehicle_module_1 = require("./vehicle/vehicle.module");
+const type_santions_module_1 = require("./type-santions/type-santions.module");
+const type_payorders_module_1 = require("./type-payorders/type-payorders.module");
+const class_vehicle_module_1 = require("./class-vehicle/class-vehicle.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -46,7 +50,6 @@ exports.AppModule = AppModule = __decorate([
             santions_module_1.SantionsModule,
             owners_module_1.OwnersModule,
             drivers_module_1.DriversModule,
-            vehicles_module_1.VehiclesModule,
             routes_module_1.RoutesModule,
             rossetes_module_1.RossetesModule,
             auth_module_1.AuthModule,
@@ -54,6 +57,11 @@ exports.AppModule = AppModule = __decorate([
             config_1.ConfigModule.forRoot({
                 isGlobal: true,
             }),
+            pdf_module_1.PdfModule,
+            vehicle_module_1.VehicleModule,
+            type_santions_module_1.TypeSantionsModule,
+            type_payorders_module_1.TypePayordersModule,
+            class_vehicle_module_1.ClassVehicleModule,
         ],
     })
 ], AppModule);

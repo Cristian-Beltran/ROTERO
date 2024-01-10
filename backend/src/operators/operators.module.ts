@@ -14,5 +14,6 @@ import { Operator } from './operators.entity';
   ],
   providers: [OperatorsService],
   controllers: [OperatorsController],
+  exports: [OperatorsService],
 })
 export class OperatorsModule {}

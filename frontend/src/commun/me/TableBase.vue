@@ -3,6 +3,7 @@
     <table class="w-full text-left text-gray-500">
       <thead class="text-xs text-gray-700 uppercase bg-zinc-400">
         <tr>
+          <th v-if="check" class="px-4 py-3">Seleccionar</th>
           <th scope="col" v-for="column in columns" :key="column.key" class="px-4 py-3">
             {{ column.title }}
           </th>
@@ -17,12 +18,15 @@
           v-for="item in itemsDisplay"
           :key="item.id"
         >
+          <td v-if="check" class="px-4 py-3">
+            <input type="checkbox" v-model="item.check" />
+          </td>
           <td class="px-4 py-4" v-for="column in columns" :key="column.key">
             <span v-if="column.type == 'date'">
-              {{ dateFormat(new Date(item[column.key])) }}
+              {{ item[column.key] ? dateFormat(new Date(item[column.key])) : '' }}
             </span>
             <span v-else-if="column.type == 'dateTime'">
-              {{ dateTimeFormat(new Date(item[column.key])) }}
+              {{ item[column.key] ? dateTimeFormat(new Date(item[column.key])) : '' }}
             </span>
             <span
               v-else-if="column.type == 'boolean'"
@@ -30,6 +34,11 @@
               :class="[item[column.key] ? 'bg-green-400' : 'bg-red-400']"
             >
               {{ item[column.key] ? 'Si' : 'No' }}
+            </span>
+            <span v-else-if="column.type == 'file'">
+              <a :href="item[column.key]" target="_blank" class="text-blue-500 underline"
+                >Ver archivo</a
+              >
             </span>
             <span v-else> {{ item[column.key] }} </span>
           </td>
@@ -123,6 +132,10 @@ const props = defineProps({
   options: {
     type: Array,
     required: true
+  },
+  check: {
+    type: Boolean,
+    default: false
   }
 })
 

@@ -23,6 +23,7 @@
               ></path>
             </svg>
           </button>
+          <Logo />
           <a class="flex ml-2 md:mr-24">
             <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap text-white"
               >ROTERO</span
@@ -72,6 +73,7 @@ import {
   DropdownMenuTrigger
 } from '@/commun/ui/dropdown-menu'
 import { Avatar, AvatarFallback } from '@/commun/ui/avatar'
+import Logo from '@/commun/me/LogoBase.vue'
 import { useUtilsStore } from '@/stores/utils.stores'
 import { useAuthStore } from '@/stores/auth.stores'
 const authStore = useAuthStore()

@@ -9,6 +9,7 @@ import { jwtConstants } from './auth.constans';
 import { Request } from 'express';
 import { Reflector } from '@nestjs/core';
 import { IS_PUBLIC_KEY } from './auth.decorator';
+import { PermissionLevel } from 'src/users/users.entity';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -45,5 +46,67 @@ export class AuthGuard implements CanActivate {
   private extractTokenFromHeader(request: Request): string | undefined {
     const [type, token] = request.headers.authorization?.split(' ') ?? [];
     return type === 'Bearer' ? token : undefined;
+  }
+  permissionLevelSuperAdmin(contex: ExecutionContext): boolean {
+    const request = contex.switchToHttp().getRequest();
+    const user = request['user'];
+    if (user && user.permissionLevel === PermissionLevel.SUPERADMINISTRADOR) {
+      return true;
+    }
+    throw new UnauthorizedException('No tiene permisos para acceder');
+  }
+  permissionLevelAdmin(contex: ExecutionContext): boolean {
+    const request = contex.switchToHttp().getRequest();
+    const user = request['user'];
+    if (
+      user &&
+      (user.permissionLevel === PermissionLevel.ADMINISTRADOR ||
+        user.permissionLevel === PermissionLevel.SUPERADMINISTRADOR)
+    ) {
+      return true;
+    }
+    throw new UnauthorizedException('No tiene permisos para acceder');
+  }
+  permissionLevelTecnical(contex: ExecutionContext): boolean {
+    const request = contex.switchToHttp().getRequest();
+    const user = request['user'];
+    if (
+      user &&
+      (user.permissionLevel === PermissionLevel.TECNICO ||
+        user.permissionLevel === PermissionLevel.ADMINISTRADOR ||
+        user.permissionLevel === PermissionLevel.SUPERADMINISTRADOR)
+    ) {
+      return true;
+    }
+    throw new UnauthorizedException('No tiene permisos para acceder');
+  }
+  permissionLevelConsultor(contex: ExecutionContext): boolean {
+    const request = contex.switchToHttp().getRequest();
+    const user = request['user'];
+    if (
+      user &&
+      (user.permissionLevel === PermissionLevel.CONSULTOR ||
+        user.permissionLevel === PermissionLevel.TECNICO ||
+        user.permissionLevel === PermissionLevel.ADMINISTRADOR ||
+        user.permissionLevel === PermissionLevel.SUPERADMINISTRADOR)
+    ) {
+      return true;
+    }
+    throw new UnauthorizedException('No tiene permisos para acceder');
+  }
+  permissionLevelOperator(contex: ExecutionContext): boolean {
+    const request = contex.switchToHttp().getRequest();
+    const user = request['user'];
+    if (
+      user &&
+      (user.permissionLevel === PermissionLevel.OPERADOR ||
+        user.permissionLevel === PermissionLevel.CONSULTOR ||
+        user.permissionLevel === PermissionLevel.TECNICO ||
+        user.permissionLevel === PermissionLevel.ADMINISTRADOR ||
+        user.permissionLevel === PermissionLevel.SUPERADMINISTRADOR)
+    ) {
+      return true;
+    }
+    throw new UnauthorizedException('No tiene permisos para acceder');
   }
 }

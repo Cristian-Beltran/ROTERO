@@ -11,8 +11,10 @@ export declare class RolesController {
         isActive: boolean;
         name: string;
         description: string;
-        pPersonal: boolean;
+        pDriver: boolean;
         pOwner: boolean;
+        pOperator: boolean;
+        pRoute: boolean;
     } & import("./roles.entity").Role>;
     updateRole(id: number, data: updateRoleDto, request: Request): Promise<import("typeorm").UpdateResult>;
     deleteRole(id: number): Promise<import("typeorm").UpdateResult>;

@@ -19,10 +19,31 @@ const typeorm_2 = require("typeorm");
 const users_service_1 = require("../users/users.service");
 const operators_entity_1 = require("./operators.entity");
 const users_entity_1 = require("../users/users.entity");
+const operators_entity_2 = require("./operators.entity");
 let OperatorsService = class OperatorsService {
     constructor(operatorRepository, userService) {
         this.operatorRepository = operatorRepository;
         this.userService = userService;
+    }
+    async getTotalEmployeeOperators() {
+        const result = await this.operatorRepository
+            .createQueryBuilder('operator')
+            .select('operator.businessName as businessName')
+            .addSelect((subQuery) => {
+            return subQuery
+                .select('COUNT(driver.id) as driverCount')
+                .from('driver', 'driver')
+                .where('driver.operator.id = operator.id');
+        }, 'driverCount')
+            .addSelect((subQuery) => {
+            return subQuery
+                .select('COUNT(owner.id) as ownerCount')
+                .from('owner', 'owner')
+                .where('owner.operator.id = operator.id');
+        }, 'ownerCount')
+            .groupBy('operator.businessName')
+            .getRawMany();
+        return result;
     }
     async getOperators() {
         const operators = await this.operatorRepository.find({
@@ -37,7 +58,7 @@ let OperatorsService = class OperatorsService {
         });
         return operator;
     }
-    async createOperator(data, operator, userId, fields) {
+    async createOperator(data, operator, userId) {
         const user = await this.userService.getUserFilter({ id: userId });
         if (!user) {
             throw new common_1.HttpException('El usuario no existe', common_1.HttpStatus.NOT_FOUND);
@@ -47,23 +68,60 @@ let OperatorsService = class OperatorsService {
             ...data,
             user,
             operator: operatorUser,
-            ...fields,
+            state: operators_entity_2.State.PROCESO,
         };
-        return this.operatorRepository.save(newOperator);
+        return await this.operatorRepository.save(newOperator);
     }
-    async updateOperator(id, data, operatorUser, userId, fields) {
+    async updateOperator(id, data, operatorUser, userId) {
         const user = await this.userService.getUserFilter({ id: userId });
         if (!user) {
             throw new common_1.HttpException('El usuario no existe', common_1.HttpStatus.NOT_FOUND);
         }
         const operatorsUpdate = {
             ...data,
-            ...fields,
         };
         await this.operatorRepository.update(id, operatorsUpdate);
-        const operator = await this.operatorRepository.findOne({ where: { id } });
+        const operator = await this.operatorRepository.findOne({
+            where: { id },
+            relations: ['operator'],
+        });
         const operatorUpdateUser = await this.userService.updateUser(operator.operator.id, operatorUser);
         return { operator, operatorUpdateUser };
+    }
+    async uploadFiles(id, url, location) {
+        const operator = await this.operatorRepository.findOne({ where: { id } });
+        if (!operator) {
+            throw new common_1.HttpException('El operador no existe', common_1.HttpStatus.NOT_FOUND);
+        }
+        const data = {
+            [location]: url,
+        };
+        return await this.operatorRepository.update(id, data);
+    }
+    async deleteOperator(id) {
+        const operator = await this.operatorRepository.findOne({ where: { id } });
+        if (!operator) {
+            throw new common_1.HttpException('El operador no existe', common_1.HttpStatus.NOT_FOUND);
+        }
+        await this.operatorRepository.update(id, {
+            state: operators_entity_2.State.BAJA,
+        });
+        return true;
+    }
+    async authorizeOperator(id) {
+        const operator = await this.operatorRepository.findOne({ where: { id } });
+        if (!operator) {
+            throw new common_1.HttpException('El operador no existe', common_1.HttpStatus.NOT_FOUND);
+        }
+        if (operator.state === 'AUTORIZADO') {
+            throw new common_1.HttpException('El operador ya esta autorizado', common_1.HttpStatus.CONFLICT);
+        }
+        const date = new Date();
+        await this.operatorRepository.update(id, {
+            state: operators_entity_2.State.AUTORIZADO,
+            authorizationDate: date,
+        });
+        return true;
     }
 };
 exports.OperatorsService = OperatorsService;

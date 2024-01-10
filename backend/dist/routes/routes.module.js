@@ -10,13 +10,25 @@ exports.RoutesModule = void 0;
 const common_1 = require("@nestjs/common");
 const routes_service_1 = require("./routes.service");
 const routes_controller_1 = require("./routes.controller");
+const typeorm_1 = require("@nestjs/typeorm");
+const routes_entity_1 = require("./routes.entity");
+const users_module_1 = require("../users/users.module");
+const vehicle_module_1 = require("../vehicle/vehicle.module");
+const cloudinary_module_1 = require("../cloudinary/cloudinary.module");
 let RoutesModule = class RoutesModule {
 };
 exports.RoutesModule = RoutesModule;
 exports.RoutesModule = RoutesModule = __decorate([
     (0, common_1.Module)({
+        imports: [
+            typeorm_1.TypeOrmModule.forFeature([routes_entity_1.Route]),
+            users_module_1.UsersModule,
+            vehicle_module_1.VehicleModule,
+            cloudinary_module_1.CloudinaryModule,
+        ],
         providers: [routes_service_1.RoutesService],
-        controllers: [routes_controller_1.RoutesController]
+        controllers: [routes_controller_1.RoutesController],
+        exports: [routes_service_1.RoutesService],
     })
 ], RoutesModule);
 //# sourceMappingURL=routes.module.js.map

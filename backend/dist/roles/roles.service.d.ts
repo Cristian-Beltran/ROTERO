@@ -13,8 +13,10 @@ export declare class RolesService {
         isActive: boolean;
         name: string;
         description: string;
-        pPersonal: boolean;
+        pDriver: boolean;
         pOwner: boolean;
+        pOperator: boolean;
+        pRoute: boolean;
     } & Role>;
     updateRole(id: number, data: updateRoleDto, userId: number): Promise<import("typeorm").UpdateResult>;
     deleteRole(id: number): Promise<import("typeorm").UpdateResult>;

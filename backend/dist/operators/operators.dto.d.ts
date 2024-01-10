@@ -1,14 +1,15 @@
-import { State } from './operators.entity';
 export declare class CreateOperatorDto {
     businessName: string;
     legalRepresentative: string;
     owner: string;
     seprec: string;
     nit: string;
+    entityMatris: string;
+    color: string;
+    route: string;
     dateRa: Date;
-    initialAffiliates: number;
-    currentAffiliates: number;
-    state: State;
+    initialAffiliates?: number;
+    currentAffiliates?: number;
     tecnicalNumber: string;
     legalNumber: string;
     observations: string;

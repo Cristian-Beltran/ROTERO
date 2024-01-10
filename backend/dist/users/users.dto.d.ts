@@ -1,12 +1,14 @@
+import { PermissionLevel } from './users.entity';
 export declare class CreateUserDto {
     readonly firstName: string;
     readonly lastName: string;
     readonly birthday: Date;
     readonly ci: string;
-    readonly email: string;
-    readonly cellphone: string;
+    readonly email?: string;
+    readonly cellphone?: string;
     roleId?: number;
     password?: string;
+    permissionLevel?: PermissionLevel;
     readonly lastLogin?: Date;
     role: any;
 }

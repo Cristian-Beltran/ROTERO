@@ -1,5 +1,5 @@
 <template>
-  <Card title="Consultor" description="Datos de consultor" icon="fa-user-tie">
+  <Card title="Clase de vehiculo" description="Datos de clase" icon="fa-car">
     <FormConsultor />
   </Card>
 </template>
