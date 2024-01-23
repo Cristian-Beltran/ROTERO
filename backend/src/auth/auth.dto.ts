@@ -27,6 +27,7 @@ export class LoginAdminDto {
   @IsNotEmpty()
   readonly password: string;
 }
+
 export class LoginOperatorDto {
   @IsString()
   @IsNotEmpty()
