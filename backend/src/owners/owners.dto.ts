@@ -20,9 +20,7 @@ export class createOwnerDto {
   readonly ci: string;
   @IsString()
   @IsNotEmpty()
-  readonly cellphone: string;
-  @IsOptional()
-  @IsObject()
+  
   operator?: Operator;
   @IsNumber()
   @IsNotEmpty()

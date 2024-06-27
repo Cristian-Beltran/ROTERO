@@ -15,10 +15,6 @@ import { Vehicle } from '../vehicle/vehicle.entity';
 export class Route {
   @PrimaryGeneratedColumn()
   id: number;
-  @Column()
-  startText: string;
-  @Column()
-  endText: string;
   @Column({ type: 'text' })
   description: string;
   @Column({ type: 'float' })

@@ -4,11 +4,8 @@ import { Vehicle } from './vehicle.entity';
 import { Repository } from 'typeorm';
 import { UsersService } from 'src/users/users.service';
 import { OperatorsService } from 'src/operators/operators.service';
-import { DriversService } from 'src/drivers/drivers.service';
 import { OwnersService } from 'src/owners/owners.service';
 import { CreateVehicleDto, UpdateVehicleDto } from './vehicle.dto';
-import { ClassVehicleService } from 'src/class-vehicle/class-vehicle.service';
-import { PdfService } from 'src/pdf/pdf.service';
 
 @Injectable()
 export class VehicleService {
@@ -16,10 +13,7 @@ export class VehicleService {
     @InjectRepository(Vehicle) private vechileRepository: Repository<Vehicle>,
     private userService: UsersService,
     private operatorService: OperatorsService,
-    private driverService: DriversService,
     private ownerService: OwnersService,
-    private classVehicleService: ClassVehicleService,
-    private pdfService: PdfService,
   ) {}
   async getVehicleForClass(): Promise<Vehicle[]> {
     return this.vechileRepository
@@ -31,7 +25,7 @@ export class VehicleService {
   }
   async getVehicles(operatorId: number): Promise<Vehicle[]> {
     const vehicles = await this.vechileRepository.find({
-      relations: ['operator', 'driver', 'owner', 'user', 'classVehicle'],
+      relations: ['operator',  'owner', 'user', 'classVehicle'],
       where: { operator: { id: operatorId } },
     });
     return vehicles;
@@ -39,13 +33,13 @@ export class VehicleService {
   async getVehicleByPlate(plate: string): Promise<Vehicle> {
     const vehicle = await this.vechileRepository.findOne({
       where: { plate },
-      relations: ['driver', 'classVehicle', 'operator'],
+      relations: [ 'classVehicle', 'operator'],
     });
     return vehicle;
   }
   async getVehicle(id: number): Promise<Vehicle> {
     const vehicle = await this.vechileRepository.findOne({
-      relations: ['operator', 'driver', 'owner', 'classVehicle'],
+      relations: ['operator', 'owner', 'classVehicle'],
       where: { id },
     });
     return vehicle;
@@ -58,20 +52,13 @@ export class VehicleService {
     if (!user) throw new Error('Usuario no encontrado');
     const operator = await this.operatorService.getOperator(data.operatorId);
     if (!operator) throw new Error('Operador no encontrado');
-    const driver = await this.driverService.getDriver(data.driverId);
-    if (!driver) throw new Error('Conductor no encontrado');
     const owner = await this.ownerService.getOwner(data.ownerId);
     if (!owner) throw new Error('Propietario no encontrado');
-    const classVehicle = await this.classVehicleService.getClassVehicle(
-      data.classVehicleId,
-    );
-    if (!classVehicle) throw new Error('Clase de vehiculo no encontrada');
     const newVehicle = {
       operator,
-      driver,
       owner,
       user,
-      classVehicle,
+      classVehicle: data.classVehicle,
       typeService: data.typeService,
       modality: data.modality,
       maxLoad: data.maxLoad,
@@ -83,7 +70,6 @@ export class VehicleService {
       chassis: data.chassis,
       soat: data.soat,
       inspection: data.inspection,
-      sure: data.sure,
       plate: data.plate,
     };
     return await this.vechileRepository.save(newVehicle);
@@ -99,20 +85,13 @@ export class VehicleService {
     if (!user) throw new Error('Usuario no encontrado');
     const operator = await this.operatorService.getOperator(data.operatorId);
     if (!operator) throw new Error('Operador no encontrado');
-    const driver = await this.driverService.getDriver(data.driverId);
-    if (!driver) throw new Error('Conductor no encontrado');
     const owner = await this.ownerService.getOwner(data.ownerId);
     if (!owner) throw new Error('Propietario no encontrado');
-    const classVehicle = await this.classVehicleService.getClassVehicle(
-      data.classVehicleId,
-    );
-    if (!classVehicle) throw new Error('Clase de vehiculo no encontrada');
     const newVehicle = {
       operator,
-      driver,
       owner,
       user,
-      classVehicle,
+      classVehicle: data.classVehicle,
       typeService: data.typeService,
       modality: data.modality,
       maxLoad: data.maxLoad,
@@ -124,7 +103,6 @@ export class VehicleService {
       chassis: data.chassis,
       soat: data.soat,
       inspection: data.inspection,
-      sure: data.sure,
       plate: data.plate,
     };
     await this.vechileRepository.update(id, newVehicle);
@@ -134,10 +112,7 @@ export class VehicleService {
     try {
       const vehicle = await this.vechileRepository.findOne({ where: { id } });
       if (!vehicle) throw new Error('Vehiculo no encontrado');
-      const driver = await this.driverService.getDriver(vehicle.driver.id);
-      if (!driver) throw new Error('Conductor no encontrado');
       const vehicleDelete = await this.vechileRepository.remove(vehicle);
-      await this.driverService.deleteDriver(driver.id);
       return vehicleDelete;
     } catch (error) {
       return error;
@@ -148,7 +123,7 @@ export class VehicleService {
     try {
       const vehicle = await this.vechileRepository.findOne({
         where: { plate },
-        relations: ['driver', 'owner'],
+        relations: ['owner'],
       });
       if (!vehicle) throw new Error('Vehiculo no encontrado');
       return vehicle;

@@ -12,8 +12,6 @@ import {
 import { User } from 'src/users/users.entity';
 import { Operator } from 'src/operators/operators.entity';
 import { Owner } from 'src/owners/owners.entity';
-import { Driver } from 'src/drivers/drivers.entity';
-import { ClassVehicle } from 'src/class-vehicle/class-vehicle.entity';
 
 export enum TypeService {
   INTERPROVINCIAL = 'interprovincial',
@@ -24,11 +22,7 @@ export enum Modality {
   CARGA = 'carga',
   PASAJERO_CARGA = 'pasajero y carga',
 }
-export enum TypeVehicle {
-  TAXI = 'taxi',
-  TAXI_TRUFI = 'taxi trufi',
-  TRUFI_MINIBUS = 'trufi minibus',
-}
+
 
 @Entity()
 export class Vehicle {
@@ -43,7 +37,7 @@ export class Vehicle {
   @Column()
   maxPass: number;
   @Column()
-  typeVehicle: TypeVehicle;
+  typeVehicle: string;
   @Column()
   model: string;
   @Column()
@@ -56,8 +50,6 @@ export class Vehicle {
   soat: boolean;
   @Column()
   inspection: boolean;
-  @Column()
-  sure: string;
   @Column()
   plate: string;
 
@@ -79,14 +71,7 @@ export class Vehicle {
     cascade: false,
   })
   owner: Owner;
-  @OneToOne(() => Driver)
-  @JoinColumn()
-  driver: Driver;
-
   @ManyToOne(() => User, (user) => user.vehiclesUpdate, { cascade: false })
   user: User;
-  @ManyToOne(() => ClassVehicle, (classVehicle) => classVehicle.vehicles, {
-    cascade: false,
-  })
-  classVehicle: ClassVehicle;
+  classVehicle: string;
 }

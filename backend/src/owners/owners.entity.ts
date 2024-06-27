@@ -22,8 +22,6 @@ export class Owner {
   lastName: string;
   @Column()
   ci: string;
-  @Column()
-  cellphone: string;
 
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;

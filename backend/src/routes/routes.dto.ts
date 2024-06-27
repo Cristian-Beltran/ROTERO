@@ -4,12 +4,6 @@ import { PartialType } from '@nestjs/mapped-types';
 export class CreateRouteDto {
   @IsString()
   @IsNotEmpty()
-  startText: string;
-  @IsString()
-  @IsNotEmpty()
-  endText: string;
-  @IsString()
-  @IsNotEmpty()
   description: string;
   @IsNumber()
   @IsNotEmpty()
