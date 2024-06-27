@@ -33,29 +33,38 @@ let PdfService = class PdfService {
                 doc
                     .fillColor('#DD2222')
                     .fontSize(10)
-                    .text('Orden de pago cancellada | ' +
+                    .text('Orden de pago cancelada | ' +
                     new Date(payorder.cancellationDate).toLocaleString('es-ES', {
                         year: 'numeric',
                         month: 'long',
                         day: 'numeric',
                     }), 50, 140)
                     .moveDown();
+            const detailsRows = payorder.detailPayorders.map((detail) => [
+                detail.name,
+                detail.amount.toString(),
+                detail.count.toString(),
+                detail.total.toString(),
+            ]);
+            detailsRows.push([
+                'Extra',
+                payorder.amountExtra.toString(),
+                '',
+                payorder.amountExtra.toString(),
+            ]);
+            const totalExtra = payorder.amountExtra;
+            const totalAmount = payorder.amount + totalExtra;
+            detailsRows.push(['', '', 'Total', totalAmount.toString()]);
             const table = {
-                headers: ['Tipo de pago', 'Detalle', 'Monto (Bs)'],
-                rows: [
-                    [
-                        payorder.typePayorder.name,
-                        payorder.detail.toString(),
-                        payorder.typePayorder.amount.toString(),
-                    ],
-                ],
+                headers: ['Detalle', 'Monto (Bs)', 'Cantidad', 'Total (Bs)'],
+                rows: detailsRows,
             };
             await doc.table(table, {
                 y: 279,
                 x: 50,
             });
-            const qrCodeBuffer = await this.generateQRCode(url + '/payorders/' + payorder.id + '/pdf');
-            doc.image(qrCodeBuffer, 400, 360, { width: 100, align: 'center' });
+            const qrCodeBuffer = await this.generateQRCode(url + '/api/payorders/' + payorder.id + '/pdf');
+            doc.image(qrCodeBuffer, 400, 80, { width: 100, align: 'center' });
             this.generateFooter(doc);
             doc.end();
             const buffer = [];
@@ -78,10 +87,20 @@ let PdfService = class PdfService {
             this.generateTitle(doc, 'Reporte de Ordenes de Pago');
             doc.moveDown();
             const table = {
-                headers: ['Detalle', 'Monto (Bs)', 'Estado'],
+                headers: [
+                    'Detalle',
+                    'Monto (Bs)',
+                    'Extra',
+                    'Extra (Bs)',
+                    'Total (Bs)',
+                    'Estado',
+                ],
                 rows: payorders.map((payorder) => [
                     payorder.detail.toString(),
-                    payorder.typePayorder.amount.toString(),
+                    payorder.total.toString(),
+                    payorder.detailExtra.toString(),
+                    payorder.amountExtra.toString(),
+                    (payorder.total + payorder.amountExtra).toString(),
                     payorder.cancellation ? 'Pagado' : 'Pendiente',
                 ]),
             };
@@ -427,13 +446,13 @@ let PdfService = class PdfService {
     generateTotal(doc, payorders, initDate, endDate) {
         const totalPendientes = payorders.reduce((acc, payorder) => {
             if (!payorder.cancellation)
-                return acc + payorder.typePayorder.amount;
+                return acc + payorder.total + payorder.amountExtra;
             else
                 return acc;
         }, 0);
         const totalPagados = payorders.reduce((acc, payorder) => {
             if (payorder.cancellation)
-                return acc + payorder.typePayorder.amount;
+                return acc + payorder.total + payorder.amountExtra;
             else
                 return acc;
         }, 0);

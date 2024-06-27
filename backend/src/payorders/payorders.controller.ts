@@ -14,7 +14,7 @@ import { PayordersService } from './payorders.service';
 import { createPayorderDto } from './payorders.dto';
 import { Request, Response } from 'express';
 import { PdfService } from 'src/pdf/pdf.service';
-import { Public } from 'src/auth/auth.decorator'; 
+import { Public } from 'src/auth/auth.decorator';
 @Controller('payorders')
 export class PayordersController {
   constructor(
@@ -76,11 +76,15 @@ export class PayordersController {
   }
   @Public()
   @Get(':id/pdf')
-  async generatePayorder(@Param('id') id: number, @Res() res: Response, @Req() req: Request) {
+  async generatePayorder(
+    @Param('id') id: number,
+    @Res() res: Response,
+    @Req() req: Request,
+  ) {
     const host = req.get('host');
     const payorder = await this.payorderService.getPayorder(id);
-    const pdfName = `Orden de Pago ${payorder.id}`;
-    const buffer = await this.pdfService.generatePayorder(payorder,host);
+    const pdfName = `Orden de Pago ${payorder.id} - Rason ${payorder.reason}`;
+    const buffer = await this.pdfService.generatePayorder(payorder, host);
     res.set({
       'Content-Type': 'application/pdf',
       'Content-Disposition': 'attachment; filename=' + pdfName + '.pdf',

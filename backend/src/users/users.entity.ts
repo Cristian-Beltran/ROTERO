@@ -6,9 +6,7 @@ import { Payorder } from 'src/payorders/payorders.entity';
 import { Role } from 'src/roles/roles.entity';
 import { Rossete } from 'src/rossetes/rossetes.entity';
 import { Route } from 'src/routes/routes.entity';
-import { Santion } from 'src/santions/santions.entity';
-import { TypePayorder } from 'src/type-payorders/type-payorders.entity';
-import { TypeSantion } from 'src/type-santions/type-santions.entity';
+import { Service } from 'src/service/service.entity';
 import { Vehicle } from 'src/vehicle/vehicle.entity';
 import {
   Entity,
@@ -79,8 +77,6 @@ export class User {
   operatorsUpdate: Operator[];
   @OneToMany(() => Payorder, (payorder) => payorder.user)
   payordersUpdate: Payorder[];
-  @OneToMany(() => Santion, (santion) => santion.user)
-  santionsUpdate: Santion[];
   @OneToMany(() => Owner, (owner) => owner.user)
   ownersUpdate: Owner[];
   @OneToMany(() => Driver, (driver) => driver.user)
@@ -91,10 +87,8 @@ export class User {
   routesUpdate: Route[];
   @OneToMany(() => Rossete, (rossete) => rossete.user)
   rossetesUpdate: Rossete[];
-  @OneToMany(() => TypePayorder, (typePayorder) => typePayorder.user)
-  typePayordersUpdate: TypePayorder[];
-  @OneToMany(() => TypeSantion, (typeSantion) => typeSantion.user)
-  typeSantionsUpdate: TypeSantion[];
   @OneToMany(() => ClassVehicle, (classVehicle) => classVehicle.user)
   classVehicleUpdate: ClassVehicle[];
+  @OneToMany(() => Service, (service) => service.user)
+  servicesUpdate: Service[];
 }

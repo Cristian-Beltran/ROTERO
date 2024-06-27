@@ -17,13 +17,13 @@ export class CreateOperatorDto {
   @IsNotEmpty()
   legalRepresentative: string;
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   owner: string;
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   seprec: string;
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   nit: string;
   @IsString()
   @IsNotEmpty()
@@ -38,7 +38,6 @@ export class CreateOperatorDto {
   @IsOptional()
   @Transform(({ value }) => new Date(value))
   @IsDate()
-  @IsNotEmpty()
   dateRa: Date;
   @IsOptional()
   @IsNumber()
@@ -58,10 +57,10 @@ export class CreateOperatorDto {
   @IsString()
   @IsNotEmpty()
   observations: string;
-  @Transform(({ value }) => new Date(value))
+  @IsOptional()
   @IsDate()
-  @IsNotEmpty()
-  validity: Date;
+  @Transform(({ value }) => new Date(value))
+  validity?: Date;
 }
 export class UpdateOperatorDto extends PartialType(CreateOperatorDto) {}
 

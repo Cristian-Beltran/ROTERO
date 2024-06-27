@@ -27,6 +27,7 @@ export class VehicleController {
   async getVehicleForClass() {
     return await this.vehicleService.getVehicleForClass();
   }
+  @Public()
   @Get(':plate/plate')
   async getVehicleByPlate(@Param('plate') plate: string) {
     return await this.vehicleService.getVehicleByPlate(plate);

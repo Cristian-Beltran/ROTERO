@@ -61,9 +61,14 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useVehicleStore } from '@/stores/vehicle.stores'
+import { useToast } from 'vue-toastification'
+const toast = useToast()
 const vehicleStore = useVehicleStore()
 const licensePlate = ref('')
 const search = async () => {
   await vehicleStore.getVehicleByPlate(licensePlate.value)
+  if (!vehicleStore.vehicle) {
+    toast.error('No se encontró el vehículo con la placa ingresada')
+  }
 }
 </script>

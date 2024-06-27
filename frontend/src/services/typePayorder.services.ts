@@ -1,11 +1,11 @@
 import axios from './axios'
-import type { TypePayorder } from '@/interfaces/TypePayorder.interfaces'
+import type { Service } from '@/interfaces/Service'
 
-export const getTypePayordersRequest = () => axios.get<TypePayorder[]>('/type-payorders/')
+export const getTypePayordersRequest = () => axios.get<Service[]>('/service/PAGO/type')
 export const getTypePayorderRequest = (id: number) =>
-  axios.get<TypePayorder>('/type-payorders/' + id)
+  axios.get<Service>('/service/' + id)
 export const createTypePayorderRequest = (typePayorder: any) =>
-  axios.post<TypePayorder>('/type-payorders', typePayorder)
+  axios.post<Service>('/service', typePayorder)
 export const updateTypePayorderRequest = (id: number, typePayorder: any) =>
-  axios.patch(`/type-payorders/${id}`, typePayorder)
-export const deleteTypePayorderRequest = (id: number) => axios.delete(`/type-payorders/${id}`)
+  axios.patch(`/service/${id}`, typePayorder)
+export const deleteTypePayorderRequest = (id: number) => axios.delete(`/service/${id}`)

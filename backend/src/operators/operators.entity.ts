@@ -12,7 +12,6 @@ import {
 
 import { User } from 'src/users/users.entity';
 import { Payorder } from 'src/payorders/payorders.entity';
-import { Santion } from 'src/santions/santions.entity';
 import { Owner } from 'src/owners/owners.entity';
 import { Driver } from 'src/drivers/drivers.entity';
 import { Vehicle } from 'src/vehicle/vehicle.entity';
@@ -30,15 +29,15 @@ export class Operator {
   businessName: string;
   @Column()
   legalRepresentative: string;
-  @Column()
+  @Column({ nullable: true })
   owner: string;
-  @Column()
+  @Column({ nullable: true })
   seprec: string;
-  @Column()
+  @Column({ nullable: true })
   nit: string;
-  @Column()
+  @Column({ default: null })
   administrativeResolution: string;
-  @Column({ type: 'date' })
+  @Column({ type: 'date', nullable: true })
   dateRa: Date;
   @Column()
   state: State;
@@ -48,19 +47,19 @@ export class Operator {
   color: string;
 
   // nuevo
-  @Column()
+  @Column({ default: null })
   tecnicalNumberUrl: string;
-  @Column()
+  @Column({ default: null })
   legalNumberUrl: string;
 
-  @Column()
+  @Column({ default: null })
   tecnicalNumber: string;
-  @Column()
+  @Column({ default: null })
   legalNumber: string;
 
   @Column({ type: 'text' })
   observations: string;
-  @Column({ type: 'date' })
+  @Column({ type: 'date', nullable: true })
   validity: Date;
   @Column({ type: 'text' })
   route: string;
@@ -84,8 +83,6 @@ export class Operator {
   operator: User;
   @OneToMany(() => Payorder, (payorder) => payorder.operator)
   payorders: Payorder[];
-  @OneToMany(() => Santion, (santion) => santion.operator)
-  santions: Payorder[];
   @OneToMany(() => Owner, (owner) => owner.operator)
   owners: Owner[];
   @OneToMany(() => Vehicle, (vehicle) => vehicle.operator)

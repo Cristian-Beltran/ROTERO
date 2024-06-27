@@ -15,7 +15,8 @@ const typeorm_1 = require("@nestjs/typeorm");
 const payorders_entity_1 = require("./payorders.entity");
 const operators_module_1 = require("../operators/operators.module");
 const pdf_module_1 = require("../pdf/pdf.module");
-const type_payorders_module_1 = require("../type-payorders/type-payorders.module");
+const service_module_1 = require("../service/service.module");
+const detail_payorder_entity_1 = require("./detail_payorder.entity");
 let PayordersModule = class PayordersModule {
 };
 exports.PayordersModule = PayordersModule;
@@ -25,8 +26,8 @@ exports.PayordersModule = PayordersModule = __decorate([
             pdf_module_1.PdfModule,
             users_module_1.UsersModule,
             operators_module_1.OperatorsModule,
-            type_payorders_module_1.TypePayordersModule,
-            typeorm_1.TypeOrmModule.forFeature([payorders_entity_1.Payorder]),
+            service_module_1.ServiceModule,
+            typeorm_1.TypeOrmModule.forFeature([payorders_entity_1.Payorder, detail_payorder_entity_1.DetailPayorder]),
         ],
         providers: [payorders_service_1.PayordersService],
         controllers: [payorders_controller_1.PayordersController],

@@ -16,7 +16,7 @@ const class_validator_1 = require("class-validator");
 const class_transformer_1 = require("class-transformer");
 class CreateOperatorDto {
     static _OPENAPI_METADATA_FACTORY() {
-        return { businessName: { required: true, type: () => String }, legalRepresentative: { required: true, type: () => String }, owner: { required: true, type: () => String }, seprec: { required: true, type: () => String }, nit: { required: true, type: () => String }, entityMatris: { required: true, type: () => String }, color: { required: true, type: () => String }, route: { required: true, type: () => String }, dateRa: { required: true, type: () => Date }, initialAffiliates: { required: false, type: () => Number }, currentAffiliates: { required: false, type: () => Number }, tecnicalNumber: { required: true, type: () => String }, legalNumber: { required: true, type: () => String }, observations: { required: true, type: () => String }, validity: { required: true, type: () => Date } };
+        return { businessName: { required: true, type: () => String }, legalRepresentative: { required: true, type: () => String }, owner: { required: true, type: () => String }, seprec: { required: true, type: () => String }, nit: { required: true, type: () => String }, entityMatris: { required: true, type: () => String }, color: { required: true, type: () => String }, route: { required: true, type: () => String }, dateRa: { required: true, type: () => Date }, initialAffiliates: { required: false, type: () => Number }, currentAffiliates: { required: false, type: () => Number }, tecnicalNumber: { required: true, type: () => String }, legalNumber: { required: true, type: () => String }, observations: { required: true, type: () => String }, validity: { required: false, type: () => Date } };
     }
 }
 exports.CreateOperatorDto = CreateOperatorDto;
@@ -32,17 +32,17 @@ __decorate([
 ], CreateOperatorDto.prototype, "legalRepresentative", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], CreateOperatorDto.prototype, "owner", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], CreateOperatorDto.prototype, "seprec", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], CreateOperatorDto.prototype, "nit", void 0);
 __decorate([
@@ -64,7 +64,6 @@ __decorate([
     (0, class_validator_1.IsOptional)(),
     (0, class_transformer_1.Transform)(({ value }) => new Date(value)),
     (0, class_validator_1.IsDate)(),
-    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Date)
 ], CreateOperatorDto.prototype, "dateRa", void 0);
 __decorate([
@@ -96,9 +95,9 @@ __decorate([
     __metadata("design:type", String)
 ], CreateOperatorDto.prototype, "observations", void 0);
 __decorate([
-    (0, class_transformer_1.Transform)(({ value }) => new Date(value)),
+    (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsDate)(),
-    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_transformer_1.Transform)(({ value }) => new Date(value)),
     __metadata("design:type", Date)
 ], CreateOperatorDto.prototype, "validity", void 0);
 class UpdateOperatorDto extends (0, mapped_types_1.PartialType)(CreateOperatorDto) {

@@ -24,7 +24,10 @@
         </div>
       </div>
       <div class="flex justify-between mt-4">
-        <Button class=""><v-icon name="fa-save" type="submit" />Guardar</Button>
+        <Button class="" :disabled="load" type="submit">
+          <v-icon v-if="load" name="fa-spinner" animation="spin-pulse" />
+          <v-icon v-else name="fa-save" /> Guardar</Button
+        >
       </div>
     </form>
   </Card>
@@ -41,6 +44,7 @@ const toast = useToast()
 const authStore = useAuthStore()
 const f1 = ref('')
 const f2 = ref('')
+const load = ref(false)
 const onFileChangeF1 = (event) => {
   f1.value = event.target.files[0]
 }
@@ -49,6 +53,7 @@ const onFileChangeF2 = (event) => {
 }
 const handleSubmit = async (event) => {
   if (event) event.preventDefault()
+  load.value = true
   if (f1.value) {
     const formData = new FormData()
     formData.append('file', f1.value)
@@ -59,6 +64,7 @@ const handleSubmit = async (event) => {
     formData.append('file', f2.value)
     await authStore.uploadFirmTwo(formData)
   }
+  load.value = false
   toast.success('Firmas guardadas correctamente')
 }
 </script>

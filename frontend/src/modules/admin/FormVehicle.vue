@@ -185,7 +185,6 @@
         </Select>
         <Error :errors="v$.ownerId.$errors" />
       </div>
-      
     </div>
 
     <div class="flex justify-between mt-4">
@@ -214,7 +213,7 @@ import Error from '@/commun/me/ErrorBase.vue'
 import Button from '@/commun/ui/button/Button.vue'
 import { useVuelidate } from '@vuelidate/core'
 import { required, helpers } from '@vuelidate/validators'
-import { reactive, computed, onMounted, ref } from 'vue'
+import { reactive, computed, onMounted } from 'vue'
 
 import { useToast } from 'vue-toastification'
 import { useRoute } from 'vue-router'
@@ -276,7 +275,6 @@ const rules = computed(() => ({
   classVehicleId: { required: helpers.withMessage('Campo requerido', required) },
   inspection: { required: helpers.withMessage('Campo requerido', required) }
 }))
-
 
 const v$ = useVuelidate(rules, formData)
 

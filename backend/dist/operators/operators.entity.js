@@ -14,7 +14,6 @@ const openapi = require("@nestjs/swagger");
 const typeorm_1 = require("typeorm");
 const users_entity_1 = require("../users/users.entity");
 const payorders_entity_1 = require("../payorders/payorders.entity");
-const santions_entity_1 = require("../santions/santions.entity");
 const owners_entity_1 = require("../owners/owners.entity");
 const drivers_entity_1 = require("../drivers/drivers.entity");
 const vehicle_entity_1 = require("../vehicle/vehicle.entity");
@@ -26,7 +25,7 @@ var State;
 })(State || (exports.State = State = {}));
 let Operator = class Operator {
     static _OPENAPI_METADATA_FACTORY() {
-        return { id: { required: true, type: () => Number }, businessName: { required: true, type: () => String }, legalRepresentative: { required: true, type: () => String }, owner: { required: true, type: () => String }, seprec: { required: true, type: () => String }, nit: { required: true, type: () => String }, administrativeResolution: { required: true, type: () => String }, dateRa: { required: true, type: () => Date }, state: { required: true, enum: require("./operators.entity").State }, entityMatris: { required: true, type: () => String }, color: { required: true, type: () => String }, tecnicalNumberUrl: { required: true, type: () => String }, legalNumberUrl: { required: true, type: () => String }, tecnicalNumber: { required: true, type: () => String }, legalNumber: { required: true, type: () => String }, observations: { required: true, type: () => String }, validity: { required: true, type: () => Date }, route: { required: true, type: () => String }, authorizationDate: { required: true, type: () => Date }, createdAt: { required: true, type: () => Date }, updatedAt: { required: true, type: () => Date }, operator: { required: true, type: () => require("../users/users.entity").User }, payorders: { required: true, type: () => [require("../payorders/payorders.entity").Payorder] }, santions: { required: true, type: () => [require("../payorders/payorders.entity").Payorder] }, owners: { required: true, type: () => [require("../owners/owners.entity").Owner] }, vehicles: { required: true, type: () => [require("../vehicle/vehicle.entity").Vehicle] }, drivers: { required: true, type: () => [require("../drivers/drivers.entity").Driver] }, user: { required: true, type: () => require("../users/users.entity").User } };
+        return { id: { required: true, type: () => Number }, businessName: { required: true, type: () => String }, legalRepresentative: { required: true, type: () => String }, owner: { required: true, type: () => String }, seprec: { required: true, type: () => String }, nit: { required: true, type: () => String }, administrativeResolution: { required: true, type: () => String }, dateRa: { required: true, type: () => Date }, state: { required: true, enum: require("./operators.entity").State }, entityMatris: { required: true, type: () => String }, color: { required: true, type: () => String }, tecnicalNumberUrl: { required: true, type: () => String }, legalNumberUrl: { required: true, type: () => String }, tecnicalNumber: { required: true, type: () => String }, legalNumber: { required: true, type: () => String }, observations: { required: true, type: () => String }, validity: { required: true, type: () => Date }, route: { required: true, type: () => String }, authorizationDate: { required: true, type: () => Date }, createdAt: { required: true, type: () => Date }, updatedAt: { required: true, type: () => Date }, operator: { required: true, type: () => require("../users/users.entity").User }, payorders: { required: true, type: () => [require("../payorders/payorders.entity").Payorder] }, owners: { required: true, type: () => [require("../owners/owners.entity").Owner] }, vehicles: { required: true, type: () => [require("../vehicle/vehicle.entity").Vehicle] }, drivers: { required: true, type: () => [require("../drivers/drivers.entity").Driver] }, user: { required: true, type: () => require("../users/users.entity").User } };
     }
 };
 exports.Operator = Operator;
@@ -43,23 +42,23 @@ __decorate([
     __metadata("design:type", String)
 ], Operator.prototype, "legalRepresentative", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], Operator.prototype, "owner", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], Operator.prototype, "seprec", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], Operator.prototype, "nit", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ default: null }),
     __metadata("design:type", String)
 ], Operator.prototype, "administrativeResolution", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'date' }),
+    (0, typeorm_1.Column)({ type: 'date', nullable: true }),
     __metadata("design:type", Date)
 ], Operator.prototype, "dateRa", void 0);
 __decorate([
@@ -75,19 +74,19 @@ __decorate([
     __metadata("design:type", String)
 ], Operator.prototype, "color", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ default: null }),
     __metadata("design:type", String)
 ], Operator.prototype, "tecnicalNumberUrl", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ default: null }),
     __metadata("design:type", String)
 ], Operator.prototype, "legalNumberUrl", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ default: null }),
     __metadata("design:type", String)
 ], Operator.prototype, "tecnicalNumber", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ default: null }),
     __metadata("design:type", String)
 ], Operator.prototype, "legalNumber", void 0);
 __decorate([
@@ -95,7 +94,7 @@ __decorate([
     __metadata("design:type", String)
 ], Operator.prototype, "observations", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'date' }),
+    (0, typeorm_1.Column)({ type: 'date', nullable: true }),
     __metadata("design:type", Date)
 ], Operator.prototype, "validity", void 0);
 __decorate([
@@ -127,10 +126,6 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => payorders_entity_1.Payorder, (payorder) => payorder.operator),
     __metadata("design:type", Array)
 ], Operator.prototype, "payorders", void 0);
-__decorate([
-    (0, typeorm_1.OneToMany)(() => santions_entity_1.Santion, (santion) => santion.operator),
-    __metadata("design:type", Array)
-], Operator.prototype, "santions", void 0);
 __decorate([
     (0, typeorm_1.OneToMany)(() => owners_entity_1.Owner, (owner) => owner.operator),
     __metadata("design:type", Array)

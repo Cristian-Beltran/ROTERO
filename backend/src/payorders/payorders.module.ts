@@ -6,15 +6,16 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Payorder } from './payorders.entity';
 import { OperatorsModule } from 'src/operators/operators.module';
 import { PdfModule } from 'src/pdf/pdf.module';
-import { TypePayordersModule } from 'src/type-payorders/type-payorders.module';
+import { ServiceModule } from 'src/service/service.module';
+import { DetailPayorder } from './detail_payorder.entity';
 
 @Module({
   imports: [
     PdfModule,
     UsersModule,
     OperatorsModule,
-    TypePayordersModule,
-    TypeOrmModule.forFeature([Payorder]),
+    ServiceModule,
+    TypeOrmModule.forFeature([Payorder, DetailPayorder]),
   ],
   providers: [PayordersService],
   controllers: [PayordersController],

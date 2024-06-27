@@ -29,7 +29,7 @@ export declare class OperatorsService {
         tecnicalNumber: string;
         legalNumber: string;
         observations: string;
-        validity: Date;
+        validity?: Date;
     } & Operator>;
     updateOperator(id: number, data: UpdateOperatorDto, operatorUser: UpdateUserDto, userId: number): Promise<{
         operator: Operator;

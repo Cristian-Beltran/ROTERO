@@ -7,11 +7,11 @@ import {
   deleteTypePayorderRequest
 } from '@/services/typePayorder.services'
 import { ref, reactive, computed } from 'vue'
-import type { TypePayorder } from '@/interfaces/TypePayorder.interfaces'
+import type { Service } from '@/interfaces/Service'
 
 export const useTypePayorderStore = defineStore('typePayorder', () => {
-  const typePayorders = reactive<TypePayorder[]>([])
-  const typePayorder = ref<TypePayorder>()
+  const typePayorders = reactive<Service[]>([])
+  const typePayorder = ref<Service>()
   const search = ref('')
   const loading = ref(false)
   const filter = computed(() => {
@@ -38,10 +38,10 @@ export const useTypePayorderStore = defineStore('typePayorder', () => {
     const { data } = await getTypePayorderRequest(id)
     typePayorder.value = data
   }
-  async function createTypePayorder(data: TypePayorder): Promise<void> {
+  async function createTypePayorder(data: Service): Promise<void> {
     await createTypePayorderRequest(data)
   }
-  async function updateTypePayorder(id: number, data: TypePayorder): Promise<void> {
+  async function updateTypePayorder(id: number, data: Service): Promise<void> {
     await updateTypePayorderRequest(id, data)
   }
   async function deleteTypePayorder(id: number): Promise<void> {

@@ -30,7 +30,6 @@ const columns = [
   { title: 'Nombre', key: 'name' },
   { title: 'Detalle', key: 'detail' },
   { title: 'Monto (Bs)', key: 'amount' },
-  { title: 'Gravedad', key: 'severity' },
   { title: 'Actualizado por', key: 'userName' },
   { title: 'Actualizado', key: 'updatedAt', type: 'date' },
   { title: 'Creado', key: 'createdAt', type: 'date' }

@@ -24,7 +24,7 @@ export class OperatorsController {
     private cloudinaryService: CloudinaryService,
   ) {}
   @Get('total-affiliates')
-  async getTotalEmployeeOperators(){
+  async getTotalEmployeeOperators() {
     return await this.operatorService.getTotalEmployeeOperators();
   }
   @Get()

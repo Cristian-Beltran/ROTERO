@@ -34,8 +34,9 @@ const swal = inject('$swal')
 const router = useRouter()
 const columns = [
   { title: 'id', key: 'id' },
-  { title: 'Tipo de orden', key: 'typePayorderName' },
-  { title: 'Monto (Bs)', key: 'amount' },
+  { title: 'Razon', key: 'reason' },
+  { title: 'Monto (Bs)', key: 'total' },
+  { title: 'Extra (Bs)', key: 'amountExtra' },
   { title: 'Detalle', key: 'detail' },
   { title: 'Pagado', key: 'cancellation', type: 'boolean' },
   { title: 'Fecha de pago', key: 'cancellationDate', type: 'date' },

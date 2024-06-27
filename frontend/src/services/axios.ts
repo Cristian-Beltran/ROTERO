@@ -1,9 +1,10 @@
 import axios, { type AxiosInstance } from 'axios'
 
 const instance: AxiosInstance = axios.create({
-  baseURL: 'http://localhost:3000'
-  //baseURL: "https://envibol.app.dexdserver.site/api",
+  baseURL: 'https://sitrand.gobernaciondecochabamba.bo/api'
+  //baseURL : 'http://localhost:3000'
 })
+
 
 instance.defaults.headers.common['Authorization'] = `Bearer ${getCookie('token')}`
 function getCookie(name: string) {

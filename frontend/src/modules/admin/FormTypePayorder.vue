@@ -22,8 +22,8 @@
         <Error :errors="v$.detail.$errors" />
       </div>
       <div class="grid items-center">
-        <Label for="amoun">Monto de tipo de pago (Bs)</Label>
-        <Input id="amoun" type="number" v-model="v$.amount.$model" />
+        <Label for="amount">Monto de tipo de pago (Bs)</Label>
+        <Input id="amount" type="number" v-model="v$.amount.$model" />
         <Error :errors="v$.amount.$errors" />
       </div>
     </div>
@@ -57,7 +57,8 @@ const router = useRouter()
 const formData = reactive({
   name: '',
   detail: '',
-  amount: ''
+  amount: '',
+  type: 'PAGO'
 })
 
 const rules = computed(() => ({
@@ -96,6 +97,7 @@ onMounted(async () => {
       formData.name = typePayorderStore.typePayorder?.name
       formData.detail = typePayorderStore.typePayorder?.detail
       formData.amount = typePayorderStore.typePayorder?.amount
+      formData.type = typePayorderStore.typePayorder?.type
     } catch (error) {
       toast.error(error?.response.data.errors[0])
     }

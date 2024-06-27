@@ -147,7 +147,10 @@
           ><v-icon name="fa-times" class="mr-2" />Salir</Button
         >
       </router-link>
-      <Button class=""><v-icon name="fa-save" type="submit" />Guardar</Button>
+      <Button class="" :disabled="load" type="submit">
+        <v-icon v-if="load" name="fa-spinner" animation="spin-pulse" />
+        <v-icon v-else name="fa-save" /> Guardar</Button
+      >
     </div>
   </form>
 </template>
@@ -182,6 +185,7 @@ import { useOperatorStore } from '@/stores/operator.stores'
 import { useRouteStore } from '@/stores/route.stores'
 import { useVehicleStore } from '@/stores/vehicle.stores'
 
+const load = ref(false)
 const vehicleStore = useVehicleStore()
 const operatorStore = useOperatorStore()
 const routeStore = useRouteStore()
@@ -246,6 +250,7 @@ async function handleSubmit(e) {
   if (currentRoute?.geometry?.coordinates.length < 1) return toast.error('Debe generar una ruta')
   const isFormCorrect = await v$.value.$validate()
   if (isFormCorrect) {
+    load.value = true
     const data = {
       startText: formData.startText,
       endText: formData.endText,
@@ -273,6 +278,8 @@ async function handleSubmit(e) {
     } catch (error) {
       toast.error(error?.response?.data?.message)
     }
+
+    load.value = false
   }
 }
 

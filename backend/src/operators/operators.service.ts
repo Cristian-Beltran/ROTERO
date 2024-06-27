@@ -60,7 +60,6 @@ export class OperatorsService {
       PermissionLevel.OPERADOR,
       operator,
     );
-
     const newOperator = {
       ...data,
       user,

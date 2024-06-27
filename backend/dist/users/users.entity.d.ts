@@ -6,9 +6,7 @@ import { Payorder } from 'src/payorders/payorders.entity';
 import { Role } from 'src/roles/roles.entity';
 import { Rossete } from 'src/rossetes/rossetes.entity';
 import { Route } from 'src/routes/routes.entity';
-import { Santion } from 'src/santions/santions.entity';
-import { TypePayorder } from 'src/type-payorders/type-payorders.entity';
-import { TypeSantion } from 'src/type-santions/type-santions.entity';
+import { Service } from 'src/service/service.entity';
 import { Vehicle } from 'src/vehicle/vehicle.entity';
 export declare enum PermissionLevel {
     SUPERADMINISTRADOR = "SUPERADMINISTRADOR",
@@ -35,13 +33,11 @@ export declare class User {
     rolesUpdate: Role[];
     operatorsUpdate: Operator[];
     payordersUpdate: Payorder[];
-    santionsUpdate: Santion[];
     ownersUpdate: Owner[];
     driversUpdate: Driver[];
     vehiclesUpdate: Vehicle[];
     routesUpdate: Route[];
     rossetesUpdate: Rossete[];
-    typePayordersUpdate: TypePayorder[];
-    typeSantionsUpdate: TypeSantion[];
     classVehicleUpdate: ClassVehicle[];
+    servicesUpdate: Service[];
 }

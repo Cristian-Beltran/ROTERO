@@ -26,23 +26,6 @@
         <Input id="amoun" type="number" v-model="v$.amount.$model" />
         <Error :errors="v$.amount.$errors" />
       </div>
-      <div class="grid items-center">
-        <Label for="severity">Severidad</Label>
-        <Select id="severity" v-model="v$.severity.$model">
-          <SelectTrigger class="">
-            <SelectValue placeholder="Selecione un grado de severidad" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectLabel>Grados</SelectLabel>
-              <SelectItem value="LEVE"> LEVE</SelectItem>
-              <SelectItem value="GRAVE"> GRAVE</SelectItem>
-              <SelectItem value="MUY GRAVE"> MUY GRAVE</SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-        <Error :errors="v$.severity.$errors" />
-      </div>
     </div>
     <div class="flex justify-between mt-4">
       <router-link to="/type-santion">
@@ -55,15 +38,7 @@
   </form>
 </template>
 <script setup lang="ts">
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue
-} from '@/commun/ui/select'
+
 import Input from '@/commun/ui/input/Input.vue'
 import Label from '@/commun/ui/label/Label.vue'
 import Error from '@/commun/me/ErrorBase.vue'
@@ -84,7 +59,7 @@ const formData = reactive({
   name: '',
   detail: '',
   amount: '',
-  severity: ''
+  type: 'SANCION'
 })
 
 const rules = computed(() => ({
@@ -96,9 +71,6 @@ const rules = computed(() => ({
   },
   amount: {
     required: helpers.withMessage('Se requiere el monto', required)
-  },
-  severity: {
-    required: helpers.withMessage('Se requiere la severidad', required)
   }
 }))
 
@@ -123,10 +95,10 @@ onMounted(async () => {
   if (route.query.id) {
     try {
       await typeSantionStore.getTypeSantion(route.query.id)
-      formData.name = typeSantionStore.typeSantion?.typePayorder.name
-      formData.detail = typeSantionStore.typeSantion?.typePayorder.detail
-      formData.amount = typeSantionStore.typeSantion?.typePayorder.amount
-      formData.severity = typeSantionStore.typeSantion?.severity
+      formData.name = typeSantionStore.typeSantion?.name
+      formData.detail = typeSantionStore.typeSantion?.detail
+      formData.amount = typeSantionStore.typeSantion?.amount
+      formData.type = typeSantionStore.typeSantion?.type
     } catch (error) {
       toast.error(error?.response.data.errors[0])
     }

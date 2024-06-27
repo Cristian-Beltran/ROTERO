@@ -53,6 +53,21 @@
         </Select>
         <Error :errors="v$.operatorId.$errors" />
       </div>
+      <div class="grid items-center">
+        <Label for="amountExtra">Monto extra(Bs)</Label>
+        <Input id="amountExtra" type="number" v-model="v$.amountExtra.$model" />
+        <Error :errors="v$.amountExtra.$errors" />
+      </div>
+      <div class="grid items-center">
+        <Label for="detailExtra">Razon de monto Extra</Label>
+        <Input
+          id="detailExtra"
+          type="text"
+          placeholder="Razon de monto Extra"
+          v-model="v$.detailExtra.$model"
+        />
+        <Error :errors="v$.detailExtra.$errors" />
+      </div>
     </div>
     <div class="flex justify-between mt-4">
       <router-link to="/santion">
@@ -96,13 +111,17 @@ const route = useRoute()
 const formData = reactive({
   typeSantionId: '',
   detail: '',
-  operatorId: ''
+  operatorId: '',
+  amountExtra: '',
+  detailExtra: ''
 })
 
 const rules = computed(() => ({
   detail: { required: helpers.withMessage('Campo requerido', required) },
   operatorId: { required: helpers.withMessage('Campo requerido', required) },
-  typeSantionId: { required: helpers.withMessage('Campo requerido', required) }
+  typeSantionId: { required: helpers.withMessage('Campo requerido', required) },
+  amountExtra: {},
+  detailExtra: {}
 }))
 
 const v$ = useVuelidate(rules, formData)
@@ -139,6 +158,8 @@ onMounted(async () => {
       formData.typeSantionId = santionStore.santion.typeSantion.id
       formData.detail = santionStore.santion.detail
       formData.operatorId = santionStore.santion?.operator.id
+      formData.amountExtra = santionStore.santion.amountExtra
+      formData.detailExtra = santionStore.santion.detailExtra
     } catch (error) {
       toast.error(error?.response.data.errors[0])
     }

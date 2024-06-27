@@ -1,17 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import PDFDocument from 'pdfkit-table';
 import { Operator } from 'src/operators/operators.entity';
-import { Payorder } from 'src/payorders/payorders.entity';
 import * as path from 'path';
 import * as QRCode from 'qrcode';
 import { JwtService } from '@nestjs/jwt';
 import { Vehicle } from 'src/vehicle/vehicle.entity';
-import { Not } from 'typeorm';
-
+import { Payorder } from 'src/payorders/payorders.entity';
 @Injectable()
 export class PdfService {
   constructor(private jwtService: JwtService) {}
-  async generatePayorder(payorder: Payorder, url): Promise<Buffer> {
+  async generatePayorder(payorder: any, url): Promise<Buffer> {
     const pdfBuffer: Buffer = await new Promise(async (resolve) => {
       const doc = new PDFDocument({
         size: 'LETTER',
@@ -27,7 +25,7 @@ export class PdfService {
           .fillColor('#DD2222')
           .fontSize(10)
           .text(
-            'Orden de pago cancellada | ' +
+            'Orden de pago cancelada | ' +
               new Date(payorder.cancellationDate).toLocaleString('es-ES', {
                 year: 'numeric',
                 month: 'long',
@@ -37,25 +35,34 @@ export class PdfService {
             140,
           )
           .moveDown();
+
+      const detailsRows = payorder.detailPayorders.map((detail) => [
+        detail.name,
+        detail.amount.toString(),
+        detail.count.toString(),
+        detail.total.toString(),
+      ]);
+      detailsRows.push([
+        'Extra',
+        payorder.amountExtra.toString(),
+        '',
+        payorder.amountExtra.toString(),
+      ]);
+      const totalExtra = payorder.amountExtra;
+      const totalAmount = payorder.amount + totalExtra;
+      detailsRows.push(['', '', 'Total', totalAmount.toString()]);
       const table = {
-        headers: ['Tipo de pago', 'Detalle', 'Monto (Bs)'],
-        rows: [
-          [
-            payorder.typePayorder.name,
-            payorder.detail.toString(),
-            payorder.typePayorder.amount.toString(),
-          ],
-        ],
+        headers: ['Detalle', 'Monto (Bs)', 'Cantidad', 'Total (Bs)'],
+        rows: detailsRows,
       };
       await doc.table(table, {
         y: 279,
         x: 50,
       });
-
       const qrCodeBuffer = await this.generateQRCode(
-        url + '/payorders/' + payorder.id + '/pdf',
+        url + '/api/payorders/' + payorder.id + '/pdf',
       );
-      doc.image(qrCodeBuffer, 400, 360, { width: 100, align: 'center' });
+      doc.image(qrCodeBuffer, 400, 80, { width: 100, align: 'center' });
       this.generateFooter(doc);
       doc.end();
       const buffer = [];
@@ -67,11 +74,8 @@ export class PdfService {
     });
     return pdfBuffer;
   }
-  async generateReportPayorders(
-    payorders: Payorder[],
-    initDate: string,
-    endDate: string,
-  ) {
+
+  async generateReportPayorders(payorders, initDate, endDate) {
     const pdfBuffer: Buffer = await new Promise(async (resolve) => {
       const doc = new PDFDocument({
         size: 'LETTER',
@@ -82,10 +86,20 @@ export class PdfService {
       this.generateTitle(doc, 'Reporte de Ordenes de Pago');
       doc.moveDown();
       const table = {
-        headers: ['Detalle', 'Monto (Bs)', 'Estado'],
+        headers: [
+          'Detalle',
+          'Monto (Bs)',
+          'Extra',
+          'Extra (Bs)',
+          'Total (Bs)',
+          'Estado',
+        ],
         rows: payorders.map((payorder) => [
           payorder.detail.toString(),
-          payorder.typePayorder.amount.toString(),
+          payorder.total.toString(),
+          payorder.detailExtra.toString(),
+          payorder.amountExtra.toString(),
+          (payorder.total + payorder.amountExtra).toString(),
           payorder.cancellation ? 'Pagado' : 'Pendiente',
         ]),
       };
@@ -554,11 +568,13 @@ export class PdfService {
     endDate: string,
   ) {
     const totalPendientes = payorders.reduce((acc, payorder) => {
-      if (!payorder.cancellation) return acc + payorder.typePayorder.amount;
+      if (!payorder.cancellation)
+        return acc + payorder.total + payorder.amountExtra;
       else return acc;
     }, 0);
     const totalPagados = payorders.reduce((acc, payorder) => {
-      if (payorder.cancellation) return acc + payorder.typePayorder.amount;
+      if (payorder.cancellation)
+        return acc + payorder.total + payorder.amountExtra;
       else return acc;
     }, 0);
     doc
@@ -595,7 +611,6 @@ export class PdfService {
         align: 'left',
       });
   }
-
   private async generateToken(id: number): Promise<string> {
     const payload = {
       id: id,

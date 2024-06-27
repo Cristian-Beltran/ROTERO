@@ -55,7 +55,7 @@ let PayordersController = class PayordersController {
     async generatePayorder(id, res, req) {
         const host = req.get('host');
         const payorder = await this.payorderService.getPayorder(id);
-        const pdfName = `Orden de Pago ${payorder.id}`;
+        const pdfName = `Orden de Pago ${payorder.id} - Rason ${payorder.reason}`;
         const buffer = await this.pdfService.generatePayorder(payorder, host);
         res.set({
             'Content-Type': 'application/pdf',
@@ -80,7 +80,7 @@ __decorate([
 ], PayordersController.prototype, "getPayorders", null);
 __decorate([
     (0, common_1.Post)(),
-    openapi.ApiResponse({ status: 201, type: Object }),
+    openapi.ApiResponse({ status: 201, type: require("./payorders.entity").Payorder }),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
@@ -136,7 +136,7 @@ __decorate([
 ], PayordersController.prototype, "generatePayorder", null);
 __decorate([
     (0, common_1.Get)(':id'),
-    openapi.ApiResponse({ status: 200, type: require("./payorders.entity").Payorder }),
+    openapi.ApiResponse({ status: 200 }),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),

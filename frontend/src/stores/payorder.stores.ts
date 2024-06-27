@@ -42,8 +42,6 @@ export const usePayorderStore = defineStore('payorder', () => {
         userName: `${payorder?.user?.firstName} ${payorder.user?.lastName}`,
         operatorName: `${payorder?.operator?.businessName}`,
         nit: `${payorder?.operator?.nit}`,
-        typePayorderName: `${payorder?.typePayorder?.name}`,
-        amount: payorder?.typePayorder?.amount,
       }
     })
     payorders.splice(0, payorders.length, ...dataMap)

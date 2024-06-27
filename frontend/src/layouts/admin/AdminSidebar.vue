@@ -23,9 +23,11 @@
         <li>
           <Archor to="/rossete" icon="fa-ticket-alt" name="Rosetas" />
         </li>
+        <!-- 
         <li>
           <Archor to="/santion" icon="fa-clipboard-list" name="Sanciones" />
         </li>
+        -->
         <li>
           <Archor to="/readQr" icon="fa-qrcode" name="Leer roseta" />
         </li>

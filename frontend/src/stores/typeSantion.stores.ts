@@ -7,18 +7,17 @@ import {
   deleteTypeSantionRequest
 } from '@/services/typeSantion.services'
 import { ref, reactive, computed } from 'vue'
-import type { TypeSantion } from '@/interfaces/TypeSantion.interfaces'
+import type { Service } from '@/interfaces/Service'
 
 export const useTypeSantionStore = defineStore('typeSantion', () => {
-  const typeSantions = reactive<TypeSantion[]>([])
-  const typeSantion = ref<TypeSantion>()
+  const typeSantions = reactive<Service[]>([])
+  const typeSantion = ref<Service>()
   const search = ref('')
   const loading = ref(false)
   const filter = computed(() => {
     return typeSantions.filter((data) => {
       return (
-        data.severity.toLowerCase().includes(search.value.toLowerCase()) ||
-        data.typePayorder.name.toLowerCase().includes(search.value.toLowerCase()) ||
+        data.name.toLowerCase().includes(search.value.toLowerCase()) ||
         data.detail.toLowerCase().includes(search.value.toLowerCase())
       )
     })
@@ -29,10 +28,7 @@ export const useTypeSantionStore = defineStore('typeSantion', () => {
     const dataMap = data.map((typeSantion) => {
       return {
         ...typeSantion,
-        userName: `${typeSantion?.user?.firstName} ${typeSantion.user?.lastName}`,
-        name: `${typeSantion?.typePayorder?.name}`,
-        amount: `${typeSantion?.typePayorder?.amount}`,
-        detail: `${typeSantion?.typePayorder?.detail}`
+        userName: `${typeSantion?.user?.firstName} ${typeSantion.user?.lastName}`
       }
     })
     typeSantions.splice(0, typeSantions.length, ...dataMap)
@@ -42,10 +38,10 @@ export const useTypeSantionStore = defineStore('typeSantion', () => {
     const { data } = await getTypeSantionRequest(id)
     typeSantion.value = data
   }
-  async function createTypeSantion(data: TypeSantion): Promise<void> {
+  async function createTypeSantion(data: Service): Promise<void> {
     await createTypeSantionRequest(data)
   }
-  async function updateTypeSantion(id: number, data: TypeSantion): Promise<void> {
+  async function updateTypeSantion(id: number, data: Service): Promise<void> {
     await updateTypeSantionRequest(id, data)
   }
   async function deleteTypeSantion(id: number): Promise<void> {

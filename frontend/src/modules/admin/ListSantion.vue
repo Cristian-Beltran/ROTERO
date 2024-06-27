@@ -36,6 +36,7 @@ const columns = [
   { title: 'id', key: 'id' },
   { title: 'Tipo de multa', key: 'typePayorderName' },
   { title: 'Monto (Bs)', key: 'amount' },
+  { title: 'Extra (Bs)', key: 'amountExtra' },
   { title: 'Severidad', key: 'severity' },
   { title: 'Detalle', key: 'detail' },
   { title: 'Pagado', key: 'cancellation', type: 'boolean' },

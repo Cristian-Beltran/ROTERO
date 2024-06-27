@@ -24,15 +24,13 @@ export declare class AuthController {
         rolesUpdate: import("../roles/roles.entity").Role[];
         operatorsUpdate: import("../operators/operators.entity").Operator[];
         payordersUpdate: import("../payorders/payorders.entity").Payorder[];
-        santionsUpdate: import("../santions/santions.entity").Santion[];
         ownersUpdate: import("../owners/owners.entity").Owner[];
         driversUpdate: import("../drivers/drivers.entity").Driver[];
         vehiclesUpdate: import("../vehicle/vehicle.entity").Vehicle[];
         routesUpdate: import("../routes/routes.entity").Route[];
         rossetesUpdate: import("../rossetes/rossetes.entity").Rossete[];
-        typePayordersUpdate: import("../type-payorders/type-payorders.entity").TypePayorder[];
-        typeSantionsUpdate: import("../type-santions/type-santions.entity").TypeSantion[];
         classVehicleUpdate: import("../class-vehicle/class-vehicle.entity").ClassVehicle[];
+        servicesUpdate: import("../service/service.entity").Service[];
         accessToken: string;
     }>;
     verify(request: Request): Promise<import("../users/users.entity").User>;

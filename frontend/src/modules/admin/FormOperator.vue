@@ -81,12 +81,10 @@
       <div class="grid items-center">
         <Label for="owner">Propietario</Label>
         <Input id="owner" type="text" placeholder="Propietario" v-model="v$.owner.$model" />
-        <Error :errors="v$.owner.$errors" />
       </div>
       <div class="grid items-center">
         <Label for="nit">NIT</Label>
         <Input id="nit" type="text" placeholder="NIT" v-model="v$.nit.$model" />
-        <Error :errors="v$.nit.$errors" />
       </div>
 
       <div class="grid items-center">
@@ -103,7 +101,6 @@
       <div class="grid items-center">
         <Label for="seprec">SEPREC</Label>
         <Input id="seprec" type="text" placeholder="SEPREC" v-model="v$.seprec.$model" />
-        <Error :errors="v$.seprec.$errors" />
       </div>
       <div class="grid items-center">
         <Label for="entityMatris">Entidad matriz</Label>
@@ -141,7 +138,6 @@
       <div class="grid items-center">
         <Label for="dateRa">Fecha de RA</Label>
         <Input id="dateRa" type="date" placeholder="Fecha de RA" v-model="v$.dateRa.$model" />
-        <Error :errors="v$.dateRa.$errors" />
       </div>
       <div class="grid items-center">
         <Label for="tecnicalNumberUrl">Número técnico PDF</Label>
@@ -173,7 +169,6 @@
         <Label for="validity">Validez de Certificado de operador</Label>
         <Input id="validity" type="date" placeholder="Validez" v-model="formData.validity" />
       </div>
-      
     </div>
 
     <div class="flex justify-between mt-4">
@@ -182,7 +177,10 @@
           ><v-icon name="fa-times" class="mr-2" />Salir</Button
         >
       </router-link>
-      <Button class=""><v-icon name="fa-save" type="submit" />Guardar</Button>
+      <Button class="" :disabled="load" type="submit">
+        <v-icon v-if="load" name="fa-spinner" animation="spin-pulse" />
+        <v-icon v-else name="fa-save" /> Guardar</Button
+      >
     </div>
   </form>
 </template>
@@ -200,6 +198,7 @@ import { useToast } from 'vue-toastification'
 import { useRoute } from 'vue-router'
 import { useRouter } from 'vue-router'
 import { useOperatorStore } from '@/stores/operator.stores'
+const load = ref(false)
 const operatorStore = useOperatorStore()
 const toast = useToast()
 const router = useRouter()
@@ -238,11 +237,11 @@ const rules = computed(() => ({
     required: helpers.withMessage('El representante legal es requerido', required)
   },
   route: { required: helpers.withMessage('La ruta es requerida', required) },
-  owner: { required: helpers.withMessage('El propietario es requerido', required) },
-  nit: { required: helpers.withMessage('El NIT es requerido', required) },
-  dateRa: { required: helpers.withMessage('La fecha de RA es requerida', required) },
+  owner: {  },
+  nit: { },
+  dateRa: { },
   observations: { required: helpers.withMessage('Las observaciones son requeridas', required) },
-  seprec: { required: helpers.withMessage('El SEPREC es requerido', required) },
+  seprec: {  },
   entityMatris: { required: helpers.withMessage('La entidad matriz es requerida', required) },
   color: { required: helpers.withMessage('El color es requerido', required) }
 }))
@@ -267,19 +266,20 @@ async function handleSubmit(e) {
   if (e) e.preventDefault()
   const isFormCorrect = await v$.value.$validate()
   if (isFormCorrect) {
+    load.value = true
     try {
       const data = {
         operator: {
           businessName: formData.businessName,
           legalRepresentative: formData.legalRepresentative,
-          owner: formData.owner,
-          nit: formData.nit,
-          dateRa: formData.dateRa,
+          owner: formData.owner || null,
+          nit: formData.nit || null,
+          dateRa: formData.dateRa || null,
           tecnicalNumber: formData.tecnicalNumber,
           legalNumber: formData.legalNumber,
           observations: formData.observations,
-          validity: formData.validity,
-          seprec: formData.seprec,
+          validity: formData.validity || null,
+          seprec: formData.seprec || null,
           entityMatris: formData.entityMatris,
           color: formData.color,
           route: formData.route
@@ -324,6 +324,7 @@ async function handleSubmit(e) {
       console.log(error)
       toast.error(error?.response?.data?.message)
     }
+    load.value = false
   }
 }
 

@@ -13,7 +13,7 @@ export declare class CreateOperatorDto {
     tecnicalNumber: string;
     legalNumber: string;
     observations: string;
-    validity: Date;
+    validity?: Date;
 }
 declare const UpdateOperatorDto_base: import("@nestjs/mapped-types").MappedType<Partial<CreateOperatorDto>>;
 export declare class UpdateOperatorDto extends UpdateOperatorDto_base {

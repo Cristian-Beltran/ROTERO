@@ -13,7 +13,6 @@ const users_module_1 = require("./users/users.module");
 const roles_module_1 = require("./roles/roles.module");
 const operators_module_1 = require("./operators/operators.module");
 const payorders_module_1 = require("./payorders/payorders.module");
-const santions_module_1 = require("./santions/santions.module");
 const owners_module_1 = require("./owners/owners.module");
 const drivers_module_1 = require("./drivers/drivers.module");
 const routes_module_1 = require("./routes/routes.module");
@@ -23,9 +22,8 @@ const cloudinary_module_1 = require("./cloudinary/cloudinary.module");
 const config_1 = require("@nestjs/config");
 const pdf_module_1 = require("./pdf/pdf.module");
 const vehicle_module_1 = require("./vehicle/vehicle.module");
-const type_santions_module_1 = require("./type-santions/type-santions.module");
-const type_payorders_module_1 = require("./type-payorders/type-payorders.module");
 const class_vehicle_module_1 = require("./class-vehicle/class-vehicle.module");
+const service_module_1 = require("./service/service.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -47,7 +45,6 @@ exports.AppModule = AppModule = __decorate([
             roles_module_1.RolesModule,
             operators_module_1.OperatorsModule,
             payorders_module_1.PayordersModule,
-            santions_module_1.SantionsModule,
             owners_module_1.OwnersModule,
             drivers_module_1.DriversModule,
             routes_module_1.RoutesModule,
@@ -59,9 +56,8 @@ exports.AppModule = AppModule = __decorate([
             }),
             pdf_module_1.PdfModule,
             vehicle_module_1.VehicleModule,
-            type_santions_module_1.TypeSantionsModule,
-            type_payorders_module_1.TypePayordersModule,
             class_vehicle_module_1.ClassVehicleModule,
+            service_module_1.ServiceModule,
         ],
     })
 ], AppModule);

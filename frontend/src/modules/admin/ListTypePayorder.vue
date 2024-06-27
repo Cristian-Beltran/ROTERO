@@ -47,7 +47,7 @@ try {
 
 const action = (data) => {
   if (data.action === 'edit') {
-    router.push({ name: 'type-order-edit', query: { id: data.id } })
+    router.push({ name: 'type-payorder-edit', query: { id: data.id } })
   } else if (data.action === 'delete') {
     swal({
       title: '¿Estas seguro?',

@@ -75,7 +75,10 @@
           ><v-icon name="fa-times" class="mr-2" />Salir</Button
         >
       </router-link>
-      <Button class=""><v-icon name="fa-save" type="submit" />Guardar</Button>
+      <Button class="" :disabled="load" type="submit">
+        <v-icon v-if="load" name="fa-spinner" animation="spin-pulse" />
+        <v-icon v-else name="fa-save" /> Guardar</Button
+      >
     </div>
   </form>
 </template>
@@ -100,7 +103,9 @@ import { useAdminStore } from '@/stores/admin.stores'
 import { useToast } from 'vue-toastification'
 import { useRoute } from 'vue-router'
 import { useRouter } from 'vue-router'
+import { ref } from 'vue'
 
+const load = ref(false)
 const adminStore = useAdminStore()
 const toast = useToast()
 const router = useRouter()
@@ -134,6 +139,7 @@ async function handleSubmit(e) {
   if (e) e.preventDefault()
   const isFormCorrect = await v$.value.$validate()
   if (isFormCorrect) {
+    load.value = true
     try {
       if (!route.query.id) await adminStore.createAdmin(formData)
       else await adminStore.updateAdmin(route.query.id, formData)
@@ -142,6 +148,7 @@ async function handleSubmit(e) {
     } catch (error) {
       toast.error(error?.response?.data?.message)
     }
+    load.value = false
   }
 }
 

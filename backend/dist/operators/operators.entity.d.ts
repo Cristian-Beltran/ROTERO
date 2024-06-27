@@ -32,7 +32,6 @@ export declare class Operator {
     updatedAt: Date;
     operator: User;
     payorders: Payorder[];
-    santions: Payorder[];
     owners: Owner[];
     vehicles: Vehicle[];
     drivers: Driver[];

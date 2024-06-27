@@ -4,7 +4,6 @@ import { UsersModule } from './users/users.module';
 import { RolesModule } from './roles/roles.module';
 import { OperatorsModule } from './operators/operators.module';
 import { PayordersModule } from './payorders/payorders.module';
-import { SantionsModule } from './santions/santions.module';
 import { OwnersModule } from './owners/owners.module';
 import { DriversModule } from './drivers/drivers.module';
 import { RoutesModule } from './routes/routes.module';
@@ -14,16 +13,16 @@ import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { ConfigModule } from '@nestjs/config';
 import { PdfModule } from './pdf/pdf.module';
 import { VehicleModule } from './vehicle/vehicle.module';
-import { TypeSantionsModule } from './type-santions/type-santions.module';
-import { TypePayordersModule } from './type-payorders/type-payorders.module';
 import { ClassVehicleModule } from './class-vehicle/class-vehicle.module';
+import { ServiceModule } from './service/service.module';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: 'mariadb',
       username: 'root',
-      password: 'holamundo',
+      password: 'u$L65rgRG4w5#M',
+      //password: 'holamundo',
       host: 'localhost',
       port: 3306,
       database: 'ROTERO',
@@ -35,7 +34,6 @@ import { ClassVehicleModule } from './class-vehicle/class-vehicle.module';
     RolesModule,
     OperatorsModule,
     PayordersModule,
-    SantionsModule,
     OwnersModule,
     DriversModule,
     RoutesModule,
@@ -47,9 +45,8 @@ import { ClassVehicleModule } from './class-vehicle/class-vehicle.module';
     }),
     PdfModule,
     VehicleModule,
-    TypeSantionsModule,
-    TypePayordersModule,
     ClassVehicleModule,
+    ServiceModule,
   ],
 })
 export class AppModule {}

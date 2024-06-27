@@ -71,6 +71,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], VehicleController.prototype, "getVehicleForClass", null);
 __decorate([
+    (0, auth_decorator_1.Public)(),
     (0, common_1.Get)(':plate/plate'),
     openapi.ApiResponse({ status: 200, type: require("./vehicle.entity").Vehicle }),
     __param(0, (0, common_1.Param)('plate')),

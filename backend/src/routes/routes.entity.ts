@@ -31,7 +31,7 @@ export class Route {
   dayEntry: string;
   @Column({ type: 'text' })
   dayExit: string;
-  @Column()
+  @Column({ default: null })
   routeFile: string;
   @Column({ type: 'text' })
   routeArray: string 

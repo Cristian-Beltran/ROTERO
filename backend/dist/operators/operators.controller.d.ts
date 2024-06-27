@@ -34,7 +34,7 @@ export declare class OperatorsController {
         tecnicalNumber: string;
         legalNumber: string;
         observations: string;
-        validity: Date;
+        validity?: Date;
     } & import("./operators.entity").Operator>;
     updateOperator(id: number, data: {
         operator: UpdateOperatorDto;
