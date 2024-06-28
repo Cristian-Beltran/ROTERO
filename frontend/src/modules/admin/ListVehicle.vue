@@ -35,7 +35,6 @@ const columns = [
   { title: 'Modelo', key: 'model' },
   { title: 'Tipo', key: 'typeVehicle' },
   { title: 'Propietario', key: 'ownerName' },
-  { title: 'Conductor', key: 'driverName' },
   { title: 'Actualizado por', key: 'userName' },
   { title: 'Actualizado', key: 'updatedAt', type: 'date' },
   { title: 'Creado', key: 'createdAt', type: 'date' }

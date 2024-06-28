@@ -2,30 +2,9 @@
   <form action="" @submit="handleSubmit">
     <div class="mt-6 grid grid-cols-2 gap-x-4 gap-y-4">
       <div class="grid items-center">
-        <Label for="startText">Punto de partida</Label>
-        <Input
-          id="startText"
-          type="text"
-          placeholder="Indique el punto de partida"
-          v-model="v$.startText.$model"
-        />
-        <Error :errors="v$.startText.$errors" />
-      </div>
-      <div class="grid items-center">
-        <Label for="endText">Punto de llegada</Label>
-        <Input
-          id="endText"
-          type="text"
-          placeholder="Indique el punto de llegada"
-          v-model="v$.endText.$model"
-        />
-        <Error :errors="v$.endText.$errors" />
-      </div>
-      <div class="grid items-center">
         <Label for="description">Descripción de ruta</Label>
-        <Input
+        <Textarea
           id="description"
-          type="text"
           placeholder="Indique la descripción de la ruta"
           v-model="v$.description.$model"
         />
@@ -128,12 +107,7 @@
     </div>
 
     <div class="flex flex-wrap cols-span-2">
-      <h6 class="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
-        Ruta
-        <Button type="button" @click="generateRoute"
-          ><v-icon name="fa-plus" class="mr-2" />Generar Ruta</Button
-        >
-      </h6>
+      <h6 class="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">Ruta</h6>
       <div class="w-full lg:w-12/12 px-4">
         <div class="relative w-full mb-3">
           <div ref="mapDiv" style="height: 600px"></div>
@@ -158,6 +132,8 @@
 <script setup lang="ts">
 import 'leaflet/dist/leaflet.css'
 import 'leaflet-draw/dist/leaflet.draw.css'
+import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch'
+import 'leaflet-geosearch/dist/geosearch.css'
 import L from 'leaflet'
 import 'leaflet-draw'
 import 'leaflet-draw/dist/leaflet.draw.css'
@@ -193,8 +169,6 @@ const toast = useToast()
 const router = useRouter()
 const route = useRoute()
 const formData = reactive({
-  startText: '',
-  endText: '',
   description: '',
   distance: '',
   hourEntry: '',
@@ -210,10 +184,8 @@ const formData = reactive({
 })
 
 const rules = computed(() => ({
-  startText: { required: helpers.withMessage('Campo requerido', required) },
   description: { required: helpers.withMessage('Campo requerido', required) },
   distance: { required: helpers.withMessage('Campo requerido', required) },
-  endText: { required: helpers.withMessage('Campo requerido', required) },
   hourEntry: { required: helpers.withMessage('Campo requerido', required) },
   hourExit: { required: helpers.withMessage('Campo requerido', required) },
   dayEntry: { required: helpers.withMessage('Campo requerido', required) },
@@ -247,13 +219,11 @@ const onFileChange = (event) => {
 
 async function handleSubmit(e) {
   if (e) e.preventDefault()
-  if (currentRoute?.geometry?.coordinates.length < 1) return toast.error('Debe generar una ruta')
+  if (routes.length < 1) return toast.error('Debe generar al menos una ruta')
   const isFormCorrect = await v$.value.$validate()
   if (isFormCorrect) {
     load.value = true
     const data = {
-      startText: formData.startText,
-      endText: formData.endText,
       description: formData.description,
       distance: formData.distance,
       hourEntry: formData.hourEntry,
@@ -262,7 +232,7 @@ async function handleSubmit(e) {
       dayExit: formData.dayExit,
       vehicleId: formData.vehicleId,
       operatorId: formData.operatorId,
-      routeArray: currentRoute.geometry.coordinates
+      routeArray: routes.map((route) => route.geometry.coordinates)
     }
     try {
       let res
@@ -286,7 +256,7 @@ async function handleSubmit(e) {
 const mapDiv = ref(null)
 var map = null
 var drawnItems = null
-var currentRoute = null
+var routes = []
 function initMap() {
   map = L.map(mapDiv.value).setView([-17.3958441, -66.1879133], 12)
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map)
@@ -311,10 +281,29 @@ function initMap() {
 
   map.on(L.Draw.Event.CREATED, (e) => {
     const layer = e.layer
-    drawnItems.clearLayers()
     drawnItems.addLayer(layer)
-    currentRoute = layer.toGeoJSON()
+    routes.push(layer.toGeoJSON())
   })
+
+  map.on(L.Draw.Event.DELETED, () => {
+    const updatedRoutes = []
+    drawnItems.eachLayer((layer) => {
+      updatedRoutes.push(layer.toGeoJSON())
+    })
+    routes = updatedRoutes
+  })
+  const provider = new OpenStreetMapProvider()
+  const searchControl = new GeoSearchControl({
+    provider: provider,
+    style: 'bar', // Estilo del buscador ('bar', 'button', 'button-hidden')
+    autoComplete: true,
+    autoCompleteDelay: 250,
+    showMarker: true,
+    retainZoomLevel: false,
+    animateZoom: true,
+    keepResult: true
+  })
+  map.addControl(searchControl)
 }
 
 onMounted(async () => {
@@ -322,8 +311,6 @@ onMounted(async () => {
   if (route.query.id) {
     try {
       await routeStore.getRoute(route.query.id)
-      formData.startText = routeStore.route.startText
-      formData.endText = routeStore.route.endText
       formData.hourEntry = routeStore.route.hourEntry
       formData.hourExit = routeStore.route.hourExit
       formData.dayEntry = routeStore.route.dayEntry
@@ -334,15 +321,18 @@ onMounted(async () => {
       formData.distance = routeStore.route.distance
       drawnItems.clearLayers()
 
-      const polyline = L.polyline(
-        JSON.parse(routeStore.route.routeArray).map((coordenada) => [coordenada[1], coordenada[0]]),
-        { color: 'red' }
-      ).addTo(drawnItems)
-      map.fitBounds(polyline.getBounds())
-      currentRoute = polyline.toGeoJSON()
+      JSON.parse(routeStore.route.routeArray).forEach((route) => {
+        const polyline = L.polyline(
+          route.map((coordenada) => [coordenada[1], coordenada[0]]),
+          { color: 'red' }
+        ).addTo(drawnItems)
+        map.fitBounds(polyline.getBounds())
+        routes.push(polyline.toGeoJSON())
+      })
       vehicleStore.getVehicle(formData.operatorId)
     } catch (error) {
-      toast.error(error?.response.data.errors[0])
+      console.log(error)
+      //toast.error(error?.response.data.errors[0])
     }
   }
 })

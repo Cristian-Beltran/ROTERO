@@ -18,8 +18,6 @@ export const useRouteStore = defineStore('route', () => {
   const filter = computed(() => {
     return routes.filter((data) => {
       return (
-        data.startText?.toLowerCase().includes(search.value.toLowerCase()) ||
-        data.endText?.toLowerCase().includes(search.value.toLowerCase()) ||
         data.vehicle.modality?.toLowerCase().includes(search.value.toLowerCase()) ||
         data.vehicle.plate?.toLowerCase().includes(search.value.toLowerCase()) ||
         data.vehicle.operator.businessName?.toLowerCase().includes(search.value.toLowerCase())

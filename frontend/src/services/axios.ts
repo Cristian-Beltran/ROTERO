@@ -1,8 +1,8 @@
 import axios, { type AxiosInstance } from 'axios'
 
 const instance: AxiosInstance = axios.create({
-  baseURL: 'https://sitrand.gobernaciondecochabamba.bo/api'
-  //baseURL : 'http://localhost:3000'
+  //baseURL: 'https://sitrand.gobernaciondecochabamba.bo/api'
+  baseURL : 'http://localhost:3000'
 })
 
 

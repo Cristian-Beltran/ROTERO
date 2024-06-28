@@ -26,16 +26,7 @@
         <Input id="ci" type="text" placeholder="Carnet de identidad" v-model="v$.ci.$model" />
         <Error :errors="v$.ci.$errors" />
       </div>
-      <div class="grid items-center">
-        <Label for="cellphone">Celular</Label>
-        <Input
-          id="cellphone"
-          type="text"
-          placeholder="Numero de celular"
-          v-model="v$.cellphone.$model"
-        />
-        <Error :errors="v$.cellphone.$errors" />
-      </div>
+      
     </div>
     <div class="flex justify-between mt-4">
       <router-link :to="'/operator/' + route.params.id">
@@ -72,14 +63,12 @@ const formData = reactive({
   firstName: '',
   lastName: '',
   ci: '',
-  cellphone: ''
 })
 
 const rules = computed(() => ({
   firstName: { required: helpers.withMessage('El nombre es requerido', required) },
   lastName: { required: helpers.withMessage('El apellido es requerido', required) },
   ci: { required: helpers.withMessage('La cédula de identidad es requerida', required) },
-  cellphone: { required: helpers.withMessage('El teléfono es requerido', required) }
 }))
 
 const v$ = useVuelidate(rules, formData)
@@ -94,7 +83,6 @@ async function handleSubmit(e) {
         firstName: formData.firstName,
         lastName: formData.lastName,
         ci: formData.ci,
-        cellphone: formData.cellphone,
         operatorId: parseInt(route.params.id)
       }
       if (!route.query.id) await ownerStore.createOwner(data)
@@ -115,7 +103,6 @@ onMounted(async () => {
       formData.firstName = ownerStore.owner.firstName
       formData.lastName = ownerStore.owner.lastName
       formData.ci = ownerStore.owner.ci
-      formData.cellphone = ownerStore.owner.cellphone
     } catch (error) {
       toast.error(error?.response.data.errors[0])
     }

@@ -19,8 +19,7 @@ export const useOwnerStore = defineStore('owner', () => {
       return (
         data.firstName?.toLowerCase().includes(search.value.toLowerCase()) ||
         data.lastName?.toLowerCase().includes(search.value.toLowerCase()) ||
-        data.ci?.toLowerCase().includes(search.value.toLowerCase()) ||
-        data.cellphone?.toLowerCase().includes(search.value.toLowerCase())
+        data.ci?.toLowerCase().includes(search.value.toLowerCase()) 
       )
     })
   })

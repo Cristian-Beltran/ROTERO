@@ -3,8 +3,6 @@ import type { Vehicle } from './Vehicle.interfaces'
 
 export interface Route {
   id: number
-  startText: string
-  endText: string
   hourEntry: string
   hourExit: string
   dayEntry: string

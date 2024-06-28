@@ -24,7 +24,6 @@ export const useVehicleStore = defineStore('vehicle', () => {
         data.model?.toLowerCase().includes(search.value.toLowerCase()) ||
         data.plate?.toLowerCase().includes(search.value.toLowerCase()) ||
         data.ownerName?.toLowerCase().includes(search.value.toLowerCase()) ||
-        data.driverName?.toLowerCase().includes(search.value.toLowerCase()) ||
         data.typeVehicle?.toLowerCase().includes(search.value.toLowerCase())
       )
     })
@@ -37,7 +36,6 @@ export const useVehicleStore = defineStore('vehicle', () => {
         ...item,
         userName: `${item?.user?.firstName} ${item.user?.lastName}`,
         ownerName: `${item?.owner?.firstName} ${item.owner?.lastName}`,
-        driverName: `${item?.driver?.firstName} ${item.driver?.lastName}`
       }
     })
     vehicles.splice(0, vehicles.length, ...dataMap)

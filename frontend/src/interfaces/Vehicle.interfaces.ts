@@ -10,12 +10,12 @@ export interface Vehicle {
   maxLoad: number
   maxPass: number
   typeVehicle: string
+  classVehicle: string
   model: string
   brand: string
   motor: string
   chassis: string
   soat: string
-  sure: string
   plate: string
   createdAt: Date
   updatedAt: Date

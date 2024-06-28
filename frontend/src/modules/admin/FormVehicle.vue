@@ -1,48 +1,6 @@
 <template>
   <form action="" @submit="handleSubmit">
     <div class="mt-4">
-      <h3 class="text-lg leading-6 font-medium text-gray-900">Datos del Conductor</h3>
-      <p class="mt-1 text-sm text-gray-500">Datos del conductor de vehiculo</p>
-    </div>
-    <div class="mt-6 grid grid-cols-2 gap-x-4 gap-y-4">
-      <div class="grid items-center">
-        <Label for="firstName">Nombre/s</Label>
-        <Input
-          id="firstName"
-          type="text"
-          placeholder="Nombre de administrador"
-          v-model="v$.firstName.$model"
-        />
-        <Error :errors="v$.firstName.$errors" />
-      </div>
-      <div class="grid items-center">
-        <Label for="lastName">Apellido/s</Label>
-        <Input
-          id="lastName"
-          type="text"
-          placeholder="Apellido de administrador"
-          v-model="v$.lastName.$model"
-        />
-        <Error :errors="v$.lastName.$errors" />
-      </div>
-      <div class="grid items-center">
-        <Label for="ci">CI</Label>
-        <Input id="ci" type="text" placeholder="Carnet de identidad" v-model="v$.ci.$model" />
-        <Error :errors="v$.ci.$errors" />
-      </div>
-      <div class="grid items-center">
-        <Label for="cellphone">Celular</Label>
-        <Input
-          id="cellphone"
-          type="text"
-          placeholder="Numero de celular"
-          v-model="v$.cellphone.$model"
-        />
-        <Error :errors="v$.cellphone.$errors" />
-      </div>
-    </div>
-    <hr class="h-px my-8 bg-gray-600 border-0" />
-    <div class="mt-4">
       <h3 class="text-lg leading-6 font-medium text-gray-900">Datos del vehiculo</h3>
       <p class="mt-1 text-sm text-gray-500">Datos del vehiculo</p>
     </div>
@@ -57,7 +15,7 @@
             <SelectGroup>
               <SelectLabel>Servicios</SelectLabel>
               <SelectItem value="interprovincial">Transporte interprovincial</SelectItem>
-              <SelectItem value="interdepartamental">Transporte interdepartamental</SelectItem>
+              <SelectItem value="intermunicipal">Transporte intermunicipal</SelectItem>
             </SelectGroup>
           </SelectContent>
         </Select>
@@ -90,21 +48,10 @@
         <Input id="maxPass" type="number" v-model="v$.maxPass.$model" />
         <Error :errors="v$.maxPass.$errors" />
       </div>
+
       <div class="grid items-center">
         <Label for="typeVehicle">Tipo de vehiculo</Label>
-        <Select id="typeVehicle" v-model="v$.typeVehicle.$model">
-          <SelectTrigger class="">
-            <SelectValue placeholder="Seleccione un tipo de vehiculo" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectLabel>Tipos de vehiculos</SelectLabel>
-              <SelectItem value="taxi">Taxi</SelectItem>
-              <SelectItem value="taxi trufi">Taxi Trufi</SelectItem>
-              <SelectItem value="trufi minibus">Trufi Minubus</SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </Select>
+        <Input id="typeVehicle" type="text" v-model="v$.typeVehicle.$model" />
         <Error :errors="v$.typeVehicle.$errors" />
       </div>
       <div class="grid items-center">
@@ -138,35 +85,14 @@
         <Error :errors="v$.inspection.$errors" />
       </div>
       <div class="grid items-center">
-        <Label for="sure">Seguro</Label>
-        <Input id="sure" type="text" v-model="v$.sure.$model" />
-        <Error :errors="v$.sure.$errors" />
-      </div>
-      <div class="grid items-center">
         <Label for="plate">Placa</Label>
         <Input id="plate" type="text" v-model="v$.plate.$model" />
         <Error :errors="v$.plate.$errors" />
       </div>
       <div class="grid items-center">
-        <Label for="classVehicleId">Clase de vehiculo</Label>
-        <Select id="classVehicleId" v-model="v$.classVehicleId.$model">
-          <SelectTrigger class="">
-            <SelectValue placeholder="Seleccione una clase " />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectLabel>Clases</SelectLabel>
-              <SelectItem
-                v-for="classVehicle in classVehicleStore.classVehicles"
-                :key="classVehicle.id"
-                :value="classVehicle.id"
-              >
-                {{ classVehicle.name }}
-              </SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-        <Error :errors="v$.ownerId.$errors" />
+        <Label for="classVehicle">Clase de vehiculo</Label>
+        <Input id="classVehicle" type="text" v-model="v$.classVehicle.$model" />
+        <Error :errors="v$.classVehicle.$errors" />
       </div>
       <div class="grid items-center">
         <Label for="ownerId">Propietario</Label>
@@ -220,45 +146,31 @@ import { useRoute } from 'vue-router'
 import { useRouter } from 'vue-router'
 import { useOwnerStore } from '@/stores/owner.stores'
 import { useVehicleStore } from '@/stores/vehicle.stores'
-import { useDriverStore } from '@/stores/driver.stores'
-import { useClassVehicleStore } from '@/stores/classVehicle.stores'
 
-const classVehicleStore = useClassVehicleStore()
 const ownerStore = useOwnerStore()
-const driverStore = useDriverStore()
 const vehicleStore = useVehicleStore()
 
 const toast = useToast()
 const router = useRouter()
 const route = useRoute()
 const formData = reactive({
-  // Driver info
-  firstName: '',
-  lastName: '',
-  ci: '',
-  cellphone: '',
   ownerId: '',
   typeService: '',
   modality: '',
   maxLoad: '',
   maxPass: '',
   typeVehicle: '',
-  classVehicleId: '',
+  classVehicle: '',
   model: '',
   brand: '',
   motor: '',
   chassis: '',
   soat: false,
   inspection: false,
-  sure: '',
   plate: ''
 })
 
 const rules = computed(() => ({
-  firstName: { required: helpers.withMessage('Campo requerido', required) },
-  lastName: { required: helpers.withMessage('Campo requerido', required) },
-  ci: { required: helpers.withMessage('Campo requerido', required) },
-  cellphone: { required: helpers.withMessage('Campo requerido', required) },
   typeService: { required: helpers.withMessage('Campo requerido', required) },
   modality: { required: helpers.withMessage('Campo requerido', required) },
   maxLoad: { required: helpers.withMessage('Campo requerido', required) },
@@ -269,32 +181,20 @@ const rules = computed(() => ({
   motor: { required: helpers.withMessage('Campo requerido', required) },
   chassis: { required: helpers.withMessage('Campo requerido', required) },
   soat: { required: helpers.withMessage('Campo requerido', required) },
-  sure: { required: helpers.withMessage('Campo requerido', required) },
   plate: { required: helpers.withMessage('Campo requerido', required) },
   ownerId: { required: helpers.withMessage('Campo requerido', required) },
-  classVehicleId: { required: helpers.withMessage('Campo requerido', required) },
+  classVehicle: { required: helpers.withMessage('Campo requerido', required) },
   inspection: { required: helpers.withMessage('Campo requerido', required) }
 }))
 
 const v$ = useVuelidate(rules, formData)
 
-try {
-  classVehicleStore.getClassVehicles()
-} catch (error) {
-  toast.error('Error al cargar las clases de vehiculos')
-}
+
 
 async function handleSubmit(e) {
   if (e) e.preventDefault()
   const isFormCorrect = await v$.value.$validate()
   if (isFormCorrect) {
-    const driver = {
-      firstName: formData.firstName,
-      lastName: formData.lastName,
-      ci: formData.ci,
-      cellphone: formData.cellphone,
-      operatorId: parseInt(route.params.id)
-    }
     const vehicle = {
       typeService: formData.typeService,
       modality: formData.modality,
@@ -307,22 +207,16 @@ async function handleSubmit(e) {
       chassis: formData.chassis,
       soat: formData.soat,
       inspection: formData.inspection,
-      sure: formData.sure,
       plate: formData.plate,
       ownerId: formData.ownerId,
       operatorId: parseInt(route.params.id),
-      driverId: null,
-      classVehicleId: formData.classVehicleId
+      classVehicle: formData.classVehicle
     }
     try {
       if (!route.query.id) {
-        const response = await driverStore.createDriver(driver)
-        const driverId = response.data.id
-        await vehicleStore.createVehicle({ ...vehicle, driverId })
+        await vehicleStore.createVehicle({ ...vehicle  })
       } else {
-        const driverId = vehicleStore.vehicle?.driver.id
-        await driverStore.updateDriver(driverId, driver)
-        await vehicleStore.updateVehicle(route.query.id, { ...vehicle, driverId })
+        await vehicleStore.updateVehicle(route.query.id, { ...vehicle })
       }
 
       toast.success('Operador guardado')
@@ -342,11 +236,6 @@ onMounted(async () => {
   if (route.query.id) {
     try {
       await vehicleStore.getVehicle(route.query.id)
-      await driverStore.getDriver(vehicleStore.vehicle?.driver.id)
-      formData.firstName = driverStore.driver.firstName
-      formData.lastName = driverStore.driver.lastName
-      formData.ci = driverStore.driver.ci
-      formData.cellphone = driverStore.driver.cellphone
       formData.typeService = vehicleStore.vehicle.typeService
       formData.modality = vehicleStore.vehicle.modality
       formData.maxLoad = vehicleStore.vehicle.maxLoad
@@ -354,13 +243,12 @@ onMounted(async () => {
       formData.typeVehicle = vehicleStore.vehicle.typeVehicle
       formData.model = vehicleStore.vehicle.model
       formData.inspection = vehicleStore.vehicle.inspection
-      formData.classVehicleId = vehicleStore.vehicle.classVehicle.id
+      formData.classVehicle = vehicleStore.vehicle.classVehicle
 
       formData.brand = vehicleStore.vehicle.brand
       formData.motor = vehicleStore.vehicle.motor
       formData.chassis = vehicleStore.vehicle.chassis
       formData.soat = vehicleStore.vehicle.soat
-      formData.sure = vehicleStore.vehicle.sure
       formData.plate = vehicleStore.vehicle.plate
       formData.ownerId = vehicleStore.vehicle.owner.id
     } catch (error) {

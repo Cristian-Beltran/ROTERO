@@ -19,6 +19,8 @@ import ListRoute from '@/modules/admin/ListRouteMap.vue'
 import Button from '@/commun/ui/button/Button.vue'
 import 'leaflet/dist/leaflet.css'
 import 'leaflet-draw/dist/leaflet.draw.css'
+import 'leaflet-geosearch/dist/geosearch.css'
+import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch'
 import L from 'leaflet'
 import 'leaflet-draw'
 import 'leaflet-draw/dist/leaflet.draw.css'
@@ -49,15 +51,34 @@ var map = null
 function initMap() {
   map = L.map(mapDiv.value).setView([-17.3958441, -66.1879133], 12)
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map)
-  routeStore.filter.forEach((route) => {
-    const polyline = L.polyline(
-      JSON.parse(route.routeArray).map((coordenada) => [coordenada[1], coordenada[0]]),
-      { color: route.vehicle.operator.color }
-    ).addTo(map)
-    const popup = L.popup().setContent(
-      `<p>${route.vehicle.plate} ${route.description} - ${route.distance} km</p>`
-    )
-    polyline.bindPopup(popup)
+
+  const provider = new OpenStreetMapProvider()
+  const searchControl = new GeoSearchControl({
+    provider: provider,
+    style: 'bar', // Estilo del buscador ('bar', 'button', 'button-hidden')
+    autoComplete: true,
+    autoCompleteDelay: 250,
+    showMarker: true,
+    retainZoomLevel: false,
+    animateZoom: true,
+    keepResult: true
+  })
+  map.addControl(searchControl)
+
+  routeStore.filter.forEach((routeGroup) => {
+    // Asume que routeGroup.routes es un array de arrays de coordenadas
+    const routes = JSON.parse(routeGroup.routeArray) // Deserialize routes
+    routes.forEach((route) => {
+      const polyline = L.polyline(
+        route.map((coordenada) => [coordenada[1], coordenada[0]]),
+        { color: routeGroup.vehicle.operator.color }
+      ).addTo(map)
+
+      const popup = L.popup().setContent(
+        `<p>${routeGroup.vehicle.plate} ${routeGroup.description} - ${routeGroup.distance} km</p>`
+      )
+      polyline.bindPopup(popup)
+    })
   })
 }
 
@@ -67,16 +88,20 @@ function drawRoute() {
       map.removeLayer(layer)
     }
   })
-  routeStore.filter.forEach((route) => {
-    if(route.check === true) return
-    const polyline = L.polyline(
-      JSON.parse(route.routeArray).map((coordenada) => [coordenada[1], coordenada[0]]),
-      { color: route.vehicle.operator.color }
-    ).addTo(map)
-    const popup = L.popup().setContent(
-      `<p>${route.vehicle.plate} ${route.description} - ${route.distance} km</p>`
-    )
-    polyline.bindPopup(popup)
+  routeStore.filter.forEach((routeGroup) => {
+    // Asume que routeGroup.routes es un array de arrays de coordenadas
+    const routes = JSON.parse(routeGroup.routeArray) // Deserialize routes
+    routes.forEach((route) => {
+      const polyline = L.polyline(
+        route.map((coordenada) => [coordenada[1], coordenada[0]]),
+        { color: routeGroup.vehicle.operator.color }
+      ).addTo(map)
+
+      const popup = L.popup().setContent(
+        `<p>${routeGroup.vehicle.plate} ${routeGroup.description} - ${routeGroup.distance} km</p>`
+      )
+      polyline.bindPopup(popup)
+    })
   })
 }
 onMounted(async () => {
