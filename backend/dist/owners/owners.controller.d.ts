@@ -12,7 +12,6 @@ export declare class OwnersController {
         firstName: string;
         lastName: string;
         ci: string;
-        cellphone: string;
     } & import("./owners.entity").Owner>;
     updateOwner(id: number, data: updateOwnerDto, req: Request): Promise<import("typeorm").UpdateResult>;
     deleteOwner(id: number): Promise<any>;

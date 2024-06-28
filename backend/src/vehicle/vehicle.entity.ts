@@ -52,6 +52,8 @@ export class Vehicle {
   inspection: boolean;
   @Column()
   plate: string;
+  @Column()
+  classVehicle: string;
 
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
@@ -73,5 +75,4 @@ export class Vehicle {
   owner: Owner;
   @ManyToOne(() => User, (user) => user.vehiclesUpdate, { cascade: false })
   user: User;
-  classVehicle: string;
 }

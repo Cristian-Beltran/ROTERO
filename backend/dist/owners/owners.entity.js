@@ -17,7 +17,7 @@ const operators_entity_1 = require("../operators/operators.entity");
 const vehicle_entity_1 = require("../vehicle/vehicle.entity");
 let Owner = class Owner {
     static _OPENAPI_METADATA_FACTORY() {
-        return { id: { required: true, type: () => Number }, firstName: { required: true, type: () => String }, lastName: { required: true, type: () => String }, ci: { required: true, type: () => String }, cellphone: { required: true, type: () => String }, createdAt: { required: true, type: () => Date }, updatedAt: { required: true, type: () => Date }, operator: { required: true, type: () => require("../operators/operators.entity").Operator }, vehicles: { required: true, type: () => [require("../vehicle/vehicle.entity").Vehicle] }, user: { required: true, type: () => require("../users/users.entity").User } };
+        return { id: { required: true, type: () => Number }, firstName: { required: true, type: () => String }, lastName: { required: true, type: () => String }, ci: { required: true, type: () => String }, createdAt: { required: true, type: () => Date }, updatedAt: { required: true, type: () => Date }, operator: { required: true, type: () => require("../operators/operators.entity").Operator }, vehicles: { required: true, type: () => [require("../vehicle/vehicle.entity").Vehicle] }, user: { required: true, type: () => require("../users/users.entity").User } };
     }
 };
 exports.Owner = Owner;
@@ -37,10 +37,6 @@ __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], Owner.prototype, "ci", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], Owner.prototype, "cellphone", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' }),
     __metadata("design:type", Date)

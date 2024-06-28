@@ -1,6 +1,4 @@
 export declare class CreateRouteDto {
-    startText: string;
-    endText: string;
     description: string;
     distance: number;
     hourEntry: string;

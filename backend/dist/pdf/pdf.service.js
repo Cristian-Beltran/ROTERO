@@ -256,7 +256,7 @@ let PdfService = class PdfService {
                 .font(NotoSansJPLight)
                 .fontSize(10)
                 .fill('#021c27')
-                .text('CLASE:' + vehicle.classVehicle.name, 440, 285, {
+                .text('CLASE:' + vehicle.classVehicle, 440, 285, {
                 align: 'left',
             });
             doc

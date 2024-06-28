@@ -19,31 +19,24 @@ const vehicle_entity_1 = require("./vehicle.entity");
 const typeorm_2 = require("typeorm");
 const users_service_1 = require("../users/users.service");
 const operators_service_1 = require("../operators/operators.service");
-const drivers_service_1 = require("../drivers/drivers.service");
 const owners_service_1 = require("../owners/owners.service");
-const class_vehicle_service_1 = require("../class-vehicle/class-vehicle.service");
-const pdf_service_1 = require("../pdf/pdf.service");
 let VehicleService = class VehicleService {
-    constructor(vechileRepository, userService, operatorService, driverService, ownerService, classVehicleService, pdfService) {
+    constructor(vechileRepository, userService, operatorService, ownerService) {
         this.vechileRepository = vechileRepository;
         this.userService = userService;
         this.operatorService = operatorService;
-        this.driverService = driverService;
         this.ownerService = ownerService;
-        this.classVehicleService = classVehicleService;
-        this.pdfService = pdfService;
     }
     async getVehicleForClass() {
         return this.vechileRepository
             .createQueryBuilder('vehicle')
-            .innerJoinAndSelect('vehicle.classVehicle', 'classVehicle')
-            .select('classVehicle.name as className, COUNT(vehicle.id) as count')
-            .groupBy('classVehicle.name')
+            .select('classVehicle as className, COUNT(vehicle.classVehicle) as count')
+            .groupBy('classVehicle')
             .getRawMany();
     }
     async getVehicles(operatorId) {
         const vehicles = await this.vechileRepository.find({
-            relations: ['operator', 'driver', 'owner', 'user', 'classVehicle'],
+            relations: ['operator', 'owner', 'user'],
             where: { operator: { id: operatorId } },
         });
         return vehicles;
@@ -51,13 +44,13 @@ let VehicleService = class VehicleService {
     async getVehicleByPlate(plate) {
         const vehicle = await this.vechileRepository.findOne({
             where: { plate },
-            relations: ['driver', 'classVehicle', 'operator'],
+            relations: ['operator'],
         });
         return vehicle;
     }
     async getVehicle(id) {
         const vehicle = await this.vechileRepository.findOne({
-            relations: ['operator', 'driver', 'owner', 'classVehicle'],
+            relations: ['operator', 'owner'],
             where: { id },
         });
         return vehicle;
@@ -69,21 +62,14 @@ let VehicleService = class VehicleService {
         const operator = await this.operatorService.getOperator(data.operatorId);
         if (!operator)
             throw new Error('Operador no encontrado');
-        const driver = await this.driverService.getDriver(data.driverId);
-        if (!driver)
-            throw new Error('Conductor no encontrado');
         const owner = await this.ownerService.getOwner(data.ownerId);
         if (!owner)
             throw new Error('Propietario no encontrado');
-        const classVehicle = await this.classVehicleService.getClassVehicle(data.classVehicleId);
-        if (!classVehicle)
-            throw new Error('Clase de vehiculo no encontrada');
         const newVehicle = {
             operator,
-            driver,
             owner,
             user,
-            classVehicle,
+            classVehicle: data.classVehicle,
             typeService: data.typeService,
             modality: data.modality,
             maxLoad: data.maxLoad,
@@ -95,7 +81,6 @@ let VehicleService = class VehicleService {
             chassis: data.chassis,
             soat: data.soat,
             inspection: data.inspection,
-            sure: data.sure,
             plate: data.plate,
         };
         return await this.vechileRepository.save(newVehicle);
@@ -110,21 +95,14 @@ let VehicleService = class VehicleService {
         const operator = await this.operatorService.getOperator(data.operatorId);
         if (!operator)
             throw new Error('Operador no encontrado');
-        const driver = await this.driverService.getDriver(data.driverId);
-        if (!driver)
-            throw new Error('Conductor no encontrado');
         const owner = await this.ownerService.getOwner(data.ownerId);
         if (!owner)
             throw new Error('Propietario no encontrado');
-        const classVehicle = await this.classVehicleService.getClassVehicle(data.classVehicleId);
-        if (!classVehicle)
-            throw new Error('Clase de vehiculo no encontrada');
         const newVehicle = {
             operator,
-            driver,
             owner,
             user,
-            classVehicle,
+            classVehicle: data.classVehicle,
             typeService: data.typeService,
             modality: data.modality,
             maxLoad: data.maxLoad,
@@ -136,7 +114,6 @@ let VehicleService = class VehicleService {
             chassis: data.chassis,
             soat: data.soat,
             inspection: data.inspection,
-            sure: data.sure,
             plate: data.plate,
         };
         await this.vechileRepository.update(id, newVehicle);
@@ -147,11 +124,7 @@ let VehicleService = class VehicleService {
             const vehicle = await this.vechileRepository.findOne({ where: { id } });
             if (!vehicle)
                 throw new Error('Vehiculo no encontrado');
-            const driver = await this.driverService.getDriver(vehicle.driver.id);
-            if (!driver)
-                throw new Error('Conductor no encontrado');
             const vehicleDelete = await this.vechileRepository.remove(vehicle);
-            await this.driverService.deleteDriver(driver.id);
             return vehicleDelete;
         }
         catch (error) {
@@ -162,7 +135,7 @@ let VehicleService = class VehicleService {
         try {
             const vehicle = await this.vechileRepository.findOne({
                 where: { plate },
-                relations: ['driver', 'owner'],
+                relations: ['owner'],
             });
             if (!vehicle)
                 throw new Error('Vehiculo no encontrado');
@@ -180,9 +153,6 @@ exports.VehicleService = VehicleService = __decorate([
     __metadata("design:paramtypes", [typeorm_2.Repository,
         users_service_1.UsersService,
         operators_service_1.OperatorsService,
-        drivers_service_1.DriversService,
-        owners_service_1.OwnersService,
-        class_vehicle_service_1.ClassVehicleService,
-        pdf_service_1.PdfService])
+        owners_service_1.OwnersService])
 ], VehicleService);
 //# sourceMappingURL=vehicle.service.js.map

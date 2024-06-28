@@ -18,10 +18,6 @@ export class createOwnerDto {
   @IsString()
   @IsNotEmpty()
   readonly ci: string;
-  @IsString()
-  @IsNotEmpty()
-  
-  operator?: Operator;
   @IsNumber()
   @IsNotEmpty()
   operatorId: number;

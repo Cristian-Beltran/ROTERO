@@ -15,20 +15,10 @@ const class_validator_1 = require("class-validator");
 const mapped_types_1 = require("@nestjs/mapped-types");
 class CreateRouteDto {
     static _OPENAPI_METADATA_FACTORY() {
-        return { startText: { required: true, type: () => String }, endText: { required: true, type: () => String }, description: { required: true, type: () => String }, distance: { required: true, type: () => Number }, hourEntry: { required: true, type: () => String }, hourExit: { required: true, type: () => String }, dayEntry: { required: true, type: () => String }, dayExit: { required: true, type: () => String }, routeArray: { required: true }, vehicleId: { required: true, type: () => Number } };
+        return { description: { required: true, type: () => String }, distance: { required: true, type: () => Number }, hourEntry: { required: true, type: () => String }, hourExit: { required: true, type: () => String }, dayEntry: { required: true, type: () => String }, dayExit: { required: true, type: () => String }, routeArray: { required: true }, vehicleId: { required: true, type: () => Number } };
     }
 }
 exports.CreateRouteDto = CreateRouteDto;
-__decorate([
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", String)
-], CreateRouteDto.prototype, "startText", void 0);
-__decorate([
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", String)
-], CreateRouteDto.prototype, "endText", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),

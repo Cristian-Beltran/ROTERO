@@ -51,7 +51,6 @@ let OwnersService = class OwnersService {
             firstName: data.firstName,
             lastName: data.lastName,
             ci: data.ci,
-            cellphone: data.cellphone,
         };
         return await this.ownerRepository.save(newOwner);
     }
@@ -71,7 +70,6 @@ let OwnersService = class OwnersService {
             firstName: data.firstName,
             lastName: data.lastName,
             ci: data.ci,
-            cellphone: data.cellphone,
         };
         return await this.ownerRepository.update(id, newOwner);
     }

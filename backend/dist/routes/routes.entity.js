@@ -16,7 +16,7 @@ const users_entity_1 = require("../users/users.entity");
 const vehicle_entity_1 = require("../vehicle/vehicle.entity");
 let Route = class Route {
     static _OPENAPI_METADATA_FACTORY() {
-        return { id: { required: true, type: () => Number }, startText: { required: true, type: () => String }, endText: { required: true, type: () => String }, description: { required: true, type: () => String }, distance: { required: true, type: () => Number }, hourEntry: { required: true, type: () => String }, hourExit: { required: true, type: () => String }, dayEntry: { required: true, type: () => String }, dayExit: { required: true, type: () => String }, routeFile: { required: true, type: () => String }, routeArray: { required: true, type: () => String }, createdAt: { required: true, type: () => Date }, updatedAt: { required: true, type: () => Date }, vehicle: { required: true, type: () => require("../vehicle/vehicle.entity").Vehicle }, user: { required: true, type: () => require("../users/users.entity").User } };
+        return { id: { required: true, type: () => Number }, description: { required: true, type: () => String }, distance: { required: true, type: () => Number }, hourEntry: { required: true, type: () => String }, hourExit: { required: true, type: () => String }, dayEntry: { required: true, type: () => String }, dayExit: { required: true, type: () => String }, routeFile: { required: true, type: () => String }, routeArray: { required: true, type: () => String }, createdAt: { required: true, type: () => Date }, updatedAt: { required: true, type: () => Date }, vehicle: { required: true, type: () => require("../vehicle/vehicle.entity").Vehicle }, user: { required: true, type: () => require("../users/users.entity").User } };
     }
 };
 exports.Route = Route;
@@ -24,14 +24,6 @@ __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
     __metadata("design:type", Number)
 ], Route.prototype, "id", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], Route.prototype, "startText", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], Route.prototype, "endText", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'text' }),
     __metadata("design:type", String)

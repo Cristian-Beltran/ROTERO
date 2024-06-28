@@ -16,7 +16,6 @@ const owners_module_1 = require("../owners/owners.module");
 const users_module_1 = require("../users/users.module");
 const drivers_module_1 = require("../drivers/drivers.module");
 const operators_module_1 = require("../operators/operators.module");
-const class_vehicle_module_1 = require("../class-vehicle/class-vehicle.module");
 const pdf_module_1 = require("../pdf/pdf.module");
 let VehicleModule = class VehicleModule {
 };
@@ -29,7 +28,6 @@ exports.VehicleModule = VehicleModule = __decorate([
             owners_module_1.OwnersModule,
             users_module_1.UsersModule,
             drivers_module_1.DriversModule,
-            class_vehicle_module_1.ClassVehicleModule,
             pdf_module_1.PdfModule,
         ],
         providers: [vehicle_service_1.VehicleService],

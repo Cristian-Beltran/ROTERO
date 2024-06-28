@@ -13,10 +13,9 @@ exports.updateOwnerDto = exports.createOwnerDto = void 0;
 const openapi = require("@nestjs/swagger");
 const mapped_types_1 = require("@nestjs/mapped-types");
 const class_validator_1 = require("class-validator");
-const operators_entity_1 = require("../operators/operators.entity");
 class createOwnerDto {
     static _OPENAPI_METADATA_FACTORY() {
-        return { firstName: { required: true, type: () => String }, lastName: { required: true, type: () => String }, ci: { required: true, type: () => String }, cellphone: { required: true, type: () => String }, operator: { required: false, type: () => require("../operators/operators.entity").Operator }, operatorId: { required: true, type: () => Number } };
+        return { firstName: { required: true, type: () => String }, lastName: { required: true, type: () => String }, ci: { required: true, type: () => String }, operatorId: { required: true, type: () => Number } };
     }
 }
 exports.createOwnerDto = createOwnerDto;
@@ -35,16 +34,6 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], createOwnerDto.prototype, "ci", void 0);
-__decorate([
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", String)
-], createOwnerDto.prototype, "cellphone", void 0);
-__decorate([
-    (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsObject)(),
-    __metadata("design:type", operators_entity_1.Operator)
-], createOwnerDto.prototype, "operator", void 0);
 __decorate([
     (0, class_validator_1.IsNumber)(),
     (0, class_validator_1.IsNotEmpty)(),

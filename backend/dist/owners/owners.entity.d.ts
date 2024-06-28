@@ -6,7 +6,6 @@ export declare class Owner {
     firstName: string;
     lastName: string;
     ci: string;
-    cellphone: string;
     createdAt: Date;
     updatedAt: Date;
     operator: Operator;

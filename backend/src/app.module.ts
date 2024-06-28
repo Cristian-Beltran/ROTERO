@@ -21,8 +21,8 @@ import { ServiceModule } from './service/service.module';
     TypeOrmModule.forRoot({
       type: 'mariadb',
       username: 'root',
-      password: 'u$L65rgRG4w5#M',
-      //password: 'holamundo',
+      //password: 'u$L65rgRG4w5#M',
+      password: 'holamundo',
       host: 'localhost',
       port: 3306,
       database: 'ROTERO',

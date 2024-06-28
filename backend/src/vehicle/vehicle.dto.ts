@@ -45,7 +45,7 @@ export class CreateVehicleDto {
   @IsNumber()
   @IsNotEmpty()
   operatorId: number;
-  @IsNumber()
+  @IsString()
   @IsNotEmpty()
   classVehicle: string;
 }

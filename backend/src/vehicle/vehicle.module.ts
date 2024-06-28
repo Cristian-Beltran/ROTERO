@@ -7,6 +7,7 @@ import { OwnersModule } from 'src/owners/owners.module';
 import { UsersModule } from 'src/users/users.module';
 import { DriversModule } from 'src/drivers/drivers.module';
 import { OperatorsModule } from 'src/operators/operators.module';
+import { PdfModule } from 'src/pdf/pdf.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { OperatorsModule } from 'src/operators/operators.module';
     OwnersModule,
     UsersModule,
     DriversModule,
+    PdfModule,
   ],
   providers: [VehicleService],
   controllers: [VehicleController],

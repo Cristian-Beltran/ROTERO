@@ -16,7 +16,7 @@ const vehicle_entity_1 = require("./vehicle.entity");
 const mapped_types_1 = require("@nestjs/mapped-types");
 class CreateVehicleDto {
     static _OPENAPI_METADATA_FACTORY() {
-        return { typeService: { required: true, enum: require("./vehicle.entity").TypeService }, modality: { required: true, enum: require("./vehicle.entity").Modality }, maxLoad: { required: true, type: () => Number }, maxPass: { required: true, type: () => Number }, typeVehicle: { required: true, enum: require("./vehicle.entity").TypeVehicle }, model: { required: true, type: () => String }, brand: { required: true, type: () => String }, motor: { required: true, type: () => String }, chassis: { required: true, type: () => String }, soat: { required: true, type: () => Boolean }, inspection: { required: true, type: () => Boolean }, sure: { required: true, type: () => String }, plate: { required: true, type: () => String }, ownerId: { required: true, type: () => Number }, driverId: { required: true, type: () => Number }, operatorId: { required: true, type: () => Number }, classVehicleId: { required: true, type: () => Number } };
+        return { typeService: { required: true, enum: require("./vehicle.entity").TypeService }, modality: { required: true, enum: require("./vehicle.entity").Modality }, maxLoad: { required: true, type: () => Number }, maxPass: { required: true, type: () => Number }, typeVehicle: { required: true, type: () => String }, model: { required: true, type: () => String }, brand: { required: true, type: () => String }, motor: { required: true, type: () => String }, chassis: { required: true, type: () => String }, soat: { required: true, type: () => Boolean }, inspection: { required: true, type: () => Boolean }, plate: { required: true, type: () => String }, ownerId: { required: true, type: () => Number }, operatorId: { required: true, type: () => Number }, classVehicle: { required: true, type: () => String } };
     }
 }
 exports.CreateVehicleDto = CreateVehicleDto;
@@ -79,11 +79,6 @@ __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
-], CreateVehicleDto.prototype, "sure", void 0);
-__decorate([
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", String)
 ], CreateVehicleDto.prototype, "plate", void 0);
 __decorate([
     (0, class_validator_1.IsNumber)(),
@@ -94,17 +89,12 @@ __decorate([
     (0, class_validator_1.IsNumber)(),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Number)
-], CreateVehicleDto.prototype, "driverId", void 0);
-__decorate([
-    (0, class_validator_1.IsNumber)(),
-    (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", Number)
 ], CreateVehicleDto.prototype, "operatorId", void 0);
 __decorate([
-    (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", Number)
-], CreateVehicleDto.prototype, "classVehicleId", void 0);
+    __metadata("design:type", String)
+], CreateVehicleDto.prototype, "classVehicle", void 0);
 class UpdateVehicleDto extends (0, mapped_types_1.PartialType)(CreateVehicleDto) {
     static _OPENAPI_METADATA_FACTORY() {
         return {};

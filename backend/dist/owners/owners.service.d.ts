@@ -16,7 +16,6 @@ export declare class OwnersService {
         firstName: string;
         lastName: string;
         ci: string;
-        cellphone: string;
     } & Owner>;
     updateOwner(id: number, data: updateOwnerDto, userId: number): Promise<import("typeorm").UpdateResult>;
     deleteOwner(id: number): Promise<any>;

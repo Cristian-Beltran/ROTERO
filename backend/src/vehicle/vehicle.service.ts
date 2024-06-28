@@ -18,14 +18,13 @@ export class VehicleService {
   async getVehicleForClass(): Promise<Vehicle[]> {
     return this.vechileRepository
       .createQueryBuilder('vehicle')
-      .innerJoinAndSelect('vehicle.classVehicle', 'classVehicle')
-      .select('classVehicle.name as className, COUNT(vehicle.id) as count')
-      .groupBy('classVehicle.name')
+      .select('classVehicle as className, COUNT(vehicle.classVehicle) as count')
+      .groupBy('classVehicle')
       .getRawMany();
   }
   async getVehicles(operatorId: number): Promise<Vehicle[]> {
     const vehicles = await this.vechileRepository.find({
-      relations: ['operator',  'owner', 'user', 'classVehicle'],
+      relations: ['operator',  'owner', 'user' ],
       where: { operator: { id: operatorId } },
     });
     return vehicles;
@@ -33,13 +32,13 @@ export class VehicleService {
   async getVehicleByPlate(plate: string): Promise<Vehicle> {
     const vehicle = await this.vechileRepository.findOne({
       where: { plate },
-      relations: [ 'classVehicle', 'operator'],
+      relations: [ 'operator'],
     });
     return vehicle;
   }
   async getVehicle(id: number): Promise<Vehicle> {
     const vehicle = await this.vechileRepository.findOne({
-      relations: ['operator', 'owner', 'classVehicle'],
+      relations: ['operator', 'owner' ],
       where: { id },
     });
     return vehicle;

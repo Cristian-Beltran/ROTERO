@@ -9,14 +9,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Vehicle = exports.TypeVehicle = exports.Modality = exports.TypeService = void 0;
+exports.Vehicle = exports.Modality = exports.TypeService = void 0;
 const openapi = require("@nestjs/swagger");
 const typeorm_1 = require("typeorm");
 const users_entity_1 = require("../users/users.entity");
 const operators_entity_1 = require("../operators/operators.entity");
 const owners_entity_1 = require("../owners/owners.entity");
-const drivers_entity_1 = require("../drivers/drivers.entity");
-const class_vehicle_entity_1 = require("../class-vehicle/class-vehicle.entity");
 var TypeService;
 (function (TypeService) {
     TypeService["INTERPROVINCIAL"] = "interprovincial";
@@ -28,15 +26,9 @@ var Modality;
     Modality["CARGA"] = "carga";
     Modality["PASAJERO_CARGA"] = "pasajero y carga";
 })(Modality || (exports.Modality = Modality = {}));
-var TypeVehicle;
-(function (TypeVehicle) {
-    TypeVehicle["TAXI"] = "taxi";
-    TypeVehicle["TAXI_TRUFI"] = "taxi trufi";
-    TypeVehicle["TRUFI_MINIBUS"] = "trufi minibus";
-})(TypeVehicle || (exports.TypeVehicle = TypeVehicle = {}));
 let Vehicle = class Vehicle {
     static _OPENAPI_METADATA_FACTORY() {
-        return { id: { required: true, type: () => Number }, typeService: { required: true, enum: require("./vehicle.entity").TypeService }, modality: { required: true, enum: require("./vehicle.entity").Modality }, maxLoad: { required: true, type: () => Number }, maxPass: { required: true, type: () => Number }, typeVehicle: { required: true, enum: require("./vehicle.entity").TypeVehicle }, model: { required: true, type: () => String }, brand: { required: true, type: () => String }, motor: { required: true, type: () => String }, chassis: { required: true, type: () => String }, soat: { required: true, type: () => Boolean }, inspection: { required: true, type: () => Boolean }, sure: { required: true, type: () => String }, plate: { required: true, type: () => String }, createdAt: { required: true, type: () => Date }, updatedAt: { required: true, type: () => Date }, operator: { required: true, type: () => require("../operators/operators.entity").Operator }, owner: { required: true, type: () => require("../owners/owners.entity").Owner }, driver: { required: true, type: () => require("../drivers/drivers.entity").Driver }, user: { required: true, type: () => require("../users/users.entity").User }, classVehicle: { required: true, type: () => require("../class-vehicle/class-vehicle.entity").ClassVehicle } };
+        return { id: { required: true, type: () => Number }, typeService: { required: true, enum: require("./vehicle.entity").TypeService }, modality: { required: true, enum: require("./vehicle.entity").Modality }, maxLoad: { required: true, type: () => Number }, maxPass: { required: true, type: () => Number }, typeVehicle: { required: true, type: () => String }, model: { required: true, type: () => String }, brand: { required: true, type: () => String }, motor: { required: true, type: () => String }, chassis: { required: true, type: () => String }, soat: { required: true, type: () => Boolean }, inspection: { required: true, type: () => Boolean }, plate: { required: true, type: () => String }, classVehicle: { required: true, type: () => String }, createdAt: { required: true, type: () => Date }, updatedAt: { required: true, type: () => Date }, operator: { required: true, type: () => require("../operators/operators.entity").Operator }, owner: { required: true, type: () => require("../owners/owners.entity").Owner }, user: { required: true, type: () => require("../users/users.entity").User } };
     }
 };
 exports.Vehicle = Vehicle;
@@ -91,11 +83,11 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], Vehicle.prototype, "sure", void 0);
+], Vehicle.prototype, "plate", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], Vehicle.prototype, "plate", void 0);
+], Vehicle.prototype, "classVehicle", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' }),
     __metadata("design:type", Date)
@@ -121,20 +113,9 @@ __decorate([
     __metadata("design:type", owners_entity_1.Owner)
 ], Vehicle.prototype, "owner", void 0);
 __decorate([
-    (0, typeorm_1.OneToOne)(() => drivers_entity_1.Driver),
-    (0, typeorm_1.JoinColumn)(),
-    __metadata("design:type", drivers_entity_1.Driver)
-], Vehicle.prototype, "driver", void 0);
-__decorate([
     (0, typeorm_1.ManyToOne)(() => users_entity_1.User, (user) => user.vehiclesUpdate, { cascade: false }),
     __metadata("design:type", users_entity_1.User)
 ], Vehicle.prototype, "user", void 0);
-__decorate([
-    (0, typeorm_1.ManyToOne)(() => class_vehicle_entity_1.ClassVehicle, (classVehicle) => classVehicle.vehicles, {
-        cascade: false,
-    }),
-    __metadata("design:type", class_vehicle_entity_1.ClassVehicle)
-], Vehicle.prototype, "classVehicle", void 0);
 exports.Vehicle = Vehicle = __decorate([
     (0, typeorm_1.Entity)()
 ], Vehicle);
