@@ -18,15 +18,15 @@ const typeorm_1 = require("@nestjs/typeorm");
 const rossetes_entity_1 = require("./rossetes.entity");
 const typeorm_2 = require("typeorm");
 const users_service_1 = require("../users/users.service");
-const routes_service_1 = require("../routes/routes.service");
 const jwt_1 = require("@nestjs/jwt");
 const auth_constans_1 = require("../auth/auth.constans");
+const vehicle_service_1 = require("../vehicle/vehicle.service");
 let RossetesService = class RossetesService {
-    constructor(rosseteRepository, jwtService, userService, routeService) {
+    constructor(rosseteRepository, jwtService, userService, vehicleService) {
         this.rosseteRepository = rosseteRepository;
         this.jwtService = jwtService;
         this.userService = userService;
-        this.routeService = routeService;
+        this.vehicleService = vehicleService;
     }
     async readQrRossete(token, userId) {
         let id;
@@ -43,15 +43,13 @@ let RossetesService = class RossetesService {
         if (!user)
             throw new common_1.HttpException('Usuario no encontrado', common_1.HttpStatus.NOT_FOUND);
         if (user.permissionLevel === 'CONSULTOR') {
-            const data = ['route.vehicle', 'route.vehicle.classVehicle'];
-            if (user.role.pRoute)
-                data.push('route');
+            const data = ['vehicle', 'vehicle.classVehicle'];
             if (user.role.pDriver)
-                data.push('route.vehicle.driver');
+                data.push('vehicle.driver');
             if (user.role.pOperator)
-                data.push('route.vehicle.operator');
+                data.push('vehicle.operator');
             if (user.role.pOwner)
-                data.push('route.vehicle.owner');
+                data.push('vehicle.owner');
             const rossete = await this.rosseteRepository.findOne({
                 where: { id },
                 relations: data
@@ -65,7 +63,7 @@ let RossetesService = class RossetesService {
         else {
             const rossete = await this.rosseteRepository.findOne({
                 where: { id },
-                relations: ['route', 'route.vehicle', 'route.vehicle.classVehicle', 'route.vehicle.driver', 'route.vehicle.owner', 'route.vehicle.operator']
+                relations: ['vehicle', 'vehicle.classVehicle', 'vehicle.driver', 'vehicle.owner', 'vehicle.operator']
             });
             if (!rossete)
                 throw new common_1.HttpException('No se encontro la roseta', common_1.HttpStatus.NOT_FOUND);
@@ -76,13 +74,13 @@ let RossetesService = class RossetesService {
     }
     async getRossetes() {
         const rossetes = await this.rosseteRepository.find({
-            relations: ['route', 'user', 'route.vehicle', 'route.vehicle.operator'],
+            relations: ['user', 'vehicle', 'vehicle.operator'],
         });
         return rossetes;
     }
     async getRossete(id) {
         const rossete = await this.rosseteRepository.findOne({
-            relations: ['route', 'route.vehicle', 'route.vehicle.operator'],
+            relations: ['vehicle', 'vehicle.operator'],
             where: { id },
         });
         return rossete;
@@ -91,12 +89,12 @@ let RossetesService = class RossetesService {
         const user = await this.userService.getUserFilter({ id: userId });
         if (!user)
             throw new Error('Usuario no encontrado');
-        const route = await this.routeService.getRoute(data.routeId);
-        if (!route)
+        const vehicle = await this.vehicleService.getVehicle(data.vehicleId);
+        if (!vehicle)
             throw new Error('Ruta no encontrada');
         const newRossete = {
             user,
-            route,
+            vehicle,
             expiration: data.expiration,
             status: data.status,
         };
@@ -109,12 +107,12 @@ let RossetesService = class RossetesService {
         const user = await this.userService.getUserFilter({ id: userId });
         if (!user)
             throw new Error('Usuario no encontrado');
-        const route = await this.routeService.getRoute(data.routeId);
-        if (!route)
+        const vehicle = await this.vehicleService.getVehicle(data.vehicleId);
+        if (!vehicle)
             throw new Error('Ruta no encontrada');
         const newRossete = {
             user,
-            route,
+            vehicle,
             expiration: data.expiration,
             status: data.status,
         };
@@ -145,6 +143,6 @@ exports.RossetesService = RossetesService = __decorate([
     __metadata("design:paramtypes", [typeorm_2.Repository,
         jwt_1.JwtService,
         users_service_1.UsersService,
-        routes_service_1.RoutesService])
+        vehicle_service_1.VehicleService])
 ], RossetesService);
 //# sourceMappingURL=rossetes.service.js.map

@@ -4,16 +4,16 @@ import { RossetesService } from './rossetes.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Rossete } from './rossetes.entity';
 import { UsersModule } from 'src/users/users.module';
-import { RoutesModule } from 'src/routes/routes.module';
 import { PdfModule } from 'src/pdf/pdf.module';
 import { jwtConstants } from 'src/auth/auth.constans';
 import { JwtModule } from '@nestjs/jwt';
+import { VehicleModule } from 'src/vehicle/vehicle.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Rossete]),
     UsersModule,
-    RoutesModule,
+    VehicleModule,
     PdfModule,
     JwtModule.register({
       global: true,

@@ -6,7 +6,7 @@ export declare class CreateRouteDto {
     dayEntry: string;
     dayExit: string;
     routeArray: [];
-    vehicleId: number;
+    operatorId: number;
 }
 declare const UpdateRouteDto_base: import("@nestjs/mapped-types").MappedType<Partial<CreateRouteDto>>;
 export declare class UpdateRouteDto extends UpdateRouteDto_base {

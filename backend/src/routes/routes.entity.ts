@@ -9,7 +9,7 @@ import {
   ManyToOne,
 } from 'typeorm';
 import { User } from '../users/users.entity';
-import { Vehicle } from '../vehicle/vehicle.entity';
+import { Operator } from 'src/operators/operators.entity';
 
 @Entity()
 export class Route {
@@ -40,9 +40,9 @@ export class Route {
   })
   updatedAt: Date;
   //Relations
-  @OneToOne(() => Vehicle)
+  @OneToOne(() => Operator)
   @JoinColumn()
-  vehicle: Vehicle;
+  operator: Operator;
   @ManyToOne(() => User, (user) => user.routesUpdate, { cascade: false })
   user: User;
 }

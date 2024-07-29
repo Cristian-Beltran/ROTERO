@@ -1,5 +1,5 @@
 import { User } from 'src/users/users.entity';
-import { Route } from 'src/routes/routes.entity';
+import { Vehicle } from 'src/vehicle/vehicle.entity';
 export declare enum Status {
     BAJA = "BAJA",
     DUPLICADO = "DUPLICADO",
@@ -13,6 +13,6 @@ export declare class Rossete {
     status: Status;
     createdAt: Date;
     updatedAt: Date;
-    route: Route;
+    vehicle: Vehicle;
     user: User;
 }

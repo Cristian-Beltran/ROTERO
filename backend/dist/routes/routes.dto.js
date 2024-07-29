@@ -15,7 +15,7 @@ const class_validator_1 = require("class-validator");
 const mapped_types_1 = require("@nestjs/mapped-types");
 class CreateRouteDto {
     static _OPENAPI_METADATA_FACTORY() {
-        return { description: { required: true, type: () => String }, distance: { required: true, type: () => Number }, hourEntry: { required: true, type: () => String }, hourExit: { required: true, type: () => String }, dayEntry: { required: true, type: () => String }, dayExit: { required: true, type: () => String }, routeArray: { required: true }, vehicleId: { required: true, type: () => Number } };
+        return { description: { required: true, type: () => String }, distance: { required: true, type: () => Number }, hourEntry: { required: true, type: () => String }, hourExit: { required: true, type: () => String }, dayEntry: { required: true, type: () => String }, dayExit: { required: true, type: () => String }, routeArray: { required: true }, operatorId: { required: true, type: () => Number } };
     }
 }
 exports.CreateRouteDto = CreateRouteDto;
@@ -58,7 +58,7 @@ __decorate([
     (0, class_validator_1.IsNumber)(),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Number)
-], CreateRouteDto.prototype, "vehicleId", void 0);
+], CreateRouteDto.prototype, "operatorId", void 0);
 class UpdateRouteDto extends (0, mapped_types_1.PartialType)(CreateRouteDto) {
     static _OPENAPI_METADATA_FACTORY() {
         return {};

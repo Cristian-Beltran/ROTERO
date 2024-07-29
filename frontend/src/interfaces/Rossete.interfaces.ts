@@ -1,11 +1,11 @@
 import type { User } from './Roles.interfaces'
-import type { Route } from './Route.interfaces'
+import type { Vehicle } from './Vehicle.interfaces'
 
 export interface Rossete {
   id: number
   expiration: string
   createdAt: Date
   updatedAt: Date
-  route: Route
+  vehicle: Vehicle 
   user: User
 }

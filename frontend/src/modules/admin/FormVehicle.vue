@@ -6,6 +6,23 @@
     </div>
     <div class="mt-6 grid grid-cols-2 gap-x-4 gap-y-4">
       <div class="grid items-center">
+        <Label for="ownerId">Propietario</Label>
+        <Select id="ownerId" v-model="v$.ownerId.$model" class="">
+          <SelectTrigger class="">
+            <SelectValue placeholder="Seleccione un operador" />
+          </SelectTrigger>
+          <SelectContent class="h-[240px]">
+            <SelectGroup>
+              <SelectLabel>Propietarios</SelectLabel>
+              <SelectItem v-for="owner in ownerStore.owners" :key="owner.id" :value="owner.id">
+                {{ owner.firstName }} {{ owner.lastName }}</SelectItem
+              >
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+        <Error :errors="v$.ownerId.$errors" />
+      </div>
+      <div class="grid items-center">
         <Label for="typeService">Tipo de servicio</Label>
         <Select id="typeService" v-model="v$.typeService.$model">
           <SelectTrigger class="">
@@ -16,6 +33,9 @@
               <SelectLabel>Servicios</SelectLabel>
               <SelectItem value="interprovincial">Transporte interprovincial</SelectItem>
               <SelectItem value="intermunicipal">Transporte intermunicipal</SelectItem>
+              <SelectItem value="interprovincial/intermunicipal"
+                >Transporte interprovincial/intermunicipal</SelectItem
+              >
             </SelectGroup>
           </SelectContent>
         </Select>
@@ -93,23 +113,6 @@
         <Label for="classVehicle">Clase de vehiculo</Label>
         <Input id="classVehicle" type="text" v-model="v$.classVehicle.$model" />
         <Error :errors="v$.classVehicle.$errors" />
-      </div>
-      <div class="grid items-center">
-        <Label for="ownerId">Propietario</Label>
-        <Select id="ownerId" v-model="v$.ownerId.$model">
-          <SelectTrigger class="">
-            <SelectValue placeholder="Seleccione un operador" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectLabel>Propietarios</SelectLabel>
-              <SelectItem v-for="owner in ownerStore.owners" :key="owner.id" :value="owner.id">
-                {{ owner.firstName }} {{ owner.lastName }}</SelectItem
-              >
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-        <Error :errors="v$.ownerId.$errors" />
       </div>
     </div>
 
@@ -189,8 +192,6 @@ const rules = computed(() => ({
 
 const v$ = useVuelidate(rules, formData)
 
-
-
 async function handleSubmit(e) {
   if (e) e.preventDefault()
   const isFormCorrect = await v$.value.$validate()
@@ -214,7 +215,7 @@ async function handleSubmit(e) {
     }
     try {
       if (!route.query.id) {
-        await vehicleStore.createVehicle({ ...vehicle  })
+        await vehicleStore.createVehicle({ ...vehicle })
       } else {
         await vehicleStore.updateVehicle(route.query.id, { ...vehicle })
       }

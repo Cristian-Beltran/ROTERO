@@ -1,13 +1,13 @@
 import { Route } from './routes.entity';
 import { Repository } from 'typeorm';
 import { UsersService } from 'src/users/users.service';
-import { VehicleService } from 'src/vehicle/vehicle.service';
 import { CreateRouteDto } from './routes.dto';
+import { OperatorsService } from 'src/operators/operators.service';
 export declare class RoutesService {
     private routeRepository;
     private userService;
-    private vehicleService;
-    constructor(routeRepository: Repository<Route>, userService: UsersService, vehicleService: VehicleService);
+    private operatorService;
+    constructor(routeRepository: Repository<Route>, userService: UsersService, operatorService: OperatorsService);
     getRoutes(): Promise<Route[]>;
     getRoute(id: number): Promise<Route>;
     createRoute(data: CreateRouteDto, userId: number): Promise<Route>;

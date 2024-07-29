@@ -28,27 +28,25 @@
         <Error :errors="v$.operatorId.$errors" />
       </div>
       <div class="grid items-center">
-        <Label for="routeId">Ruta</Label>
-        <Select id="routeId" v-model="v$.routeId.$model">
+        <Label for="vehicleId">Vehiculos</Label>
+        <Select id="vehicleId" v-model="v$.vehicleId.$model">
           <SelectTrigger class="">
             <SelectValue placeholder="Selecione una ruta" />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              <SelectLabel>Rutas</SelectLabel>
+              <SelectLabel>vehiculos</SelectLabel>
               <SelectItem
-                v-for="route in routeStore.routes.filter(
-                  (route) => route.vehicle.operator.id === formData.operatorId
-                )"
-                :key="route.id"
-                :value="route.id"
+                v-for="vehicle in vehicleStore.vehicles"
+                :key="vehicle.id"
+                :value="vehicle.id"
               >
-                {{ route.startText }} - {{ route.endText }} {{ route.vehicle.plate }}</SelectItem
+                {{ vehicle.model }} - {{ vehicle.plate }}</SelectItem
               >
             </SelectGroup>
           </SelectContent>
         </Select>
-        <Error :errors="v$.routeId.$errors" />
+        <Error :errors="v$.vehicleId.$errors" />
       </div>
       <div class="grid items-center">
         <Label for="status">Estado de la roseta</Label>
@@ -67,46 +65,34 @@
             </SelectGroup>
           </SelectContent>
         </Select>
-        <Error :errors="v$.routeId.$errors" />
+        <Error :errors="v$.status.$errors" />
       </div>
     </div>
 
-    <div class="container mt-5" v-if="routeStore.route">
+    <div class="container mt-5" v-if="vehicleStore.vehicle">
       <div class="grid grid-cols-2 md:grid-cols-2 gap-4">
         <!-- Columna izquierda -->
         <div>
           <div class="mb-4">
-            <h3 class="text-lg font-bold mb-2">Información del Operador y propietario</h3>
-            <div class="bg-gray-100 p-4 rounded shadow mt-4">
-              <h2 class="text-xl font-bold mb-4">Información de la Ruta</h2>
-              <p><strong>Punto de Inicio:</strong> {{ routeStore.route.startText }}</p>
-              <p><strong>Punto de Destino:</strong> {{ routeStore.route.endText }}</p>
-              <p><strong>Hora de Entrada:</strong> {{ routeStore.route.hourEntry }}</p>
-              <p><strong>Hora de Salida:</strong> {{ routeStore.route.hourExit }}</p>
-              <p><strong>Día de Entrada:</strong> {{ routeStore.route.dayEntry }}</p>
-              <p><strong>Día de Salida:</strong> {{ routeStore.route.dayExit }}</p>
-              <!-- Agrega más detalles de la ruta según sea necesario -->
-            </div>
-
             <div class="bg-gray-100 p-4 rounded shadow mt-4">
               <h2 class="text-xl font-bold mb-4">Información del Vehículo</h2>
               <p>
                 <strong>Tipo de Servicio:</strong>
-                {{ routeStore.route.vehicle.typeService }}
+                {{ vehicleStore.vehicle.typeService }}
               </p>
-              <p><strong>Modalidad:</strong> {{ routeStore.route.vehicle.modality }}</p>
-              <p><strong>Carga Máxima:</strong> {{ routeStore.route.vehicle.maxLoad }}</p>
-              <p><strong>Pasajeros Máximos:</strong> {{ routeStore.route.vehicle.maxPass }}</p>
+              <p><strong>Modalidad:</strong> {{ vehicleStore.vehicle.modality }}</p>
+              <p><strong>Carga Máxima:</strong> {{ vehicleStore.vehicle.maxLoad }}</p>
+              <p><strong>Pasajeros Máximos:</strong> {{ vehicleStore.vehicle.maxPass }}</p>
               <p>
                 <strong>Tipo de Vehículo:</strong>
-                {{ routeStore.route.vehicle.typeVehicle }}
+                {{ vehicleStore.vehicle.typeVehicle }}
               </p>
-              <p><strong>Modelo:</strong> {{ routeStore.route.vehicle.model }}</p>
-              <p><strong>Marca:</strong> {{ routeStore.route.vehicle.brand }}</p>
-              <p><strong>Motor:</strong> {{ routeStore.route.vehicle.motor }}</p>
-              <p><strong>Chasis:</strong> {{ routeStore.route.vehicle.chassis }}</p>
-              <p><strong>SOAT:</strong> {{ routeStore.route.vehicle.soat }}</p>
-              <p><strong>Placa:</strong> {{ routeStore.route.vehicle.plate }}</p>
+              <p><strong>Modelo:</strong> {{ vehicleStore.vehicle.model }}</p>
+              <p><strong>Marca:</strong> {{ vehicleStore.vehicle.brand }}</p>
+              <p><strong>Motor:</strong> {{ vehicleStore.vehicle.motor }}</p>
+              <p><strong>Chasis:</strong> {{ vehicleStore.vehicle.chassis }}</p>
+              <p><strong>SOAT:</strong> {{ vehicleStore.vehicle.soat }}</p>
+              <p><strong>Placa:</strong> {{ vehicleStore.vehicle.plate }}</p>
               <!-- Agrega más detalles del vehículo según sea necesario -->
             </div>
 
@@ -114,44 +100,44 @@
               <h2 class="text-xl font-bold mb-4">Información del Operador</h2>
               <p>
                 <strong>Razon social:</strong>
-                {{ routeStore.route.vehicle.operator.businessName }}
+                {{ vehicleStore.vehicle.operator.businessName }}
               </p>
               <p>
                 <strong>Representante Legal:</strong>
-                {{ routeStore.route.vehicle.operator.legalRepresentative }}
+                {{ vehicleStore.vehicle.operator.legalRepresentative }}
               </p>
               <p>
                 <strong>Propietario:</strong>
-                {{ routeStore.route.vehicle.operator.owner }}
+                {{ vehicleStore.vehicle.operator.owner }}
               </p>
-              <p><strong>NIT:</strong> {{ routeStore.route.vehicle.operator.nit }}</p>
+              <p><strong>NIT:</strong> {{ vehicleStore.vehicle.operator.nit }}</p>
               <p>
                 <strong>Resolución Administrativa:</strong>
                 <a
                   class="text-blue-600"
-                  :href="routeStore.route.vehicle.operator.administrativeResolution"
+                  :href="vehicleStore.vehicle.operator.administrativeResolution"
                 >
                   Ver</a
                 >
               </p>
               <p>
                 <strong>Fecha de Resolución:</strong>
-                {{ routeStore.route.vehicle.operator.dateRa }}
+                {{ vehicleStore.vehicle.operator.dateRa }}
               </p>
               <p>
                 <strong>Número Técnico:</strong>
-                {{ routeStore.route.vehicle.operator.tecnicalNumber }}
+                {{ vehicleStore.vehicle.operator.tecnicalNumber }}
               </p>
               <p>
                 <strong>Número Legal:</strong>
-                {{ routeStore.route.vehicle.operator.legalNumber }}
+                {{ vehicleStore.vehicle.operator.legalNumber }}
               </p>
               <p>
                 <strong>Observaciones:</strong>
-                {{ routeStore.route.vehicle.operator.observations }}
+                {{ vehicleStore.vehicle.operator.observations }}
               </p>
-              <p><strong>Estado:</strong> {{ routeStore.route.vehicle.operator.state }}</p>
-              <p><strong>Validez:</strong> {{ routeStore.route.vehicle.operator.validity }}</p>
+              <p><strong>Estado:</strong> {{ vehicleStore.vehicle.operator.state }}</p>
+              <p><strong>Validez:</strong> {{ vehicleStore.vehicle.operator.validity }}</p>
             </div>
           </div>
         </div>
@@ -189,18 +175,18 @@ import { useToast } from 'vue-toastification'
 import { useRoute } from 'vue-router'
 import { useRouter } from 'vue-router'
 import { useRosseteStore } from '@/stores/rossete.stores'
-import { useRouteStore } from '@/stores/route.stores'
 import { useOperatorStore } from '@/stores/operator.stores'
+import { useVehicleStore } from '@/stores/vehicle.stores'
 
 const operatorStore = useOperatorStore()
-const routeStore = useRouteStore()
+const vehicleStore = useVehicleStore()
 const rosseteStore = useRosseteStore()
 const toast = useToast()
 const route = useRoute()
 const router = useRouter()
 const formData = reactive({
   expiration: '',
-  routeId: '',
+  vehicleId: '',
   operatorId: '',
   status: ''
 })
@@ -208,7 +194,7 @@ const formData = reactive({
 const rules = computed(() => ({
   operatorId: { required: helpers.withMessage('Operador es requerido', required) },
   expiration: { required: helpers.withMessage('Fecha de expiración es requerida', required) },
-  routeId: { required: helpers.withMessage('Ruta es requerida', required) },
+  vehicleId: { required: helpers.withMessage('Vehiculo es requerida', required) },
   status: { required: helpers.withMessage('Status es requerido', required) }
 }))
 
@@ -219,17 +205,20 @@ try {
 } catch (error) {
   toast.error('Error al cargar los operadores')
 }
-try {
-  routeStore.getRoutes()
-} catch (error) {
-  toast.error('Error al cargar las rutas')
-}
 
 watch(
-  () => formData.routeId,
-  (routeId) => {
-    if (routeId) {
-      routeStore.getRoute(routeId)
+  () => formData.vehicleId,
+  (vehicleId) => {
+    if (vehicleId) {
+      vehicleStore.getVehicle(vehicleId)
+    }
+  }
+)
+watch(
+  () => formData.operatorId,
+  (operatorId) => {
+    if (operatorId) {
+      vehicleStore.getVehicles(operatorId)
     }
   }
 )
@@ -240,7 +229,7 @@ async function handleSubmit(e) {
   if (isFormCorrect) {
     const data = {
       expiration: formData.expiration,
-      routeId: formData.routeId,
+      vehicleId: formData.vehicleId,
       status: formData.status
     }
     try {
@@ -259,10 +248,10 @@ onMounted(async () => {
     try {
       await rosseteStore.getRossete(route.query.id)
       formData.expiration = rosseteStore.rosette?.expiration
-      formData.routeId = rosseteStore.rosette?.route.id
-      formData.operatorId = rosseteStore.rosette?.route.vehicle.operator.id
+      formData.vehicleId = rosseteStore.rosette?.vehicle.id
+      formData.operatorId = rosseteStore.rosette?.vehicle.operator.id
       formData.status = rosseteStore.rosette?.status
-      routeStore.getRoute(formData.routeId)
+      routeStore.getVehicle(formData.vehicleId)
     } catch (error) {
       console.log(error)
       toast.error(error?.response.data.errors[0])

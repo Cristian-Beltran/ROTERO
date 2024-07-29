@@ -12,8 +12,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Rossete = exports.Status = void 0;
 const openapi = require("@nestjs/swagger");
 const users_entity_1 = require("../users/users.entity");
-const routes_entity_1 = require("../routes/routes.entity");
 const typeorm_1 = require("typeorm");
+const vehicle_entity_1 = require("../vehicle/vehicle.entity");
 var Status;
 (function (Status) {
     Status["BAJA"] = "BAJA";
@@ -24,7 +24,7 @@ var Status;
 })(Status || (exports.Status = Status = {}));
 let Rossete = class Rossete {
     static _OPENAPI_METADATA_FACTORY() {
-        return { id: { required: true, type: () => Number }, expiration: { required: true, type: () => String }, status: { required: true, enum: require("./rossetes.entity").Status }, createdAt: { required: true, type: () => Date }, updatedAt: { required: true, type: () => Date }, route: { required: true, type: () => require("../routes/routes.entity").Route }, user: { required: true, type: () => require("../users/users.entity").User } };
+        return { id: { required: true, type: () => Number }, expiration: { required: true, type: () => String }, status: { required: true, enum: require("./rossetes.entity").Status }, createdAt: { required: true, type: () => Date }, updatedAt: { required: true, type: () => Date }, vehicle: { required: true, type: () => require("../vehicle/vehicle.entity").Vehicle }, user: { required: true, type: () => require("../users/users.entity").User } };
     }
 };
 exports.Rossete = Rossete;
@@ -53,10 +53,10 @@ __decorate([
     __metadata("design:type", Date)
 ], Rossete.prototype, "updatedAt", void 0);
 __decorate([
-    (0, typeorm_1.OneToOne)(() => routes_entity_1.Route),
+    (0, typeorm_1.OneToOne)(() => vehicle_entity_1.Vehicle),
     (0, typeorm_1.JoinColumn)(),
-    __metadata("design:type", routes_entity_1.Route)
-], Rossete.prototype, "route", void 0);
+    __metadata("design:type", vehicle_entity_1.Vehicle)
+], Rossete.prototype, "vehicle", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => users_entity_1.User, (user) => user.rossetesUpdate, { cascade: false }),
     __metadata("design:type", users_entity_1.User)

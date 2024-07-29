@@ -18,12 +18,10 @@ export const useRosseteStore = defineStore('rossete', () => {
   const filter = computed(() => {
     return rosettes.filter((data) => {
       return (
-        data.route.endText.toLowerCase().includes(search.value.toLowerCase()) ||
         data.vehiclePlate.toLowerCase().includes(search.value.toLowerCase()) ||
         data.vehicleName.toLowerCase().includes(search.value.toLowerCase()) ||
         data.operatorName?.toLowerCase().includes(search.value.toLowerCase()) ||
-        data.vehicleType?.toLowerCase().includes(search.value.toLowerCase()) ||
-        data.route.startText.toLowerCase().includes(search.value.toLowerCase())
+        data.vehicleType?.toLowerCase().includes(search.value.toLowerCase()) 
       )
     })
   })
@@ -33,12 +31,11 @@ export const useRosseteStore = defineStore('rossete', () => {
     const dataMap = data.map((rosette) => {
       return {
         ...rosette,
-        routePoint: `${rosette.route.startText} - ${rosette.route.endText}`,
         userName: `${rosette.user?.firstName} ${rosette.user?.lastName}`,
-        operatorName: `${rosette.route.vehicle.operator.businessName}`,
-        vehicleName: `${rosette.route.vehicle.brand} ${rosette.route.vehicle.model}`,
-        vehiclePlate: `${rosette.route.vehicle.plate}`,
-        vehicleType: `${rosette.route.vehicle.typeService} - ${rosette.route.vehicle.typeVehicle}`
+        operatorName: `${rosette.vehicle.operator.businessName}`,
+        vehicleName: `${rosette.vehicle.brand} ${rosette.vehicle.model}`,
+        vehiclePlate: `${rosette.vehicle.plate}`,
+        vehicleType: `${rosette.vehicle.typeService} - ${rosette.vehicle.typeVehicle}`
       }
     })
     rosettes.splice(0, rosettes.length, ...dataMap)

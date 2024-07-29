@@ -19,6 +19,7 @@ var TypeService;
 (function (TypeService) {
     TypeService["INTERPROVINCIAL"] = "interprovincial";
     TypeService["INTERMUNICIPAL"] = "intermunicipal";
+    TypeService["INTERPROVINCIALINTERMUNICIPAL"] = "interprovincial/intermunicipal";
 })(TypeService || (exports.TypeService = TypeService = {}));
 var Modality;
 (function (Modality) {

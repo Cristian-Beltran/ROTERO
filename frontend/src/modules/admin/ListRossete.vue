@@ -27,7 +27,6 @@ const swal = inject('$swal')
 const router = useRouter()
 const columns = [
   { title: 'id', key: 'id' },
-  { title: 'Puntos', key: 'routePoint' },
   { title: 'Operador', key: 'operatorName' },
   { title: 'Vehiculo', key: 'vehicleName' },
   { title: 'Estado', key: 'status'},
@@ -68,7 +67,7 @@ const action = (data) => {
           await rosseteStore.deleteRossete(data.id)
           await rosseteStore.getRossetes()
         } catch (error) {
-          toast.error('La multa ya fue cancelada')
+          toast.error('error')
         }
       }
     })

@@ -13,10 +13,10 @@ exports.Route = void 0;
 const openapi = require("@nestjs/swagger");
 const typeorm_1 = require("typeorm");
 const users_entity_1 = require("../users/users.entity");
-const vehicle_entity_1 = require("../vehicle/vehicle.entity");
+const operators_entity_1 = require("../operators/operators.entity");
 let Route = class Route {
     static _OPENAPI_METADATA_FACTORY() {
-        return { id: { required: true, type: () => Number }, description: { required: true, type: () => String }, distance: { required: true, type: () => Number }, hourEntry: { required: true, type: () => String }, hourExit: { required: true, type: () => String }, dayEntry: { required: true, type: () => String }, dayExit: { required: true, type: () => String }, routeFile: { required: true, type: () => String }, routeArray: { required: true, type: () => String }, createdAt: { required: true, type: () => Date }, updatedAt: { required: true, type: () => Date }, vehicle: { required: true, type: () => require("../vehicle/vehicle.entity").Vehicle }, user: { required: true, type: () => require("../users/users.entity").User } };
+        return { id: { required: true, type: () => Number }, description: { required: true, type: () => String }, distance: { required: true, type: () => Number }, hourEntry: { required: true, type: () => String }, hourExit: { required: true, type: () => String }, dayEntry: { required: true, type: () => String }, dayExit: { required: true, type: () => String }, routeFile: { required: true, type: () => String }, routeArray: { required: true, type: () => String }, createdAt: { required: true, type: () => Date }, updatedAt: { required: true, type: () => Date }, operator: { required: true, type: () => require("../operators/operators.entity").Operator }, user: { required: true, type: () => require("../users/users.entity").User } };
     }
 };
 exports.Route = Route;
@@ -69,10 +69,10 @@ __decorate([
     __metadata("design:type", Date)
 ], Route.prototype, "updatedAt", void 0);
 __decorate([
-    (0, typeorm_1.OneToOne)(() => vehicle_entity_1.Vehicle),
+    (0, typeorm_1.OneToOne)(() => operators_entity_1.Operator),
     (0, typeorm_1.JoinColumn)(),
-    __metadata("design:type", vehicle_entity_1.Vehicle)
-], Route.prototype, "vehicle", void 0);
+    __metadata("design:type", operators_entity_1.Operator)
+], Route.prototype, "operator", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => users_entity_1.User, (user) => user.routesUpdate, { cascade: false }),
     __metadata("design:type", users_entity_1.User)

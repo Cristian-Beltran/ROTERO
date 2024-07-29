@@ -35,17 +35,10 @@
           <li><strong>Chasis:</strong> {{ vehicleStore.vehicle.chassis }}</li>
           <li><strong>SOAT:</strong> {{ vehicleStore.vehicle.soat ? 'Sí' : 'No' }}</li>
           <li><strong>Inspección:</strong> {{ vehicleStore.vehicle.inspection ? 'Sí' : 'No' }}</li>
-          <li><strong>Aseguradora:</strong> {{ vehicleStore.vehicle.sure }}</li>
           <li><strong>Placa:</strong> {{ vehicleStore.vehicle.plate }}</li>
           <li>
-            <strong>Conductor:</strong> {{ vehicleStore.vehicle.driver.firstName }}
-            {{ vehicleStore.vehicle.driver.lastName }} (CI: {{ vehicleStore.vehicle.driver.ci }},
-            Teléfono: {{ vehicleStore.vehicle.driver.cellphone }})
-          </li>
-          <li>
             <strong>Clase de Vehículo:</strong>
-            {{ vehicleStore.vehicle.classVehicle.name }} (Descripción:
-            {{ vehicleStore.vehicle.classVehicle.description }})
+            {{ vehicleStore.vehicle.classVehicle }}
           </li>
           <li>
             <strong>Operador:</strong>

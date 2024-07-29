@@ -6,6 +6,7 @@ import * as QRCode from 'qrcode';
 import { JwtService } from '@nestjs/jwt';
 import { Vehicle } from 'src/vehicle/vehicle.entity';
 import { Payorder } from 'src/payorders/payorders.entity';
+import { Rossete } from 'src/rossetes/rossetes.entity';
 @Injectable()
 export class PdfService {
   constructor(private jwtService: JwtService) {}
@@ -119,7 +120,7 @@ export class PdfService {
     });
     return pdfBuffer;
   }
-  async generateRossete(id: number) {
+  async generateRossete(id: number, url: string) {
     const pdfBuffer: Buffer = await new Promise(async (resolve) => {
       const doc = new PDFDocument({
         size: [200, 245],
@@ -133,8 +134,9 @@ export class PdfService {
       doc.image(bg, 0, 0, { width: 200, height: 245 });
       doc.fontSize(12).text('ROSETA DE OPERACIÓN', { align: 'center' });
       doc.image(logo, 50, 70, { width: 100, align: 'center' });
-      const token = await this.generateToken(id);
-      const qrCodeBuffer = await this.generateQRCode(token);
+      const qrCodeBuffer = await this.generateQRCode(
+        url + '/api/rossete/' + id + '/info',
+      );
       doc.image(qrCodeBuffer, 50, 130, { width: 100, align: 'center' });
       doc.image(firmOne, 10, 10, { width: 100, align: 'center' });
       doc.image(firmTwo, 100, 10, { width: 100, align: 'center' });
@@ -148,6 +150,27 @@ export class PdfService {
     });
     return pdfBuffer;
   }
+  async generateRosseteInfo(rossete: Rossete) {
+    const pdfBuffer: Buffer = await new Promise(async (resolve) => {
+      const doc = new PDFDocument({
+        size: 'LETTER',
+        bufferPages: true,
+        margin: 50,
+      });
+      this.generateHeader(doc);
+      this.generateTitle(doc, 'Información de Roseta');
+      this.generateRosseteInformation(doc, rossete);
+      doc.end();
+      const buffer = [];
+      doc.on('data', buffer.push.bind(buffer));
+      doc.on('end', () => {
+        const data = Buffer.concat(buffer);
+        resolve(data);
+      });
+    });
+    return pdfBuffer;
+  }
+
   async generateCertificateOperator(vehicle: Vehicle) {
     const pdfBuffer: Buffer = await new Promise(async (resolve) => {
       const doc = new PDFDocument({
@@ -530,6 +553,86 @@ export class PdfService {
       .lineTo(550, y)
       .stroke();
   }
+
+  private generateRosseteInformation(doc: any, rossete: Rossete) {
+    this.generateHr(doc, 185);
+    const customerInformationTop = 200;
+
+    doc
+      .fontSize(10)
+      .text('Razón Social:', 50, customerInformationTop)
+      .font('Helvetica-Bold')
+      .text(rossete.vehicle.operator.businessName, 150, customerInformationTop)
+      .font('Helvetica')
+      .text('Representante Legal:', 50, customerInformationTop + 15)
+      .text(
+        rossete.vehicle.operator.legalRepresentative,
+        150,
+        customerInformationTop + 15,
+      )
+      .text('Propietario:', 50, customerInformationTop + 30)
+      .text(rossete.vehicle.operator.owner, 150, customerInformationTop + 30)
+      .text('NIT:', 50, customerInformationTop + 45)
+      .text(rossete.vehicle.operator.nit, 150, customerInformationTop + 45)
+      .text('Estado:', 50, customerInformationTop + 60)
+      .text(rossete.vehicle.operator.state, 150, customerInformationTop + 60)
+      .text('Entidad Matriz:', 50, customerInformationTop + 75)
+      .text(rossete.vehicle.operator.entityMatris, 150, customerInformationTop + 75)
+      .text('Ruta:', 50, customerInformationTop + 90)
+      .text(rossete.vehicle.operator.route, 150, customerInformationTop + 90)
+      .text('Observaciones:', 50, customerInformationTop + 105)
+      .text(rossete.vehicle.operator.observations, 150, customerInformationTop + 105)
+      .font('Helvetica-Bold')
+      .moveDown();
+
+    this.generateHr(doc, 270);
+
+    doc
+      .fontSize(10)
+      .text('Tipo de Servicio:', 50, customerInformationTop + 120)
+      .text(rossete.vehicle.typeService, 150, customerInformationTop + 120)
+      .text('Modalidad:', 50, customerInformationTop + 135)
+      .text(rossete.vehicle.modality, 150, customerInformationTop + 135)
+      .text('Carga Máxima:', 50, customerInformationTop + 150)
+      .text(rossete.vehicle.maxLoad + ' kg', 150, customerInformationTop + 150)
+      .text('Pasajeros Máximos:', 50, customerInformationTop + 165)
+      .text(rossete.vehicle.maxPass, 150, customerInformationTop + 165)
+      .text('Tipo de Vehículo:', 50, customerInformationTop + 180)
+      .text(rossete.vehicle.typeVehicle, 150, customerInformationTop + 180)
+      .text('Modelo:', 50, customerInformationTop + 195)
+      .text(rossete.vehicle.model, 150, customerInformationTop + 195)
+      .text('Marca:', 50, customerInformationTop + 210)
+      .text(rossete.vehicle.brand, 150, customerInformationTop + 210)
+      .text('Motor:', 50, customerInformationTop + 225)
+      .text(rossete.vehicle.motor, 150, customerInformationTop + 225)
+      .text('Chasis:', 50, customerInformationTop + 240)
+      .text(rossete.vehicle.chassis, 150, customerInformationTop + 240)
+      .text('SOAT:', 50, customerInformationTop + 255)
+      .text(rossete.vehicle.soat ? 'Sí' : 'No', 150, customerInformationTop + 255)
+      .text('Inspección:', 50, customerInformationTop + 270)
+      .text(rossete.vehicle.inspection ? 'Sí' : 'No', 150, customerInformationTop + 270)
+      .text('Placa:', 50, customerInformationTop + 285)
+      .text(rossete.vehicle.plate, 150, customerInformationTop + 285)
+      .text('Clase de Vehículo:', 50, customerInformationTop + 300)
+      .text(rossete.vehicle.classVehicle, 150, customerInformationTop + 300)
+      .moveDown();
+
+    this.generateHr(doc, 375);
+
+    doc
+      .fontSize(10)
+      .text('Propietario:', 50, customerInformationTop + 315)
+      .font('Helvetica-Bold')
+      .text(
+        rossete.vehicle.owner.firstName + ' ' + rossete.vehicle.owner.lastName,
+        150,
+        customerInformationTop + 315,
+      )
+      .font('Helvetica')
+      .text('CI:', 50, customerInformationTop + 330)
+      .text(rossete.vehicle.owner.ci, 150, customerInformationTop + 330)
+      .moveDown();
+  }
   private generateOperatorInformation(doc: any, operator: Operator) {
     this.generateHr(doc, 185);
     const customerInformationTop = 200;
@@ -550,13 +653,13 @@ export class PdfService {
       .text(
         'Numero tecnico: ' + operator.tecnicalNumber,
         300,
-        customerInformationTop,
+        customerInformationTop + 30,
       )
       .font('Helvetica')
       .text(
         'Numero legal: ' + operator.legalNumber,
         300,
-        customerInformationTop + 15,
+        customerInformationTop + 45,
       )
       .moveDown();
     this.generateHr(doc, 267);

@@ -4,14 +4,14 @@ import { RoutesController } from './routes.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Route } from './routes.entity';
 import { UsersModule } from 'src/users/users.module';
-import { VehicleModule } from 'src/vehicle/vehicle.module';
 import { CloudinaryModule } from 'src/cloudinary/cloudinary.module';
+import { OperatorsModule } from 'src/operators/operators.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Route]),
     UsersModule,
-    VehicleModule,
+    OperatorsModule,
     CloudinaryModule,
   ],
   providers: [RoutesService],

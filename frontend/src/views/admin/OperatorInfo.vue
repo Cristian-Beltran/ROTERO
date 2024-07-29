@@ -4,6 +4,14 @@
     description="Información de operador registrado"
     icon="fa-building"
   >
+    <template v-slot:button>
+      <router-link v-if="!routeStore.route" :to="'/route/' + operatorId + '/create'">
+        <Button type="primary"><v-icon name="fa-plus" class="mr-2" />Crear ruta</Button>
+      </router-link>
+      <router-link v-else :to="'/route/' + operatorId + '/edit?id=' + routeStore.route.id">
+        <Button type="primary"><v-icon name="fa-plus" class="mr-2" />Editar Ruta</Button>
+      </router-link>
+    </template>
     <div v-if="!operatorStore.operator">
       <LoadingBase />
     </div>
@@ -123,6 +131,7 @@
       </div>
     </div>
   </Card>
+  <br />
   <Card
     title="Propietarios de vehiculos"
     description="Propietarios de vehiculos del operador"
@@ -135,6 +144,7 @@
     </template>
     <ListOwner />
   </Card>
+  <br />
   <Card
     title="Lista de vehiculos y conductores"
     description="Lista de vehiculos y conductores del operador"
@@ -147,6 +157,8 @@
     </template>
     <ListVehicle />
   </Card>
+  <br />
+ 
 </template>
 <script setup lang="ts">
 import Card from '@/commun/me/CardBase.vue'
@@ -157,17 +169,22 @@ import { useRoute } from 'vue-router'
 import { useOperatorStore } from '@/stores/operator.stores'
 import { ref, onMounted } from 'vue'
 import LoadingBase from '@/commun/me/LoadingBase.vue'
+import { useRouteStore } from '@/stores/route.stores'
 import { dateFormat } from '@/lib/dateFormat'
+
 const operatorStore = useOperatorStore()
+const routeStore = useRouteStore()
 const route = useRoute()
 const operatorId = ref(route.params.id)
+routeStore.route = null
 if (!operatorId.value || operatorId.value === '' || typeof operatorId.value !== 'string') {
   throw new Error('No se ha encontrado el operador')
 }
 
-onMounted(() => {
+onMounted(async () => {
   try {
-    operatorStore.getOperator(parseInt(operatorId.value, 10))
+    await operatorStore.getOperator(parseInt(operatorId.value, 10))
+    await routeStore.getRoute(parseInt(operatorId.value, 10))
   } catch (error) {
     console.log(error)
   }

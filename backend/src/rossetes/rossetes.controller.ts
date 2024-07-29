@@ -13,6 +13,7 @@ import { RossetesService } from './rossetes.service';
 import { CreateRosseteDto, UpdateRosseteDto } from './rossetes.dto';
 import { Request, Response } from 'express';
 import { PdfService } from 'src/pdf/pdf.service';
+import { Public } from 'src/auth/auth.decorator';
 
 @Controller('rossetes')
 export class RossetesController {
@@ -52,10 +53,31 @@ export class RossetesController {
     return await this.rosseteService.deleteRossete(id);
   }
   @Get(':id/pdf')
-  async generateRossete(@Param('id') id: number, @Res() res: Response) {
+  async generateRossete(
+    @Param('id') id: number,
+    @Res() res: Response,
+    @Req() req: Request,
+  ) {
+    const host = req.get('host');
     const rossete = await this.rosseteService.getRossete(id);
     const pdfName = `Roseta ${rossete.id}`;
-    const buffer = await this.pdfService.generateRossete(id);
+    const buffer = await this.pdfService.generateRossete(id, host);
+    res.set({
+      'Content-Type': 'application/pdf',
+      'Content-Disposition': 'attachment; filename=' + pdfName + '.pdf',
+      'Content-Length': buffer.length,
+    });
+    res.end(buffer);
+  }
+  @Public() 
+  @Get(':id/info')
+  async generateRosseteInfo(
+    @Param('id') id: number,
+    @Res() res: Response,
+  ) {
+    const rossete = await this.rosseteService.getRossete(id);
+    const pdfName = `Informacion de Roseta ${rossete.id}`;
+    const buffer = await this.pdfService.generateRosseteInfo(rossete);
     res.set({
       'Content-Type': 'application/pdf',
       'Content-Disposition': 'attachment; filename=' + pdfName + '.pdf',

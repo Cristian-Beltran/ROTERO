@@ -59,48 +59,6 @@
       </div>
 
       <div class="grid items-center">
-        <Label for="operator">Operador</Label>
-        <Select id="operator" v-model="v$.operatorId.$model">
-          <SelectTrigger class="">
-            <SelectValue placeholder="Seleccione un operador" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectLabel>Operadores</SelectLabel>
-              <SelectItem
-                v-for="operator in operatorStore.operators"
-                :key="operator.id"
-                :value="operator.id"
-              >
-                {{ operator.businessName }}</SelectItem
-              >
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-        <Error :errors="v$.operatorId.$errors" />
-      </div>
-      <div class="grid items-center">
-        <Label for="vehicleId">Vehiculo</Label>
-        <Select id="vehicleId" v-model="v$.vehicleId.$model">
-          <SelectTrigger class="">
-            <SelectValue placeholder="Seleccione un operador" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectLabel>Vehiculo</SelectLabel>
-              <SelectItem
-                v-for="vehicle in vehicleStore.vehicles"
-                :key="vehicle.id"
-                :value="vehicle.id"
-              >
-                {{ vehicle.brand }}{{ vehicle.plate }}</SelectItem
-              >
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-        <Error :errors="v$.operatorId.$errors" />
-      </div>
-      <div class="grid items-center">
         <Label for="route">Archivo de ruta</Label>
         <Input id="route" type="file" v-on:change="onFileChange" />
       </div>
@@ -116,7 +74,7 @@
     </div>
 
     <div class="flex justify-between mt-4">
-      <router-link to="/route">
+      <router-link :to="'/operator/' + route.params.id">
         <Button type="button" variant="destructive"
           ><v-icon name="fa-times" class="mr-2" />Salir</Button
         >
@@ -157,13 +115,9 @@ import { reactive, computed, onMounted, watch, ref } from 'vue'
 import { useToast } from 'vue-toastification'
 import { useRoute } from 'vue-router'
 import { useRouter } from 'vue-router'
-import { useOperatorStore } from '@/stores/operator.stores'
 import { useRouteStore } from '@/stores/route.stores'
-import { useVehicleStore } from '@/stores/vehicle.stores'
 
 const load = ref(false)
-const vehicleStore = useVehicleStore()
-const operatorStore = useOperatorStore()
 const routeStore = useRouteStore()
 const toast = useToast()
 const router = useRouter()
@@ -175,7 +129,6 @@ const formData = reactive({
   hourExit: '',
   dayEntry: '',
   dayExit: '',
-  vehicleId: '',
   operatorId: '',
   startLat: 0,
   startLng: 0,
@@ -190,27 +143,9 @@ const rules = computed(() => ({
   hourExit: { required: helpers.withMessage('Campo requerido', required) },
   dayEntry: { required: helpers.withMessage('Campo requerido', required) },
   dayExit: { required: helpers.withMessage('Campo requerido', required) },
-  vehicleId: { required: helpers.withMessage('Campo requerido', required) },
-  operatorId: { required: helpers.withMessage('Campo requerido', required) }
 }))
 
 const v$ = useVuelidate(rules, formData)
-try {
-  operatorStore.getOperators()
-} catch (error) {
-  toast.error('Error al cargar los operadores')
-}
-
-watch(
-  () => formData.operatorId,
-  async (value) => {
-    try {
-      await vehicleStore.getVehicles(value)
-    } catch (error) {
-      toast.error('Error al cargar los vehiculos')
-    }
-  }
-)
 const file = ref(null)
 
 const onFileChange = (event) => {
@@ -230,8 +165,7 @@ async function handleSubmit(e) {
       hourExit: formData.hourExit,
       dayEntry: formData.dayEntry,
       dayExit: formData.dayExit,
-      vehicleId: formData.vehicleId,
-      operatorId: formData.operatorId,
+      operatorId: parseInt(route.params.id),
       routeArray: routes.map((route) => route.geometry.coordinates)
     }
     try {
@@ -244,7 +178,7 @@ async function handleSubmit(e) {
         await routeStore.uploadFile(res.data.id, formData)
       }
       toast.success('Ruta guardada')
-      router.push({ name: 'route' })
+      router.push({ name: 'operator-info', params: { id: route.params.id } })
     } catch (error) {
       toast.error(error?.response?.data?.message)
     }
@@ -276,9 +210,7 @@ function initMap() {
       remove: true
     }
   })
-
   map.addControl(drawControl)
-
   map.on(L.Draw.Event.CREATED, (e) => {
     const layer = e.layer
     drawnItems.addLayer(layer)
@@ -310,13 +242,11 @@ onMounted(async () => {
   initMap()
   if (route.query.id) {
     try {
-      await routeStore.getRoute(route.query.id)
+      await routeStore.getRoute(route.params.id)
       formData.hourEntry = routeStore.route.hourEntry
       formData.hourExit = routeStore.route.hourExit
       formData.dayEntry = routeStore.route.dayEntry
       formData.dayExit = routeStore.route.dayExit
-      formData.vehicleId = routeStore.route?.vehicle.id
-      formData.operatorId = routeStore.route?.vehicle.operator.id
       formData.description = routeStore.route.description
       formData.distance = routeStore.route.distance
       drawnItems.clearLayers()
@@ -329,7 +259,6 @@ onMounted(async () => {
         map.fitBounds(polyline.getBounds())
         routes.push(polyline.toGeoJSON())
       })
-      vehicleStore.getVehicle(formData.operatorId)
     } catch (error) {
       console.log(error)
       //toast.error(error?.response.data.errors[0])

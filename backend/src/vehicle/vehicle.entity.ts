@@ -16,6 +16,7 @@ import { Owner } from 'src/owners/owners.entity';
 export enum TypeService {
   INTERPROVINCIAL = 'interprovincial',
   INTERMUNICIPAL = 'intermunicipal',
+  INTERPROVINCIALINTERMUNICIPAL = 'interprovincial/intermunicipal',
 }
 export enum Modality {
   PASAJERO = 'pasajero',

@@ -34,14 +34,13 @@
         </li>
         -->
 
+        <!-- 
         <li>
           <Archor to="/readQr" icon="fa-qrcode" name="Leer roseta" />
         </li>
+        -->
         <li>
-          <ArchorGroup icon="fa-map-marked-alt" name="Rutas">
-            <Archor to="/route" icon="fa-list-ul" name="Lista de rutas" />
-            <Archor to="/route/map" icon="fa-map-marked-alt" name="Vista de rutas" />
-          </ArchorGroup>
+          <Archor to="/route/map" icon="fa-map-marked-alt" name="Vista de rutas" />
         </li>
         <li>
           <ArchorGroup icon="fa-toolbox" name="Configuración">

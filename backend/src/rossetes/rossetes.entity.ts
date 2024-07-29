@@ -10,6 +10,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Vehicle } from 'src/vehicle/vehicle.entity';
 
 export enum Status {
   BAJA = 'BAJA',
@@ -35,9 +36,9 @@ export class Rossete {
     onUpdate: 'CURRENT_TIMESTAMP',
   })
   updatedAt: Date;
-  @OneToOne(() => Route)
+  @OneToOne(() => Vehicle)
   @JoinColumn()
-  route: Route;
+  vehicle: Vehicle;
   @ManyToOne(() => User, (user) => user.rossetesUpdate, { cascade: false })
   user: User;
 }

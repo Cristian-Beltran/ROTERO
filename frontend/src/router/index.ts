@@ -166,18 +166,14 @@ const router = createRouter({
           name: 'vehicle-edit',
           component: () => import('@/views/admin/VehicleData.vue')
         },
+        
         {
-          path: '/route',
-          name: 'route',
-          component: () => import('@/views/admin/RouteView.vue')
-        },
-        {
-          path: '/route/create',
+          path: '/route/:id/create',
           name: 'route-create',
           component: () => import('@/views/admin/RouteData.vue')
         },
         {
-          path: '/route/edit',
+          path: '/route/:id/edit',
           name: 'route-edit',
           component: () => import('@/views/admin/RouteData.vue')
         },

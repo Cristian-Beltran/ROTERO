@@ -13,10 +13,10 @@ const rossetes_service_1 = require("./rossetes.service");
 const typeorm_1 = require("@nestjs/typeorm");
 const rossetes_entity_1 = require("./rossetes.entity");
 const users_module_1 = require("../users/users.module");
-const routes_module_1 = require("../routes/routes.module");
 const pdf_module_1 = require("../pdf/pdf.module");
 const auth_constans_1 = require("../auth/auth.constans");
 const jwt_1 = require("@nestjs/jwt");
+const vehicle_module_1 = require("../vehicle/vehicle.module");
 let RossetesModule = class RossetesModule {
 };
 exports.RossetesModule = RossetesModule;
@@ -25,7 +25,7 @@ exports.RossetesModule = RossetesModule = __decorate([
         imports: [
             typeorm_1.TypeOrmModule.forFeature([rossetes_entity_1.Rossete]),
             users_module_1.UsersModule,
-            routes_module_1.RoutesModule,
+            vehicle_module_1.VehicleModule,
             pdf_module_1.PdfModule,
             jwt_1.JwtModule.register({
                 global: true,

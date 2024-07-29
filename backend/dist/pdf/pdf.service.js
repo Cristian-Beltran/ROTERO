@@ -437,9 +437,9 @@ let PdfService = class PdfService {
             .text('NIT:', 50, customerInformationTop + 45)
             .text(operator.nit, 150, customerInformationTop + 45)
             .font('Helvetica-Bold')
-            .text('Numero tecnico: ' + operator.tecnicalNumber, 300, customerInformationTop)
+            .text('Numero tecnico: ' + operator.tecnicalNumber, 300, customerInformationTop + 30)
             .font('Helvetica')
-            .text('Numero legal: ' + operator.legalNumber, 300, customerInformationTop + 15)
+            .text('Numero legal: ' + operator.legalNumber, 300, customerInformationTop + 45)
             .moveDown();
         this.generateHr(doc, 267);
     }

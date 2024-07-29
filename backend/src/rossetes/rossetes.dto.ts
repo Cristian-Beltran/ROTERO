@@ -11,7 +11,7 @@ export class CreateRosseteDto {
   status: Status;
   @IsNumber()
   @IsNotEmpty()
-  routeId: number;
+  vehicleId: number;
 }
 
 export class UpdateRosseteDto extends PartialType(CreateRosseteDto) {}

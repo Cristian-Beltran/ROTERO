@@ -1,5 +1,5 @@
 import { User } from '../users/users.entity';
-import { Vehicle } from '../vehicle/vehicle.entity';
+import { Operator } from 'src/operators/operators.entity';
 export declare class Route {
     id: number;
     description: string;
@@ -12,6 +12,6 @@ export declare class Route {
     routeArray: string;
     createdAt: Date;
     updatedAt: Date;
-    vehicle: Vehicle;
+    operator: Operator;
     user: User;
 }

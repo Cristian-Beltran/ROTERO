@@ -71,7 +71,7 @@ function initMap() {
     routes.forEach((route) => {
       const polyline = L.polyline(
         route.map((coordenada) => [coordenada[1], coordenada[0]]),
-        { color: routeGroup.vehicle.operator.color }
+        { color: routeGroup.operator.color }
       ).addTo(map)
 
       const popup = L.popup().setContent(

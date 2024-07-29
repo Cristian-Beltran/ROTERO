@@ -25,7 +25,7 @@ export class CreateRouteDto {
   routeArray: []; 
   @IsNumber()
   @IsNotEmpty()
-  vehicleId: number;
+  operatorId: number;
 }
 
 export class UpdateRouteDto extends PartialType(CreateRouteDto) {}

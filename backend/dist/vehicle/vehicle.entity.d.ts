@@ -3,7 +3,8 @@ import { Operator } from 'src/operators/operators.entity';
 import { Owner } from 'src/owners/owners.entity';
 export declare enum TypeService {
     INTERPROVINCIAL = "interprovincial",
-    INTERMUNICIPAL = "intermunicipal"
+    INTERMUNICIPAL = "intermunicipal",
+    INTERPROVINCIALINTERMUNICIPAL = "interprovincial/intermunicipal"
 }
 export declare enum Modality {
     PASAJERO = "pasajero",

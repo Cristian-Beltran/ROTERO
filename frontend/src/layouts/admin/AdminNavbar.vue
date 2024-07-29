@@ -26,7 +26,7 @@
           <Logo />
           <a class="flex ml-2 md:mr-24">
             <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap text-white"
-              >ROTERO</span
+              >SITRAND</span
             >
           </a>
         </div>

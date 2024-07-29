@@ -32,8 +32,6 @@ const columns = [
   { title: 'id', key: 'id' },
   { title: 'Punto de inicio', key: 'startText' },
   { title: 'Punto de fin', key: 'endText' },
-  { title: 'Vehiculo', key: 'vehicleName' },
-  { title: 'Placa', key: 'vehiclePlate' },
   { title: 'Operador', key: 'operatorName' },
   { title: 'Actualizdo por', key: 'userName' },
   { title: 'createdAt', key: 'createdAt', type: 'dateTime' }

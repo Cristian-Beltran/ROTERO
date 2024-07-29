@@ -18,9 +18,7 @@ export const useRouteStore = defineStore('route', () => {
   const filter = computed(() => {
     return routes.filter((data) => {
       return (
-        data.vehicle.modality?.toLowerCase().includes(search.value.toLowerCase()) ||
-        data.vehicle.plate?.toLowerCase().includes(search.value.toLowerCase()) ||
-        data.vehicle.operator.businessName?.toLowerCase().includes(search.value.toLowerCase())
+        data.operator.businessName?.toLowerCase().includes(search.value.toLowerCase())
       )
     })
   })
@@ -32,9 +30,7 @@ export const useRouteStore = defineStore('route', () => {
       return {
         ...route,
         userName: `${route?.user?.firstName} ${route.user?.lastName}`,
-        vehicleName: `${route?.vehicle?.brand} ${route.vehicle?.model}`,
-        vehiclePlate: `${route?.vehicle?.plate}`,
-        operatorName: `${route?.vehicle?.operator?.businessName}`,
+        operatorName: `${route?.operator?.businessName}`,
         check: false
       }
     })

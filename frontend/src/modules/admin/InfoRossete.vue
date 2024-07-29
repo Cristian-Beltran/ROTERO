@@ -19,8 +19,6 @@
           class="bg-gray-100 p-4 rounded shadow mt-4"
         >
           <h2 class="text-xl font-bold mb-4">Información de la Ruta</h2>
-          <p><strong>Punto de Inicio:</strong> {{ rosseteStore.rosette.route.startText }}</p>
-          <p><strong>Punto de Destino:</strong> {{ rosseteStore.rosette.route.endText }}</p>
           <p><strong>Hora de Entrada:</strong> {{ rosseteStore.rosette.route.hourEntry }}</p>
           <p><strong>Hora de Salida:</strong> {{ rosseteStore.rosette.route.hourExit }}</p>
           <p><strong>Día de Entrada:</strong> {{ rosseteStore.rosette.route.dayEntry }}</p>
@@ -50,7 +48,7 @@
             <strong>Inspección:</strong>
             {{ rosseteStore.rosette.route.vehicle.inspection ? 'si' : 'no' }}
           </p>
-          <p><strong>Clase:</strong> {{ rosseteStore.rosette.route.vehicle.classVehicle.name }}</p>
+          <p><strong>Clase:</strong> {{ rosseteStore.rosette.route.vehicle.classVehicle }}</p>
           <p><strong>Placa:</strong> {{ rosseteStore.rosette.route.vehicle.plate }}</p>
           <!-- Agrega más detalles del vehículo según sea necesario -->
         </div>
@@ -110,16 +108,6 @@
           <p>
             <strong>Validez:</strong> {{ rosseteStore.rosette.route.vehicle.operator.validity }}
           </p>
-        </div>
-        <div
-          v-if="rosseteStore.rosette.route.vehicle.driver"
-          class="bg-gray-100 p-4 rounded shadow mt-4"
-        >
-          <h2 class="text-xl font-bold mb-4">Información Conductor</h2>
-          <p><strong>Nombre:</strong> {{ rosseteStore.rosette.route.vehicle.driver.firstName }}</p>
-          <p><strong>Apellido:</strong> {{ rosseteStore.rosette.route.vehicle.driver.lastName }}</p>
-          <p><strong>CI:</strong> {{ rosseteStore.rosette.route.vehicle.driver.ci }}</p>
-          <!-- Agrega más detalles del vehículo según sea necesario -->
         </div>
         <div
           v-if="rosseteStore.rosette.route.vehicle.owner"

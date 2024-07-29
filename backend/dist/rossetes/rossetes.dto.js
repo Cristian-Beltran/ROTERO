@@ -16,7 +16,7 @@ const mapped_types_1 = require("@nestjs/mapped-types");
 const rossetes_entity_1 = require("./rossetes.entity");
 class CreateRosseteDto {
     static _OPENAPI_METADATA_FACTORY() {
-        return { expiration: { required: true, type: () => String }, status: { required: true, enum: require("./rossetes.entity").Status }, routeId: { required: true, type: () => Number } };
+        return { expiration: { required: true, type: () => String }, status: { required: true, enum: require("./rossetes.entity").Status }, vehicleId: { required: true, type: () => Number } };
     }
 }
 exports.CreateRosseteDto = CreateRosseteDto;
@@ -34,7 +34,7 @@ __decorate([
     (0, class_validator_1.IsNumber)(),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Number)
-], CreateRosseteDto.prototype, "routeId", void 0);
+], CreateRosseteDto.prototype, "vehicleId", void 0);
 class UpdateRosseteDto extends (0, mapped_types_1.PartialType)(CreateRosseteDto) {
     static _OPENAPI_METADATA_FACTORY() {
         return {};

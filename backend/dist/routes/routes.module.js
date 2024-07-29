@@ -13,8 +13,8 @@ const routes_controller_1 = require("./routes.controller");
 const typeorm_1 = require("@nestjs/typeorm");
 const routes_entity_1 = require("./routes.entity");
 const users_module_1 = require("../users/users.module");
-const vehicle_module_1 = require("../vehicle/vehicle.module");
 const cloudinary_module_1 = require("../cloudinary/cloudinary.module");
+const operators_module_1 = require("../operators/operators.module");
 let RoutesModule = class RoutesModule {
 };
 exports.RoutesModule = RoutesModule;
@@ -23,7 +23,7 @@ exports.RoutesModule = RoutesModule = __decorate([
         imports: [
             typeorm_1.TypeOrmModule.forFeature([routes_entity_1.Route]),
             users_module_1.UsersModule,
-            vehicle_module_1.VehicleModule,
+            operators_module_1.OperatorsModule,
             cloudinary_module_1.CloudinaryModule,
         ],
         providers: [routes_service_1.RoutesService],

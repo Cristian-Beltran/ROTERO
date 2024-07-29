@@ -1,15 +1,15 @@
 import { Rossete } from './rossetes.entity';
 import { Repository } from 'typeorm';
 import { UsersService } from 'src/users/users.service';
-import { RoutesService } from 'src/routes/routes.service';
 import { CreateRosseteDto, UpdateRosseteDto } from './rossetes.dto';
 import { JwtService } from '@nestjs/jwt';
+import { VehicleService } from 'src/vehicle/vehicle.service';
 export declare class RossetesService {
     private rosseteRepository;
     private jwtService;
     private userService;
-    private routeService;
-    constructor(rosseteRepository: Repository<Rossete>, jwtService: JwtService, userService: UsersService, routeService: RoutesService);
+    private vehicleService;
+    constructor(rosseteRepository: Repository<Rossete>, jwtService: JwtService, userService: UsersService, vehicleService: VehicleService);
     readQrRossete(token: string, userId: number): Promise<Rossete>;
     getRossetes(): Promise<Rossete[]>;
     getRossete(id: number): Promise<Rossete>;
